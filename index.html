@@ -431,13 +431,14 @@ function resetCode(){
 }
 
 function showHint(){
-  const c=courses[cur],idx=prog.hints[cur]||0;
-  if(idx<c.hints.length){
-    document.getElementById('consoleEl').innerHTML+='\n\n<span class="c-hint">💡 '+(idx+1)+'/'+c.hints.length+'：'+c.hints[idx]+'</span>';
-    prog.hints[cur]=idx+1;sv();hintI=idx+1;
-    document.getElementById('hintBtn').textContent='💡 提示('+(c.hints.length-hintI)+')';
-    if(hintI>=c.hints.length)document.getElementById('hintBtn').disabled=true;
-  }
+  const c=courses[cur];
+  let idx=prog.hints[cur]||0;
+  if(idx>=c.hints.length) idx=0; // 循环：用完回到第一条
+  document.getElementById('consoleEl').innerHTML+='\n\n<span class="c-hint">💡 提示：'+c.hints[idx]+'</span>';
+  prog.hints[cur]=idx+1;sv();hintI=idx+1;
+  if(hintI>=c.hints.length) prog.hints[cur]=0; // 下次从头循环
+  document.getElementById('hintBtn').textContent='💡 提示(♾)';
+  document.getElementById('hintBtn').disabled=false;
 }
 
 function nextLesson(){
