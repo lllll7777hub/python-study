@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Python 题库 — 50道精选练习题</title>
+<meta name="apple-mobile-web-app-title" content="Python题库">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<style>
+:root {
+  --primary: #4f46e5; --primary-bg: #eef2ff; --success: #10b981; --danger: #ef4444; --warning: #f59e0b;
+  --bg: #f8fafc; --card: #fff; --border: #e2e8f0;
+  --text: #1e293b; --text2: #64748b; --text3: #94a3b8;
+  --code-bg: #1e293b;
+  --radius: 12px; --shadow: 0 1px 3px rgba(0,0,0,.1);
+  --font: -apple-system, 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  --font-mono: 'SF Mono', 'JetBrains Mono', 'Consolas', 'Courier New', monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden}
+body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+.app{display:flex;flex-direction:column;height:100vh;height:100dvh}
+
+/* TOP BAR */
+.topbar{display:flex;align-items:center;gap:10px;padding:0 14px;height:50px;flex-shrink:0;background:var(--card);border-bottom:1px solid var(--border);z-index:20}
+.topbar .logo{font-size:22px}
+.topbar .brand{font-size:15px;font-weight:700;background:linear-gradient(135deg,#4f46e5,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.topbar .spacer{flex:1}
+.topbar .nav-link{font-size:13px;font-weight:600;color:var(--primary);text-decoration:none;padding:5px 12px;border-radius:8px;transition:.15s}
+.topbar .nav-link:hover{background:var(--primary-bg)}
+.stat-badge{padding:4px 10px;border-radius:12px;font-size:11px;font-weight:700;background:#ecfdf5;color:var(--success);white-space:nowrap}
+.stat-badge.warn{background:#fffbeb;color:var(--warning)}
+
+/* MAIN */
+.main{display:flex;flex:1;overflow:hidden}
+
+/* SIDEBAR */
+.sidebar{width:230px;min-width:180px;background:#f8fafc;border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.sidebar-head{padding:14px 16px 8px;font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.5px}
+.sidebar-section{padding:4px 12px 8px}
+.sidebar-section .sec-title{font-size:11px;font-weight:700;color:var(--text3);padding:6px 4px 4px}
+.filter-chip{display:inline-flex;align-items:center;gap:4px;padding:5px 10px;margin:2px;border-radius:14px;font-size:12px;cursor:pointer;font-weight:600;border:1px solid var(--border);background:var(--card);color:var(--text2);transition:.15s;font-family:inherit;user-select:none}
+.filter-chip:hover{border-color:var(--primary);color:var(--primary)}
+.filter-chip.active{background:var(--primary-bg);border-color:var(--primary);color:var(--primary)}
+.filter-chip .dot{width:6px;height:6px;border-radius:50%}
+.filter-chip .dot.easy{background:var(--success)}
+.filter-chip .dot.medium{background:var(--warning)}
+.filter-chip .dot.hard{background:var(--danger)}
+.sidebar-stats{padding:12px 16px;margin:8px 12px;background:var(--card);border-radius:var(--radius);border:1px solid var(--border)}
+.sidebar-stats .stat-row{display:flex;justify-content:space-between;font-size:12px;padding:3px 0;color:var(--text2)}
+.sidebar-stats .stat-row .val{font-weight:700;color:var(--text)}
+.sidebar-stats .stat-bar{height:4px;border-radius:2px;background:var(--border);margin:4px 0;overflow:hidden}
+.sidebar-stats .stat-bar-fill{height:100%;border-radius:2px;background:linear-gradient(135deg,var(--primary),#8b5cf6);transition:.3s}
+.sidebar-actions{padding:8px 16px;border-top:1px solid var(--border);margin-top:auto}
+.sidebar-actions .btn{width:100%;padding:8px;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:.15s}
+.sidebar-actions .btn.reset{background:#fff1f0;color:var(--danger)}
+.sidebar-actions .btn.reset:active{background:#ffe4e0}
+
+/* CONTENT */
+.content-panel{flex:1;overflow-y:auto;overflow-x:hidden;background:var(--bg);padding:20px 24px}
+.quiz-header{margin-bottom:16px}
+.quiz-header h1{font-size:22px;font-weight:800;margin-bottom:4px}
+.quiz-header .subtitle{font-size:13px;color:var(--text3)}
+.mode-bar{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.mode-btn{padding:6px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--text2);font-family:inherit;transition:.15s}
+.mode-btn.active{background:var(--primary-bg);border-color:var(--primary);color:var(--primary)}
+.mode-btn .badge{font-size:10px;margin-left:4px;opacity:.7}
+
+/* PROGRESS */
+.progress-bar-wrap{height:6px;background:var(--border);border-radius:3px;margin-bottom:14px;overflow:hidden}
+.progress-bar-fill{height:100%;border-radius:3px;background:linear-gradient(135deg,#4f46e5,#8b5cf6);transition:.3s}
+
+/* QUICK JUMP */
+.quick-jump{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:14px}
+.quick-jump .dot-btn{width:26px;height:26px;border-radius:6px;border:1px solid var(--border);background:var(--card);font-size:10px;font-weight:700;cursor:pointer;color:var(--text2);font-family:inherit;transition:.15s;display:flex;align-items:center;justify-content:center}
+.quick-jump .dot-btn:hover{border-color:var(--primary);color:var(--primary)}
+.quick-jump .dot-btn.done{background:#d1fae5;border-color:var(--success);color:var(--success)}
+.quick-jump .dot-btn.wrong-q{background:#fee2e2;border-color:var(--danger);color:var(--danger)}
+.quick-jump .dot-btn.current{border-color:var(--primary);background:var(--primary-bg);color:var(--primary)}
+
+/* QUESTION CARD */
+.q-card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:22px;margin-bottom:14px;transition:.2s;position:relative}
+.q-card.answered{border-color:var(--primary)}
+.q-card.correct{border-color:var(--success);background:#f0fdf4}
+.q-card.wrong{border-color:var(--danger);background:#fff5f5}
+.q-card-header{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.q-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;background:var(--primary-bg);color:var(--primary);flex-shrink:0}
+.q-card.correct .q-num{background:#d1fae5;color:var(--success)}
+.q-card.wrong .q-num{background:#fee2e2;color:var(--danger)}
+.q-difficulty{font-size:11px}
+.q-category{font-size:11px;font-weight:600;color:var(--primary);background:var(--primary-bg);padding:2px 8px;border-radius:10px}
+.q-stem{font-size:15px;font-weight:600;line-height:1.6;margin-bottom:14px}
+.q-stem code{background:#f1f5f9;color:#be185d;padding:1px 5px;border-radius:3px;font-size:14px;font-family:var(--font-mono)}
+.q-stem pre{background:var(--code-bg);color:#e2e8f0;padding:10px 14px;border-radius:8px;font-size:13px;line-height:1.6;margin:8px 0;overflow-x:auto;font-family:var(--font-mono)}
+.q-options{display:flex;flex-direction:column;gap:8px}
+.q-option{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:10px;border:1.5px solid var(--border);cursor:pointer;transition:.15s;font-size:14px;line-height:1.5}
+.q-option:hover{border-color:var(--primary);background:#fafaff}
+.q-option.selected{border-color:var(--primary);background:var(--primary-bg)}
+.q-option.correct-opt{border-color:var(--success);background:#f0fdf4}
+.q-option.wrong-opt{border-color:var(--danger);background:#fff5f5}
+.q-option .opt-letter{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;background:var(--border);color:var(--text2)}
+.q-option.selected .opt-letter{background:var(--primary);color:#fff}
+.q-option.correct-opt .opt-letter{background:var(--success);color:#fff}
+.q-option.wrong-opt .opt-letter{background:var(--danger);color:#fff}
+.q-option .opt-text{flex:1}
+.q-option .opt-text code{background:rgba(0,0,0,.05);color:#be185d;padding:1px 4px;border-radius:3px;font-size:13px;font-family:var(--font-mono)}
+.q-option .opt-icon{font-size:16px;margin-left:auto;display:none}
+.q-option.correct-opt .opt-icon,.q-option.wrong-opt .opt-icon{display:block}
+.q-explanation{margin-top:12px;padding:12px 14px;border-radius:8px;font-size:13px;line-height:1.6;display:none}
+.q-explanation.show{display:block}
+.q-explanation.correct-exp{background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46}
+.q-explanation.wrong-exp{background:#fff5f5;border:1px solid #fecaca;color:#991b1b}
+
+/* RESULT SUMMARY */
+.result-summary{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:24px;margin-bottom:20px;text-align:center}
+.result-summary .big-score{font-size:56px;font-weight:900;background:linear-gradient(135deg,#4f46e5,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.result-summary .big-label{font-size:14px;color:var(--text3);margin-top:4px}
+.result-summary .stat-grid{display:flex;gap:16px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+.result-summary .stat-item{padding:10px 18px;border-radius:var(--radius);text-align:center;border:1px solid var(--border);min-width:80px}
+.result-summary .stat-item .sval{font-size:22px;font-weight:800}
+.result-summary .stat-item .slab{font-size:11px;color:var(--text3)}
+.result-summary .stat-item.green{background:#ecfdf5;border-color:#a7f3d0}
+.result-summary .stat-item.green .sval{color:var(--success)}
+.result-summary .stat-item.red{background:#fff5f5;border-color:#fecaca}
+.result-summary .stat-item.red .sval{color:var(--danger)}
+.result-summary .retry-btn{display:inline-block;margin-top:14px;padding:10px 24px;border:none;border-radius:8px;background:linear-gradient(135deg,#4f46e5,#6366f1);color:#fff;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit}
+
+/* EMPTY */
+.empty-state{text-align:center;padding:60px 20px}
+.empty-state .icon{font-size:60px;margin-bottom:12px}
+.empty-state h3{font-size:18px;margin-bottom:6px}
+.empty-state p{font-size:14px;color:var(--text2);line-height:1.6}
+
+/* TOAST */
+.toast{position:fixed;top:60px;left:50%;transform:translateX(-50%);background:var(--text);color:#fff;padding:10px 22px;border-radius:16px;font-size:13px;font-weight:600;z-index:2000;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .sidebar{display:none}
+  .content-panel{padding:14px 16px}
+  .quiz-header h1{font-size:18px}
+  .q-card{padding:16px}
+  .q-stem{font-size:14px}
+  .q-stem pre{font-size:12px;padding:8px 10px}
+  .q-option{font-size:13px;padding:10px 12px}
+  .main{flex-direction:column}
+  .result-summary{padding:16px}
+  .result-summary .big-score{font-size:42px}
+  .result-summary .stat-grid{gap:8px}
+  .result-summary .stat-item{padding:8px 12px;min-width:60px}
+  .result-summary .stat-item .sval{font-size:18px}
+  .topbar{height:44px;padding:0 10px}
+  .topbar .brand{font-size:13px}
+  .mode-btn{white-space:nowrap;font-size:12px;padding:5px 12px}
+  .quick-jump .dot-btn{width:24px;height:24px;font-size:10px}
+}
+@media(max-width:480px){
+  .content-panel{padding:10px 12px}
+  .q-card{padding:12px}
+  .q-stem{font-size:13px}
+  .q-stem pre{font-size:11px;padding:6px 8px}
+  .q-option{font-size:12px;padding:8px 10px}
+  .q-option .opt-letter{width:22px;height:22px;font-size:10px}
+  .q-num{width:24px;height:24px;font-size:10px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <span class="logo">📝</span>
+    <span class="brand">Python 题库</span>
+    <span class="spacer"></span>
+    <span class="stat-badge" id="scoreBadge">📊 0/50</span>
+    <span class="stat-badge warn" id="accBadge">🎯 0%</span>
+    <a href="index.html" class="nav-link">← 返回学堂</a>
+  </div>
+  <div class="main">
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-head">🔍 筛选题目</div>
+      <div class="sidebar-section"><div class="sec-title">📂 知识点</div><div id="catFilters"></div></div>
+      <div class="sidebar-section"><div class="sec-title">⭐ 难度</div><div id="diffFilters"></div></div>
+      <div class="sidebar-stats" id="sidebarStats">
+        <div class="stat-row"><span>已做</span><span class="val" id="statDone">0</span></div>
+        <div class="stat-row"><span>正确</span><span class="val" id="statRight">0</span></div>
+        <div class="stat-row"><span>准确率</span><span class="val" id="statAcc">0%</span></div>
+        <div class="stat-bar"><div class="stat-bar-fill" id="statBar" style="width:0%"></div></div>
+      </div>
+      <div class="sidebar-actions"><button class="btn reset" onclick="resetAll()">🔄 重置所有记录</button></div>
+    </div>
+    <div class="content-panel" id="contentPanel">
+      <div class="quiz-header">
+        <h1>🐍 Python 精选题库</h1>
+        <p class="subtitle">50道题 · 3档难度 · 12个知识点 · 每题附详细解析</p>
+        <div class="mode-bar">
+          <button class="mode-btn active" onclick="setMode('all')">📋 全部 <span class="badge">50</span></button>
+          <button class="mode-btn" onclick="setMode('random')">🎲 随机10题</button>
+          <button class="mode-btn" onclick="setMode('wrong')">🔁 错题重练</button>
+          <button class="mode-btn" onclick="setMode('undone')">📌 未做题目</button>
+        </div>
+      </div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressBar" style="width:0%"></div></div>
+      <div class="quick-jump" id="quickJump"></div>
+      <div id="questionsArea"></div>
+    </div>
+  </div>
+</div>
+<script>
+// ======================== 50 QUESTIONS ========================
+const Q = [
+  // --- 基础语法 (5题) ---
+  {id:1,cat:"基础语法",diff:1,stem:"以下哪个语句可以在屏幕上输出 <code>Hello</code>？",opts:["print(Hello)","echo 'Hello'","print('Hello')","output('Hello')"],ans:2,exp:"<code>print()</code> 是 Python 的输出函数，字符串必须用引号括起来。A缺少引号，B是shell命令，D不存在。"},
+  {id:2,cat:"基础语法",diff:1,stem:"执行 <code>print(1 + 2 * 3)</code>，输出什么？",opts:["9","7","6","报错"],ans:1,exp:"先乘除后加减：<code>2*3=6</code>，<code>1+6=7</code>。Python 遵循标准数学运算优先级。"},
+  {id:3,cat:"基础语法",diff:1,stem:"以下哪个变量名是<strong>合法</strong>的？",opts:["2name","my-name","_count","class"],ans:2,exp:"变量名只能以字母或下划线开头，不能以数字开头(A错)，不能含连字符(B错)，不能使用关键词如 <code>class</code>(D错)。<code>_count</code> 是合法的。"},
+  {id:4,cat:"基础语法",diff:2,stem:"<code>name = 'Python'</code> 后执行 <code>print('name')</code>，输出什么？",opts:["Python","name","报错","'Python'"],ans:1,exp:"<code>print('name')</code> 打印的是字符串 <code>'name'</code>（有引号），不是变量。要打印变量用 <code>print(name)</code>（无引号）。"},
+  {id:5,cat:"基础语法",diff:2,stem:"<code>print('5' + '3')</code> 输出什么？",opts:["8","53","报错","5 3"],ans:1,exp:"两个字符串用 <code>+</code> 是拼接，不是数学加法。<code>'5'+'3'</code> 得到 <code>'53'</code>。要做数字运算需写 <code>print(5+3)</code>。"},
+
+  // --- 条件判断 (5题) ---
+  {id:6,cat:"条件判断",diff:1,stem:"<code>if</code> 语句后面必须有什么符号？",opts:["分号 ;","冒号 :","逗号 ,","等号 ="],ans:1,exp:"Python 的 <code>if</code>、<code>elif</code>、<code>else</code> 后面都要跟冒号 <code>:</code>，然后下一行缩进写代码块。"},
+  {id:7,cat:"条件判断",diff:1,stem:"<pre><code>a = 10\nif a > 5:\n    print('大')\nelse:\n    print('小')</code></pre>输出什么？",opts:["大","小","报错","大 小"],ans:0,exp:"<code>10 > 5</code> 为 <code>True</code>，进入 if 分支打印 <code>'大'</code>。else 分支不执行。"},
+  {id:8,cat:"条件判断",diff:2,stem:"<pre><code>score = 75\nif score >= 90:\n    print('A')\nelif score >= 60:\n    print('B')\nelse:\n    print('C')</code></pre>输出什么？",opts:["A","B","C","报错"],ans:1,exp:"<code>75>=90</code> 为假跳过；<code>75>=60</code> 为真，执行 elif 分支输出 <code>'B'</code>。<code>elif</code> 是 else if 的缩写。"},
+  {id:9,cat:"条件判断",diff:2,stem:"<pre><code>x = 3; y = 5\nif x > 2 and y < 10:\n    print('OK')</code></pre>输出什么？",opts:["OK","不输出","报错","False"],ans:0,exp:"<code>and</code> 两边都为真才为真。<code>3>2</code> 为真且 <code>5<10</code> 为真，打印 <code>'OK'</code>。"},
+  {id:10,cat:"条件判断",diff:2,stem:"以下哪个表示<strong>不等于</strong>？",opts:["<>","!=","~=","=/="],ans:1,exp:"Python 中不等于用 <code>!=</code>。例如 <code>if a != b:</code> 表示 a 不等于 b 时执行。"},
+
+  // --- for循环 (4题) ---
+  {id:11,cat:"for循环",diff:1,stem:"<pre><code>for i in range(3):\n    print(i)</code></pre>第2行输出（即第二次迭代）打印什么？",opts:["0","1","2","3"],ans:1,exp:"<code>range(3)</code> 生成 0,1,2。第一次 i=0，第二次 i=1。所以第二行输出 1。"},
+  {id:12,cat:"for循环",diff:1,stem:"<code>range(1, 5)</code> 会生成哪些数字？",opts:["1,2,3,4,5","1,2,3,4","0,1,2,3,4","0,1,2,3,4,5"],ans:1,exp:"<code>range(start, stop)</code> 从 start 开始，到 stop-1 结束。所以 <code>range(1,5)</code> 生成 1,2,3,4。"},
+  {id:13,cat:"for循环",diff:2,stem:"<code>for i in range(2, 10, 3): print(i)</code> 输出什么？",opts:["2 5 8","2 5 8 11","2 3 4 5","报错"],ans:0,exp:"<code>range(2,10,3)</code> 从2开始每次加3：2, 5, 8。第3个参数是步长。"},
+  {id:14,cat:"for循环",diff:3,stem:"<pre><code>result = 0\nfor i in range(1, 5):\n    result = result + i\nprint(result)</code></pre>输出什么？",opts:["10","15","5","报错"],ans:0,exp:"累加：i 依次 1,2,3,4，result: 1→3→6→10。等价于 <code>sum(range(1,5))</code>。"},
+
+  // --- while循环 (4题) ---
+  {id:15,cat:"while循环",diff:1,stem:"<pre><code>n = 3\nwhile n > 0:\n    print(n)\n    n = n - 1</code></pre>总共输出几行？",opts:["1","2","3","4"],ans:2,exp:"n 从3递减到1，每次打印后减1。输出 3,2,1 共3行。n=0 时不满足条件退出。"},
+  {id:16,cat:"while循环",diff:2,stem:"以下哪段代码会造成<strong>无限循环</strong>？",opts:["while True: break","while False: print('a')","while 1: print('a')","while 0: print('a')"],ans:2,exp:"<code>1</code> 在Python中为真值(truthy)，<code>while 1:</code> 相当于 <code>while True:</code> 且无 break，无限循环。0/False 为假值不执行。"},
+  {id:17,cat:"while循环",diff:2,stem:"<pre><code>n = 5\nwhile n > 0:\n    n = n - 1\n    if n == 3:\n        break\nprint(n)</code></pre>输出什么？",opts:["3","2","0","报错"],ans:0,exp:"n 递减：5→4→3。n==3 时 break 跳出循环，此时 n 仍是 3，打印3。"},
+  {id:18,cat:"while循环",diff:3,stem:"<pre><code>n = 1\ntotal = 0\nwhile n <= 5:\n    if n % 2 == 0:\n        total += n\n    n += 1\nprint(total)</code></pre>输出什么？",opts:["6","9","15","2"],ans:0,exp:"<code>n%2==0</code> 判断偶数。1~5中偶数2和4，累加得6。<code>%</code> 取余，<code>+=</code> 加后赋值。"},
+
+  // --- 函数 (5题) ---
+  {id:19,cat:"函数",diff:1,stem:"用哪个关键字定义函数？",opts:["function","def","func","define"],ans:1,exp:"Python 用 <code>def</code> 定义函数：<code>def 函数名(): ...</code>。"},
+  {id:20,cat:"函数",diff:1,stem:"<pre><code>def hello():\n    return 'Hi'\nprint(hello())</code></pre>输出什么？",opts:["hello","Hi","None","报错"],ans:1,exp:"<code>return 'Hi'</code> 返回 <code>'Hi'</code>，<code>print(hello())</code> 打印返回值。"},
+  {id:21,cat:"函数",diff:2,stem:"<pre><code>def add(a, b):\n    print(a + b)\nresult = add(3, 4)\nprint(result)</code></pre>第二个 <code>print(result)</code> 输出什么？",opts:["7","7 和 None","None","报错"],ans:2,exp:"函数没有 <code>return</code> 默认返回 <code>None</code>。<code>add(3,4)</code> 调用时打印7，<code>result</code> 为 None。"},
+  {id:22,cat:"函数",diff:2,stem:"<pre><code>def greet(name='同学'):\n    print('你好，' + name)\ngreet()</code></pre>输出什么？",opts:["你好，同学","你好，","报错","你好，name"],ans:0,exp:"<code>name='同学'</code> 是默认参数。调用时不传参就用默认值，打印 <code>'你好，同学'</code>。"},
+  {id:23,cat:"函数",diff:3,stem:"<code>lambda x: x * 2</code> 是什么？",opts:["普通函数","匿名函数","变量","类"],ans:1,exp:"<code>lambda</code> 创建匿名函数（一行函数）。<code>lambda x: x * 2</code> 接受一个参数返回其2倍。等价于 <code>def f(x): return x*2</code>。"},
+
+  // --- 列表 (5题) ---
+  {id:24,cat:"列表",diff:1,stem:"<code>nums = [10, 20, 30]</code>，<code>nums[1]</code> 的值是？",opts:["10","20","30","报错"],ans:1,exp:"列表索引从0开始：nums[0]=10，nums[1]=20，nums[2]=30。"},
+  {id:25,cat:"列表",diff:1,stem:"<code>nums = [1, 2, 3]; nums.append(4)</code> 后 <code>nums</code> 变成？",opts:["[1,2,3]","[4,1,2,3]","[1,2,3,4]","报错"],ans:2,exp:"<code>append()</code> 在列表末尾添加元素。<code>[1,2,3]</code> → <code>[1,2,3,4]</code>。"},
+  {id:26,cat:"列表",diff:2,stem:"<code>nums = [1, 2, 3, 4, 5]</code>，<code>nums[1:4]</code> 的结果是？",opts:["[1,2,3]","[2,3,4]","[2,3,4,5]","[1,2,3,4]"],ans:1,exp:"切片 <code>[1:4]</code> 从索引1开始（包含）到索引4结束（不包含），取 1,2,3 → <code>[2,3,4]</code>。"},
+  {id:27,cat:"列表",diff:2,stem:"<code>[i*2 for i in range(1,4)]</code> 的结果是？",opts:["[2,4]","[1,2,3]","[2,4,6]","[1,4,9]"],ans:2,exp:"列表推导式：i 取 1,2,3，每个乘2得 2,4,6。"},
+  {id:28,cat:"列表",diff:3,stem:"<pre><code>a = [1, 2]\nb = a\nb.append(3)\nprint(a)</code></pre>输出什么？",opts:["[1,2]","[1,2,3]","[3,1,2]","报错"],ans:1,exp:"<code>b = a</code> 不是复制而是让 b 指向同一对象。修改 b 也会影响 a。复制用 <code>a.copy()</code> 或 <code>a[:]</code>。"},
+
+  // --- 字典 (4题) ---
+  {id:29,cat:"字典",diff:1,stem:"字典使用什么括号创建？",opts:["[]","()","{}","<>"],ans:2,exp:"字典用花括号 <code>{}</code>：<code>{'key': 'value'}</code>。列表用 <code>[]</code>，元组用 <code>()</code>。"},
+  {id:30,cat:"字典",diff:1,stem:"<code>d = {'a':1, 'b':2}</code>，<code>d['b']</code> 的值是？",opts:["1","2","b","报错"],ans:1,exp:"通过键访问值：<code>d['b']</code> 返回键 <code>'b'</code> 对应的值 2。"},
+  {id:31,cat:"字典",diff:2,stem:"<code>d = {'x':10}; d['y'] = 20</code> 后 <code>d</code> 变成？",opts:["{'x':10}","{'x':10,'y':10}","{'x':10,'y':20}","报错"],ans:2,exp:"直接赋值 <code>d['新键'] = 值</code> 可向字典添加新键值对。"},
+  {id:32,cat:"字典",diff:3,stem:"<code>d = {'a':1,'b':2}</code>，以下哪个<strong>不会</strong>报错？",opts:["d['c']","d.get('c')","del d['c']","d.pop('c')"],ans:1,exp:"<code>get()</code> 在键不存在时返回 <code>None</code> 不报错。其他三个方法对不存在的键操作都会引发 <code>KeyError</code>。"},
+
+  // --- 字符串 (5题) ---
+  {id:33,cat:"字符串",diff:1,stem:"<code>'hello'.upper()</code> 的结果是？",opts:["Hello","HELLO","hello","报错"],ans:1,exp:"<code>upper()</code> 全部转大写：<code>'hello' → 'HELLO'</code>。"},
+  {id:34,cat:"字符串",diff:1,stem:"<code>len('Python')</code> 的值是？",opts:["5","6","7","报错"],ans:1,exp:"<code>len()</code> 返回字符串长度。<code>'Python'</code> 有6个字符。"},
+  {id:35,cat:"字符串",diff:2,stem:"<pre><code>name = '小明'\nage = 18\nprint(f'{name}今年{age}岁')</code></pre>输出什么？",opts:["{name}今年{age}岁","小明今年18岁","小明今年 18 岁","报错"],ans:1,exp:"f-string（格式化字符串）：<code>f'{变量}'</code> 直接把变量值嵌入字符串。"},
+  {id:36,cat:"字符串",diff:2,stem:"<code>'a,b,c'.split(',')</code> 的结果是？",opts:["['a,b,c']","['a','b','c']","('a','b','c')","'abc'"],ans:1,exp:"<code>split(',')</code> 用逗号分割字符串，返回列表 <code>['a','b','c']</code>。"},
+  {id:37,cat:"字符串",diff:3,stem:"<code>'-'.join(['a','b','c'])</code> 的结果是？",opts:["'abc'","'a-b-c'","'-abc'","报错"],ans:1,exp:"<code>join()</code> 用分隔符连接列表：<code>'-'.join(['a','b','c'])</code> → <code>'a-b-c'</code>。注意 join 是字符串方法。"},
+
+  // --- 文件操作 (4题) ---
+  {id:38,cat:"文件操作",diff:1,stem:"用以下哪种模式打开文件进行<strong>写入</strong>？",opts:["'r'","'w'","'x'","'a'"],ans:1,exp:"<code>'w'</code> (write) 用于写入会覆盖内容。<code>'r'</code> 只读，<code>'a'</code> 追加，<code>'x'</code> 创建新文件。"},
+  {id:39,cat:"文件操作",diff:2,stem:"打开文件后，<strong>必须</strong>做什么？",opts:["print文件","关闭文件","复制文件","重命名文件"],ans:1,exp:"文件操作后需调用 <code>f.close()</code> 关闭文件。推荐用 <code>with open(...) as f:</code> 自动关闭。"},
+  {id:40,cat:"文件操作",diff:2,stem:"<pre><code>with open('test.txt', 'r') as f:\n    content = f.read()</code></pre><code>with</code> 语句的好处是？",opts:["打开更快","自动关闭文件","文件只读","不用写文件名"],ans:1,exp:"<code>with</code> 上下文管理器代码块结束后自动调用 <code>close()</code>，即使发生异常也会关闭。"},
+  {id:41,cat:"文件操作",diff:3,stem:"<code>f.readlines()</code> 返回什么类型？",opts:["字符串","列表","字典","整数"],ans:1,exp:"<code>readlines()</code> 返回一个列表，每个元素是文件中的一行文本（含换行符）。<code>read()</code> 返回字符串。"},
+
+  // --- 异常处理 (4题) ---
+  {id:42,cat:"异常处理",diff:1,stem:"捕获异常用哪个关键字？",opts:["catch","except","error","try"],ans:1,exp:"Python 用 <code>try...except</code>：<code>try: ... except Exception: ...</code>。不是 Java 的 catch。"},
+  {id:43,cat:"异常处理",diff:2,stem:"<pre><code>try:\n    x = 1 / 0\nexcept ZeroDivisionError:\n    print('不能除以零')</code></pre>输出什么？",opts:["报错","不能除以零","0","None"],ans:1,exp:"<code>1/0</code> 引发 ZeroDivisionError，被 except 捕获执行打印。程序不会崩溃。"},
+  {id:44,cat:"异常处理",diff:2,stem:"<pre><code>try:\n    print('A')\nexcept:\n    print('B')\nfinally:\n    print('C')</code></pre>输出什么？",opts:["A","A 和 C","B 和 C","A B C"],ans:1,exp:"try 正常打印 'A'，无异常跳过 except。<code>finally</code> 无论是否异常都执行，打印 'C'。"},
+  {id:45,cat:"异常处理",diff:3,stem:"<pre><code>try:\n    raise ValueError('错了')\nexcept ValueError as e:\n    print(e)</code></pre>输出什么？",opts:["正常","错了","ValueError","报错"],ans:1,exp:"<code>raise</code> 手动抛出异常，被 except 捕获。<code>as e</code> 获取异常对象，打印消息 <code>'错了'</code>。"},
+
+  // --- 面向对象 (5题) ---
+  {id:46,cat:"面向对象",diff:1,stem:"用哪个关键字定义类？",opts:["struct","object","class","type"],ans:2,exp:"Python 用 <code>class</code> 定义类：<code>class Dog: ...</code>。<code>object</code> 是所有类的基类，<code>type</code> 是元类。"},
+  {id:47,cat:"面向对象",diff:2,stem:"<pre><code>class Dog:\n    def __init__(self, name):\n        self.name = name</code></pre><code>__init__</code> 方法的作用是？",opts:["销毁对象","初始化对象","打印对象","继承对象"],ans:1,exp:"<code>__init__</code> 是构造方法，创建实例时自动调用。<code>Dog('旺财')</code> 会传入参数初始化对象。"},
+  {id:48,cat:"面向对象",diff:2,stem:"<pre><code>class Cat:\n    def speak(self):\n        print('喵')\n\ntom = Cat()\ntom.speak()</code></pre>输出什么？",opts:["喵","speak","Cat","报错"],ans:0,exp:"<code>tom = Cat()</code> 创建实例，<code>tom.speak()</code> 调用方法打印 <code>'喵'</code>。方法第一个参数 <code>self</code> 代表实例本身。"},
+  {id:49,cat:"面向对象",diff:3,stem:"<pre><code>class Animal:\n    def speak(self):\n        return '叫'\nclass Dog(Animal):\n    def speak(self):\n        return '汪汪'\nd = Dog()\nprint(d.speak())</code></pre>输出什么？",opts:["叫","汪汪","叫 汪汪","报错"],ans:1,exp:"<code>Dog</code> 继承 <code>Animal</code>，并重写(override)了 <code>speak</code> 方法。调用时使用子类自己的版本，输出 <code>'汪汪'</code>。"},
+  {id:50,cat:"面向对象",diff:3,stem:"<code>isinstance(5, int)</code> 返回什么？",opts:["True","False","5","报错"],ans:0,exp:"<code>isinstance(obj, type)</code> 检查对象是否是指定类型。5 是 int 类型，返回 <code>True</code>。类似地 <code>isinstance('hi', str)</code> 也返回 True。"},
+];
+
+// ======================== STATE ========================
+let mode = 'all';
+let catFilter = 'all';
+let diffFilter = 'all';
+let records = {}; // { questionId: { correct: bool, selected: int } }
+
+function loadRecords() {
+  try { records = JSON.parse(localStorage.pythonQuiz || '{}'); } catch(e) { records = {}; }
+}
+function saveRecords() { localStorage.pythonQuiz = JSON.stringify(records); }
+
+// ======================== FILTER QUESTIONS ========================
+function getFilteredQuestions() {
+  let qs = [...Q];
+  if (catFilter !== 'all') qs = qs.filter(q => q.cat === catFilter);
+  if (diffFilter === 'easy') qs = qs.filter(q => q.diff === 1);
+  if (diffFilter === 'medium') qs = qs.filter(q => q.diff === 2);
+  if (diffFilter === 'hard') qs = qs.filter(q => q.diff === 3);
+  if (mode === 'random') {
+    qs = shuffle([...qs]).slice(0, 10);
+  }
+  if (mode === 'wrong') {
+    qs = qs.filter(q => records[q.id] && records[q.id].correct === false);
+    if (qs.length === 0) return [];
+  }
+  if (mode === 'undone') {
+    qs = qs.filter(q => !records[q.id]);
+    if (qs.length === 0) return [];
+  }
+  return qs;
+}
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+// ======================== DIFF LABEL ========================
+function diffLabel(d) {
+  if (d === 1) return '★ 入门';
+  if (d === 2) return '★★ 进阶';
+  return '★★★ 挑战';
+}
+function diffCSS(d) {
+  if (d === 1) return 'color:var(--success)';
+  if (d === 2) return 'color:var(--warning)';
+  return 'color:var(--danger)';
+}
+
+// ======================== RENDER SIDEBAR ========================
+function renderSidebar() {
+  // Category filters
+  const cats = [...new Set(Q.map(q => q.cat))];
+  let catHTML = '<button class="filter-chip active" onclick="setCatFilter(\'all\')">全部</button>';
+  cats.forEach(c => {
+    const active = catFilter === c ? ' active' : '';
+    catHTML += `<button class="filter-chip${active}" onclick="setCatFilter('${c}')">${c}</button>`;
+  });
+  document.getElementById('catFilters').innerHTML = catHTML;
+
+  // Difficulty filters
+  let diffHTML = '<button class="filter-chip active" onclick="setDiffFilter(\'all\')">全部难度</button>';
+  diffHTML += '<button class="filter-chip" onclick="setDiffFilter(\'easy\')"><span class="dot easy"></span>入门</button>';
+  diffHTML += '<button class="filter-chip" onclick="setDiffFilter(\'medium\')"><span class="dot medium"></span>进阶</button>';
+  diffHTML += '<button class="filter-chip" onclick="setDiffFilter(\'hard\')"><span class="dot hard"></span>挑战</button>';
+  // apply active states
+  ['easy','medium','hard'].forEach(d => {
+    const el = document.querySelector(`.filter-chip[onclick="setDiffFilter('${d}')"]`);
+  });
+  document.getElementById('diffFilters').innerHTML = diffHTML;
+  // re-apply active after innerHTML
+  setTimeout(() => {
+    document.querySelectorAll('#diffFilters .filter-chip').forEach(b => {
+      const d = b.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
+      b.classList.toggle('active', d === diffFilter);
+    });
+  }, 0);
+
+  // Stats
+  const allDone = Object.keys(records).length;
+  const allRight = Object.values(records).filter(r => r.correct).length;
+  const allPct = allDone > 0 ? Math.round(allRight / allDone * 100) : 0;
+  document.getElementById('statDone').textContent = allDone;
+  document.getElementById('statRight').textContent = allRight;
+  document.getElementById('statAcc').textContent = allPct + '%';
+  document.getElementById('statBar').style.width = allPct + '%';
+
+  document.getElementById('scoreBadge').textContent = '📊 ' + allDone + '/50';
+  document.getElementById('accBadge').textContent = '🎯 ' + allPct + '%';
+}
+
+function setCatFilter(c) {
+  catFilter = c;
+  document.querySelectorAll('#catFilters .filter-chip').forEach(b => {
+    const t = b.textContent;
+    b.classList.toggle('active', (t === c || (c === 'all' && t === '全部')));
+  });
+  renderAll();
+}
+
+function setDiffFilter(d) {
+  diffFilter = d;
+  document.querySelectorAll('#diffFilters .filter-chip').forEach(b => {
+    const v = b.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
+    b.classList.toggle('active', v === d);
+  });
+  renderAll();
+}
+
+function setMode(m) {
+  mode = m;
+  document.querySelectorAll('.mode-btn').forEach(b => {
+    // match by onclick
+    const v = b.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
+    b.classList.toggle('active', v === m);
+  });
+  renderAll();
+}
+
+// ======================== RENDER QUESTIONS ========================
+function renderAll() {
+  renderSidebar();
+  const qs = getFilteredQuestions();
+  const area = document.getElementById('questionsArea');
+  const jump = document.getElementById('quickJump');
+  const prog = document.getElementById('progressBar');
+
+  // Progress bar
+  const totalDone = qs.filter(q => records[q.id]).length;
+  prog.style.width = qs.length > 0 ? (totalDone / qs.length * 100) + '%' : '0%';
+
+  if (qs.length === 0) {
+    let msg = '';
+    if (mode === 'wrong') msg = '<p>暂无错题，继续加油！💪</p>';
+    else msg = '<p>当前筛选条件下没有题目</p>';
+    area.innerHTML = `<div class="empty-state"><div class="icon">📭</div><h3>暂无题目</h3>${msg}</div>`;
+    jump.innerHTML = '';
+    return;
+  }
+
+  // Quick jump
+  let jhtml = '';
+  qs.forEach((q, i) => {
+    const r = records[q.id];
+    let cls = '';
+    if (r && r.correct) cls = 'done';
+    else if (r && !r.correct) cls = 'wrong-q';
+    jhtml += `<button class="dot-btn ${cls}" onclick="scrollToQ(${q.id})" title="第${i+1}题">${i+1}</button>`;
+  });
+  jump.innerHTML = jhtml;
+
+  // Summary if all answered
+  let summaryHTML = '';
+  if (totalDone === qs.length && qs.length > 0) {
+    const correct = qs.filter(q => records[q.id] && records[q.id].correct).length;
+    const pct = Math.round(correct / qs.length * 100);
+    let emoji = '🌟', msg = '';
+    if (pct === 100) { emoji = '🏆'; msg = '全部正确，太厉害了！'; }
+    else if (pct >= 80) { emoji = '🎉'; msg = '非常棒！继续加油！'; }
+    else if (pct >= 60) { emoji = '👍'; msg = '还不错，再看看错题解析吧！'; }
+    else { emoji = '📚'; msg = '继续努力，多做几遍会有进步！'; }
+    summaryHTML = `
+      <div class="result-summary">
+        <div class="big-score">${pct}%</div>
+        <div class="big-label">${msg}</div>
+        <div class="stat-grid">
+          <div class="stat-item green"><div class="sval">✅ ${correct}</div><div class="slab">正确</div></div>
+          <div class="stat-item red"><div class="sval">❌ ${qs.length - correct}</div><div class="slab">错误</div></div>
+          <div class="stat-item"><div class="sval">📋 ${qs.length}</div><div class="slab">总题数</div></div>
+        </div>
+        <button class="retry-btn" onclick="retryMode()">🔄 重新练习</button>
+      </div>`;
+  }
+
+  // Questions
+  let qhtml = summaryHTML;
+  qs.forEach((q, i) => {
+    const r = records[q.id];
+    let cardCls = '';
+    if (r) {
+      cardCls = r.correct ? 'correct' : 'wrong';
+    }
+    qhtml += `<div class="q-card ${cardCls}" id="q${q.id}">`;
+    qhtml += `<div class="q-card-header">`;
+    qhtml += `<span class="q-num">${i+1}</span>`;
+    qhtml += `<span class="q-category">${q.cat}</span>`;
+    qhtml += `<span class="q-difficulty" style="${diffCSS(q.diff)}">${diffLabel(q.diff)}</span>`;
+    qhtml += `</div>`;
+    qhtml += `<div class="q-stem">${q.stem}</div>`;
+    qhtml += `<div class="q-options">`;
+    const letters = ['A','B','C','D'];
+    letters.forEach((l, oi) => {
+      let optCls = '';
+      if (r) {
+        if (oi === q.ans) optCls = 'correct-opt';
+        else if (oi === r.selected) optCls = 'wrong-opt';
+      }
+      qhtml += `<div class="q-option ${optCls}" onclick="answerQ(${q.id}, ${oi})">`;
+      qhtml += `<span class="opt-letter">${l}</span>`;
+      qhtml += `<span class="opt-text">${q.opts[oi]}</span>`;
+      qhtml += `<span class="opt-icon">${oi === q.ans ? '✅' : '❌'}</span>`;
+      qhtml += `</div>`;
+    });
+    qhtml += `</div>`;
+    if (r) {
+      qhtml += `<div class="q-explanation show ${r.correct ? 'correct-exp' : 'wrong-exp'}">`;
+      qhtml += `<strong>${r.correct ? '✅ 正确！' : '❌ 正确答案是 ' + letters[q.ans] + ': ' + q.opts[q.ans]}</strong><br>`;
+      qhtml += q.exp;
+      qhtml += `</div>`;
+    }
+    qhtml += `</div>`;
+  });
+
+  area.innerHTML = qhtml;
+}
+
+function scrollToQ(id) {
+  const el = document.getElementById('q' + id);
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // briefly highlight
+    el.style.boxShadow = '0 0 0 3px var(--primary)';
+    setTimeout(() => { el.style.boxShadow = ''; }, 1500);
+  }
+}
+
+function answerQ(qid, selected) {
+  if (records[qid]) return; // already answered
+  const q = Q.find(q => q.id === qid);
+  const correct = selected === q.ans;
+  records[qid] = { correct, selected };
+  saveRecords();
+  renderAll();
+  // Scroll back to the card
+  setTimeout(() => scrollToQ(qid), 100);
+}
+
+function retryMode() {
+  const qs = getFilteredQuestions();
+  qs.forEach(q => { delete records[q.id]; });
+  saveRecords();
+  renderAll();
+}
+
+function resetAll() {
+  if (confirm('确定要清除所有做题记录吗？此操作不可撤销。')) {
+    records = {};
+    saveRecords();
+    mode = 'all';
+    catFilter = 'all';
+    diffFilter = 'all';
+    document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.getAttribute('onclick')?.includes("'all'")));
+    renderAll();
+    showToast('✅ 记录已清除');
+  }
+}
+
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2000);
+}
+
+// ======================== INIT ========================
+loadRecords();
+renderAll();
+</script>
+</body>
+</html>
