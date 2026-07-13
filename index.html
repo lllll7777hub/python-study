@@ -1,1387 +1,357 @@
 <!DOCTYPE html>
-<html lang="zh-CN" class="light" style="transition: background-color 0.4s ease, color 0.4s ease;">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Python零基础学堂</title>
-<meta name="apple-mobile-web-app-title" content="Python学堂">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-/* ===== GOOGLE FONTS ===== */
-/* Inter loaded above for English/numbers; CJK uses system stack */
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%; font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif; background:#f5f5f5; color:#333; -webkit-text-size-adjust:100%}
+.app{display:flex;flex-direction:column;height:100vh;height:100dvh;max-width:900px;margin:0 auto}
 
-:root {
-  /* Modern gradient primary */
-  --primary: #667eea;
-  --primary-end: #764ba2;
-  --primary-bg: #f0f0ff;
-  --primary-glow: rgba(102,126,234,0.25);
-  /* Success gradient */
-  --success: #11998e;
-  --success-end: #38ef7d;
-  --success-bg: #ecfdf5;
-  /* Accent colors */
-  --danger: #ef4444; --warning: #f59e0b;
-  /* Surfaces */
-  --bg: #f1f5f9;
-  --card: rgba(255,255,255,0.82);
-  --card-solid: #ffffff;
-  --border: #e2e8f0;
-  /* Text */
-  --text: #1e293b; --text2: #64748b; --text3: #94a3b8;
-  /* Code */
-  --code-bg: #1a1a2e;
-  --code-surface: #16213e;
-  --sidebar-bg: rgba(248,250,252,0.75);
-  --topbar-bg: rgba(255,255,255,0.8);
-  /* Radii & Shadows */
-  --radius: 14px;
-  --radius-sm: 10px;
-  --shadow-sm: 0 1px 2px rgba(0,0,0,.04);
-  --shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
-  --shadow-md: 0 4px 6px rgba(0,0,0,.04), 0 2px 4px rgba(0,0,0,.03), 0 1px 2px rgba(0,0,0,.05);
-  --shadow-lg: 0 10px 25px rgba(0,0,0,.06), 0 4px 10px rgba(0,0,0,.04), 0 2px 4px rgba(0,0,0,.03);
-  --shadow-xl: 0 20px 40px rgba(0,0,0,.08), 0 8px 16px rgba(0,0,0,.04);
-  /* Typography */
-  --font: 'Inter', -apple-system, 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
-  --font-mono: 'SF Mono', 'JetBrains Mono', 'Consolas', 'Courier New', monospace;
-  /* Glass */
-  --glass-bg: rgba(255,255,255,0.65);
-  --glass-border: rgba(255,255,255,0.5);
-  --glass-blur: 16px;
-}
+/* Top */
+.top{display:flex;align-items:center;gap:8px;padding:10px 16px;background:#fff;border-bottom:1px solid #eee;flex-shrink:0}
+.top .logo{font-size:20px}
+.top .title{font-size:15px;font-weight:700;color:#4f46e5}
+.top .flex{flex:1}
+.top .pct{font-size:12px;color:#10b981;font-weight:600;background:#ecfdf5;padding:4px 10px;border-radius:10px}
 
-.dark {
-  --bg: #0b0f19;
-  --card: rgba(30,41,59,0.75);
-  --card-solid: #1e293b;
-  --border: #2d3a4f;
-  --text: #e2e8f0; --text2: #94a3b8; --text3: #64748b;
-  --primary-bg: rgba(102,126,234,0.12);
-  --shadow-sm: 0 1px 2px rgba(0,0,0,.2);
-  --shadow: 0 1px 3px rgba(0,0,0,.3), 0 1px 2px rgba(0,0,0,.2);
-  --shadow-md: 0 4px 6px rgba(0,0,0,.25), 0 2px 4px rgba(0,0,0,.2);
-  --shadow-lg: 0 10px 25px rgba(0,0,0,.35), 0 4px 10px rgba(0,0,0,.25);
-  --shadow-xl: 0 20px 40px rgba(0,0,0,.4), 0 8px 16px rgba(0,0,0,.3);
-  --sidebar-bg: rgba(11,15,25,0.8);
-  --topbar-bg: rgba(30,41,59,0.75);
-  --code-bg: #080c18;
-  --code-surface: #0f1525;
-  --glass-bg: rgba(30,41,59,0.55);
-  --glass-border: rgba(255,255,255,0.06);
-  --glass-blur: 20px;
-  --success-bg: rgba(17,153,142,0.15);
-}
+/* Tabs */
+.tabs{display:flex;border-bottom:1px solid #eee;background:#fff;flex-shrink:0}
+.tabs button{flex:1;padding:12px;border:none;background:transparent;font-size:14px;font-weight:600;color:#999;cursor:pointer;position:relative;font-family:inherit}
+.tabs button.on{color:#4f46e5}
+.tabs button.on:after{content:'';position:absolute;bottom:0;left:30%;right:30%;height:2px;background:#4f46e5;border-radius:1px}
 
-* { margin:0; padding:0; box-sizing:border-box; }
+/* Body */
+.body{flex:1;overflow-y:auto;padding:16px}
 
-html, body { height:100%; }
-html { transition: background-color 0.4s ease, color 0.4s ease; }
-body {
-  font-family:var(--font); background:var(--bg); color:var(--text);
-  overflow:hidden; -webkit-font-smoothing:antialiased;
-  -webkit-tap-highlight-color:transparent;
-  transition: background-color 0.4s ease, color 0.4s ease;
-  letter-spacing: 0.01em;
-}
+/* Lesson */
+.lsn{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.lsn .chip{padding:6px 12px;border-radius:14px;font-size:12px;font-weight:600;border:1px solid #ddd;background:#fff;cursor:pointer;color:#666;font-family:inherit}
+.lsn .chip.done{background:#d1fae5;border-color:#a7f3d0;color:#065f46}
+.lsn .chip.on{background:#eef2ff;border-color:#4f46e5;color:#4f46e5}
+.lsn .chip.lock{opacity:.4;pointer-events:none}
 
-/* ================================================================
-   1. PAGE LOAD — STAGGERED ENTRANCE ANIMATIONS
-   ================================================================ */
-@keyframes slideUpIn {
-  0% { opacity: 0; transform: translateY(28px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-.topbar, .sidebar, .content-panel, .editor-panel, .mobile-tabs {
-  animation: slideUpIn 0.4s ease-out both;
-}
-.topbar        { animation-delay: 0s; }
-.mobile-tabs   { animation-delay: 0.05s; }
-.sidebar       { animation-delay: 0.05s; }
-.content-panel { animation-delay: 0.1s; }
-.editor-panel  { animation-delay: 0.15s; }
+.hero{background:linear-gradient(135deg,#4338ca,#6366f1,#8b5cf6);border-radius:12px;padding:20px;color:#fff;margin-bottom:16px}
+.hero h2{font-size:18px;margin-bottom:6px}
+.hero p{font-size:13px;opacity:.9;line-height:1.6}
 
-/* ================================================================
-   2. COURSE TRANSITION — FADE + SLIDE
-   ================================================================ */
-.content-panel {
-  transition: opacity 0.3s ease;
-}
-.content-panel.transitioning { opacity: 0; }
+.c-section{margin-bottom:14px}
+.c-section h3{font-size:15px;font-weight:700;color:#4f46e5;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.c-section p{font-size:14px;line-height:1.75;color:#555}
+.c-section code.inline{background:#f0f0f0;color:#c7254e;padding:1px 5px;border-radius:3px;font-size:13px}
+.c-section pre{background:#1e293b;color:#e2e8f0;padding:12px 14px;border-radius:8px;font-size:13px;line-height:1.6;overflow-x:auto;margin:8px 0;font-family:Consolas,monospace}
+.c-section pre code{font-family:inherit}
+.box{border-radius:8px;padding:12px 14px;margin:10px 0;font-size:13px;line-height:1.6;display:flex;gap:8px}
+.box.tip{background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46}
+.box.warn{background:#fffbeb;border:1px solid #fde68a;color:#92400e}
+.box.info{background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af}
+.box .box-icon{font-size:16px;flex-shrink:0}
 
-.code-wrap {
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-.code-wrap.transitioning {
-  opacity: 0; transform: translateX(10px);
-}
+.step{padding:10px 0;display:flex;gap:10px;align-items:start}
+.step .sn{width:28px;height:28px;border-radius:50%;background:#4f46e5;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.step div:last-child{font-size:13px}
+.step div:last-child strong{display:block;margin-bottom:2px}
 
-/* ================================================================
-   3. CODE RUN — BUTTON PRESS + CONSOLE LOADING / GLOW
-   ================================================================ */
-/* Run button press + pulse */
-@keyframes runPulse {
-  0%   { box-shadow: 0 0 0 0 rgba(17,153,142,.6); }
-  70%  { box-shadow: 0 0 0 12px rgba(17,153,142,0); }
-  100% { box-shadow: 0 0 0 0 rgba(17,153,142,0); }
-}
-.btn.run.pressed {
-  transform: scale(.9);
-  animation: runPulse 0.5s ease-out;
-}
+/* Editor */
+.editor{background:#1e293b;border-radius:10px;overflow:hidden;margin-bottom:10px;flex-shrink:0}
+.editor .ed-top{display:flex;align-items:center;padding:8px 14px;background:#0f172a;border-bottom:1px solid #334155}
+.editor .ed-top .fn{font-size:11px;color:#94a3b8;font-weight:600;font-family:Consolas,monospace}
+.editor .ed-top .dot{width:7px;height:7px;border-radius:50%;background:#10b981;display:inline-block;margin-right:5px}
+.editor .ed-top .flex{flex:1}
+.editor textarea{width:100%;min-height:140px;background:transparent;color:#e2e8f0;border:none;outline:none;padding:14px;font-family:Consolas,monospace;font-size:14px;line-height:1.6;resize:vertical;tab-size:4;caret-color:#facc15}
+.editor textarea::placeholder{color:#475569}
 
-/* Console loading dots */
-@keyframes dotPulse { 0%,100%{opacity:.3} 50%{opacity:1} }
-.console .loading-dot {
-  display: inline-block;
-  animation: dotPulse 1.2s infinite;
-}
-.console .loading-dot:nth-child(1) { animation-delay: 0s; }
-.console .loading-dot:nth-child(2) { animation-delay: 0.3s; }
-.console .loading-dot:nth-child(3) { animation-delay: 0.6s; }
+.btns{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.btns button{padding:10px 16px;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s}
+.btns button:active{transform:scale(.96)}
+.btn-run{background:linear-gradient(135deg,#10b981,#059669);color:#fff}
+.btn-reset{background:#475569;color:#e2e8f0}
+.btn-hint{background:#78350f;color:#fde68a}
+.btn-next{background:linear-gradient(135deg,#4f46e5,#6366f1);color:#fff}
+.btns button:disabled{opacity:.35;pointer-events:none}
 
-/* Console success / error glow */
-@keyframes consoleGlowGreen {
-  0%   { box-shadow: inset 0 0 0 0 rgba(17,153,142,.3); }
-  50%  { box-shadow: inset 0 0 16px 3px rgba(17,153,142,.45); }
-  100% { box-shadow: inset 0 0 0 0 rgba(17,153,142,0); }
-}
-@keyframes consoleGlowRed {
-  0%   { box-shadow: inset 0 0 0 0 rgba(239,68,68,.3); }
-  50%  { box-shadow: inset 0 0 16px 3px rgba(239,68,68,.45); }
-  100% { box-shadow: inset 0 0 0 0 rgba(239,68,68,0); }
-}
-.console.glow-green { animation: consoleGlowGreen 0.6s ease-out; }
-.console.glow-red   { animation: consoleGlowRed 0.6s ease-out; }
+.console{background:#080d14;color:#94a3b8;border-radius:8px;padding:12px 14px;font-family:Consolas,monospace;font-size:13px;line-height:1.6;min-height:80px;max-height:200px;overflow-y:auto;white-space:pre-wrap;margin-bottom:16px}
+.console .c-out{color:#a7f3d0}
+.console .c-err{color:#fda4af}
+.console .c-info{color:#93c5fd}
+.console .c-ok{color:#34d399;font-weight:700}
+.console .c-hint{color:#fde68a}
 
-/* ================================================================
-   4. CELEBRATION — MULTI-STAGE
-   ================================================================ */
-@keyframes starBurst {
-  0%   { opacity: 0; transform: scale(0) rotate(-30deg); }
-  50%  { opacity: 1; transform: scale(1.3) rotate(10deg); }
-  100% { opacity: 0; transform: scale(1.6) rotate(0deg); }
-}
-@keyframes confettiDrop {
-  0%   { transform: translateY(-110vh) rotate(0deg); opacity: 1; }
-  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
-}
-@keyframes textBounceIn {
-  0%   { opacity: 0; transform: translateY(60px) scale(.4); }
-  50%  { opacity: 1; transform: translateY(-10px) scale(1.05); }
-  70%  { transform: translateY(4px) scale(.97); }
-  85%  { transform: translateY(-2px) scale(1.01); }
-  100% { transform: translateY(0) scale(1); }
-}
-@keyframes dingVibrate {
-  0%,100% { transform: scale(1); }
-  20%  { transform: scale(1.08); }
-  35%  { transform: scale(.96); }
-  55%  { transform: scale(1.03); }
-  75%  { transform: scale(.99); }
-}
-.celeb-bg .big.multi-stage {
-  animation: textBounceIn 0.7s cubic-bezier(.34,1.56,.64,1) 1s both,
-             dingVibrate 0.3s ease-out 1.15s;
-}
+.theme-btn{position:fixed;bottom:20px;right:20px;width:44px;height:44px;border-radius:50%;background:#fff;border:1px solid #ddd;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);z-index:100;display:flex;align-items:center;justify-content:center}
+.toast{position:fixed;top:16px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:8px 20px;border-radius:20px;font-size:13px;font-weight:600;z-index:200;pointer-events:none;animation:toastIn .3s ease}
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(-10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 
-/* Star burst overlay */
-.stars-overlay {
-  position: fixed; inset: 0; pointer-events: none; z-index: 1000;
-  display: flex; align-items: center; justify-content: center;
-}
-.stars-overlay .star {
-  position: absolute; font-size: 30px;
-  animation: starBurst 0.5s ease-out both;
-}
+.dark-mode{background:#0f172a;color:#e2e8f0}
+.dark-mode .top{background:#1e293b;border-color:#334155}
+.dark-mode .tabs{background:#1e293b;border-color:#334155}
+.dark-mode .lsn .chip{background:#1e293b;border-color:#334155;color:#94a3b8}
+.dark-mode .lsn .chip.done{background:#064e3b;border-color:#065f46;color:#6ee7b7}
+.dark-mode .lsn .chip.on{background:#312e81;border-color:#4f46e5;color:#a5b4fc}
+.dark-mode .c-section p{color:#94a3b8}
+.dark-mode .c-section h3{color:#818cf8}
+.dark-mode .c-section code.inline{background:#1e293b;color:#f472b6}
+.dark-mode .theme-btn{background:#1e293b;border-color:#334155}
+.dark-mode .btns button{color:#e2e8f0}
 
-/* ================================================================
-   5. MICRO-INTERACTIONS
-   ================================================================ */
-
-/* Hint button bounce (cubic-bezier) */
-@keyframes hintBounce {
-  0%   { transform: scale(1); }
-  30%  { transform: scale(.85); }
-  55%  { transform: scale(1.1); }
-  75%  { transform: scale(.95); }
-  100% { transform: scale(1); }
-}
-.btn.hint.bouncing {
-  animation: hintBounce 0.45s cubic-bezier(.34,1.56,.64,1);
-}
-
-/* Sidebar course-item hover dot indicator */
-.course-item::after {
-  content: '';
-  position: absolute; left: 8px; top: 50%;
-  width: 5px; height: 5px; border-radius: 50%;
-  background: var(--primary);
-  opacity: 0;
-  transform: translateX(-8px) translateY(-50%);
-  transition: opacity 0.2s ease, transform 0.2s ease;
-}
-.course-item:not(.active):not(.locked):hover::after {
-  opacity: .7;
-  transform: translateX(0) translateY(-50%);
-}
-
-/* Editor parallax: line numbers lag slightly */
-.line-nums {
-  transition: transform 0.08s linear;
-}
-
-/* ================================================================
-   6. DARK MODE — SMOOTH COLOR TRANSITION
-   ================================================================ */
-/* (html element inline style + body transition handle this;
-   child elements use var(--*) so they naturally transition too.) */
-
-/* ===== BACKGROUND TEXTURE & GRAIN ===== */
-body::before {
-  content: '';
-  position: fixed; inset: 0;
-  pointer-events: none; z-index: -1;
-  background:
-    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(102,126,234,0.06) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 50% at 80% 90%, rgba(118,75,162,0.05) 0%, transparent 50%),
-    radial-gradient(ellipse 40% 30% at 50% 50%, rgba(17,153,142,0.03) 0%, transparent 50%);
-}
-.dark body::before {
-  background:
-    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(102,126,234,0.08) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 50% at 80% 90%, rgba(118,75,162,0.06) 0%, transparent 50%),
-    radial-gradient(ellipse 40% 30% at 50% 50%, rgba(56,239,125,0.03) 0%, transparent 50%);
-}
-
-.app { display:flex; flex-direction:column; height:100vh; height:100dvh; }
-
-/* ===== TOP BAR ===== */
-.topbar {
-  display:flex; align-items:center; gap:12px;
-  padding:0 18px; height:54px; flex-shrink:0;
-  background: var(--topbar-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border-bottom:1px solid var(--border);
-  z-index:20; transition:background .4s;
-}
-.topbar .logo { font-size:24px; filter: drop-shadow(0 2px 4px rgba(102,126,234,0.3)); }
-.topbar .brand {
-  font-size:15px; font-weight:800;
-  background:linear-gradient(135deg, var(--primary) 0%, var(--primary-end) 100%);
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-  background-clip:text;
-  letter-spacing: 0.5px;
-}
-.topbar .spacer { flex:1; }
-.topbar .mode-tabs {
-  display:flex; background:var(--primary-bg);
-  border-radius:10px; padding:3px; transition:background .4s;
-  border: 1px solid rgba(102,126,234,0.1);
-}
-.topbar .mode-tabs button {
-  border:none; background:transparent; font-size:12px; font-weight:600;
-  padding:6px 14px; border-radius:8px; cursor:pointer;
-  color:var(--text2); font-family:inherit;
-  transition:all .2s ease;
-  letter-spacing: 0.01em;
-}
-.topbar .mode-tabs button:hover { color: var(--primary); }
-.topbar .mode-tabs button:active { transform:scale(.96); }
-.topbar .mode-tabs button.active {
-  background:var(--card-solid); color:var(--primary);
-  box-shadow: var(--shadow-sm);
-}
-.progress-badge {
-  padding:5px 12px; border-radius:14px; font-size:12px; font-weight:700;
-  background:linear-gradient(135deg, rgba(17,153,142,0.12), rgba(56,239,125,0.12));
-  color: var(--success); white-space:nowrap;
-  border: 1px solid rgba(17,153,142,0.15);
-  letter-spacing: 0.02em;
-}
-.theme-btn {
-  background:transparent; border:1px solid var(--border); border-radius:10px;
-  font-size:17px; padding:6px 10px; cursor:pointer;
-  transition:all .2s ease; line-height:1;
-  backdrop-filter: blur(8px);
-}
-.theme-btn:hover {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 4px var(--primary-glow);
-}
-.theme-btn:active { transform:scale(.96); }
-
-/* ===== MAIN LAYOUT ===== */
-.main { display:flex; flex:1; overflow:hidden; }
-
-/* ===== SIDEBAR ===== */
-.sidebar {
-  width:230px; min-width:170px;
-  background: var(--sidebar-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border-right:1px solid var(--border);
-  display:flex; flex-direction:column; overflow:hidden;
-  transition:background .4s;
-}
-.sidebar-head {
-  padding:18px 16px 10px;
-  font-size:11px; font-weight:700; color:var(--text3);
-  letter-spacing:1px; text-transform:uppercase;
-}
-.course-list { flex:1; overflow-y:auto; padding:0 10px 10px; }
-.course-item {
-  padding:10px 14px; margin-bottom:2px; cursor:pointer; font-size:13px;
-  border-radius:10px; display:flex; align-items:center; gap:10px;
-  transition:all .2s ease; position:relative;
-  border-left: 3px solid transparent;
-}
-.course-item:hover {
-  background:var(--primary-bg);
-  transform: translateX(2px);
-}
-.course-item.active {
-  background:linear-gradient(135deg, var(--primary-bg), rgba(118,75,162,0.08));
-  color:var(--primary); font-weight:700;
-  border-left: 3px solid var(--primary);
-  box-shadow: inset 0 0 0 1px rgba(102,126,234,0.12);
-  animation:subtle-pulse 3s ease-in-out infinite;
-}
-@keyframes subtle-pulse {
-  0%,100% { box-shadow: inset 0 0 0 1px rgba(102,126,234,0.08); }
-  50% { box-shadow: inset 0 0 0 1px rgba(102,126,234,0.2), 0 0 0 4px rgba(102,126,234,0.08); }
-}
-.course-item.active:before {
-  content:''; position:absolute; left:-3px; top:6px; bottom:6px;
-  width:3px; background:linear-gradient(180deg, var(--primary), var(--primary-end));
-  border-radius:0 3px 3px 0;
-}
-.course-item.locked { color:var(--text3); opacity:.35; pointer-events:none; }
-.course-item .idx {
-  width:26px; height:26px; border-radius:50%; display:flex;
-  align-items:center; justify-content:center;
-  font-size:12px; font-weight:700; flex-shrink:0;
-  background:#e2e8f0; color:var(--text2);
-  transition: all .2s ease;
-}
-.course-item.done .idx {
-  background:linear-gradient(135deg, var(--success), var(--success-end));
-  color:#fff;
-  box-shadow: 0 2px 8px rgba(17,153,142,0.3);
-}
-.course-item.active .idx {
-  background:linear-gradient(135deg, var(--primary), var(--primary-end));
-  color:#fff;
-  box-shadow: 0 2px 8px rgba(102,126,234,0.35);
-}
-.course-item .name { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-
-/* ===== CONTENT PANEL ===== */
-.content-panel {
-  flex:1; overflow-y:auto; overflow-x:hidden;
-  background:var(--card);
-  backdrop-filter: blur(4px);
-  padding:24px 28px;
-  transition:background .4s;
-}
-
-/* ===== HERO BANNER ===== */
-.hero-banner {
-  background:linear-gradient(135deg, #312e81 0%, #4f46e5 30%, #764ba2 70%, #a855f7 100%);
-  border-radius:var(--radius);
-  overflow:hidden; display:flex;
-  margin-bottom:24px; min-height:160px;
-  position:relative;
-  box-shadow: var(--shadow-lg), 0 0 60px rgba(102,126,234,0.15);
-}
-/* Geometric decorations */
-.hero-banner::before {
-  content: ''; position: absolute; top: -40px; right: -30px;
-  width: 160px; height: 160px; border-radius: 50%;
-  border: 3px solid rgba(255,255,255,0.08);
-  pointer-events: none;
-}
-.hero-banner::after {
-  content: ''; position: absolute; bottom: -50px; left: 20%;
-  width: 200px; height: 200px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
-  pointer-events: none;
-}
-.hero-geo {
-  position: absolute; pointer-events: none;
-}
-.hero-geo.circle-1 {
-  top: 20px; right: 120px;
-  width: 60px; height: 60px;
-  border-radius: 50%;
-  border: 2px solid rgba(255,255,255,0.12);
-}
-.hero-geo.circle-2 {
-  bottom: 30px; right: 200px;
-  width: 40px; height: 40px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.06);
-}
-.hero-geo.triangle {
-  top: 50px; right: 60px;
-  width: 0; height: 0;
-  border-left: 18px solid transparent;
-  border-right: 18px solid transparent;
-  border-bottom: 30px solid rgba(255,255,255,0.08);
-}
-.hero-geo.square {
-  bottom: 40px; right: 80px;
-  width: 30px; height: 30px;
-  border: 2px solid rgba(255,255,255,0.1);
-  transform: rotate(25deg);
-  border-radius: 4px;
-}
-.hero-geo.dots {
-  top: 30px; left: 55%;
-  display: grid; grid-template-columns: repeat(3, 6px); gap: 8px;
-}
-.hero-geo.dots span {
-  width: 4px; height: 4px; border-radius: 50%;
-  background: rgba(255,255,255,0.2);
-  display: block;
-}
-.hero-banner .hero-img {
-  width:45%; min-height:160px;
-  background:url('https://sase-public-server-files.oss-cn-hangzhou.aliyuncs.com/saas-1829547276560185%2Fwm_embed_out_WMT_PURE_IMAGE%2F019F59E5-1FBB-5EA9-AC4D-5DBDB037D4A8-a658f73b977eb9e4d6c990fd4db042e4-1783919616966544426-iDx5qsmAqEk.jpg?Expires=1786511617') center/cover;
-  position: relative; z-index: 1;
-}
-.hero-banner .hero-text {
-  flex:1; padding:24px; color:#fff; display:flex;
-  flex-direction:column; justify-content:center;
-  position: relative; z-index: 1;
-}
-.hero-banner .hero-text h1 {
-  font-size:22px; font-weight:900; margin-bottom:6px;
-  letter-spacing: -0.02em;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.2);
-}
-.hero-banner .hero-text p {
-  font-size:13px; opacity:.9; line-height:1.7;
-  letter-spacing: 0.01em;
-}
-.hero-banner .start-btn {
-  display:inline-flex; align-items:center; gap:8px;
-  margin-top:14px; padding:10px 24px;
-  background:rgba(255,255,255,.15);
-  backdrop-filter: blur(8px);
-  border:1px solid rgba(255,255,255,.25);
-  border-radius:24px; font-size:13px; font-weight:700;
-  cursor:pointer; color:#fff; width:fit-content;
-  transition:all .2s ease; letter-spacing: 0.02em;
-}
-.hero-banner .start-btn:hover {
-  background:rgba(255,255,255,.22);
-  box-shadow: 0 0 20px rgba(255,255,255,.12);
-  transform: translateY(-1px);
-}
-.hero-banner .start-btn:active {
-  background:rgba(255,255,255,.3);
-  transform:scale(.96);
-}
-
-/* ===== CONTENT TEXT ===== */
-.content-panel h1 {
-  font-size:22px; margin-bottom:8px; font-weight:900;
-  letter-spacing: -0.02em;
-  background: linear-gradient(135deg, var(--text), var(--text2));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.content-panel .dark h1 {
-  background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Gradient divider after h1 headings */
-.content-panel h1::after {
-  content: ''; display: block;
-  width: 60px; height: 3px;
-  margin-top: 12px; margin-bottom: 8px;
-  border-radius: 2px;
-  background: linear-gradient(90deg, var(--primary), var(--primary-end), transparent);
-}
-
-.content-panel h2 {
-  font-size:17px; margin:20px 0 8px; font-weight:700;
-  color:var(--primary);
-  letter-spacing: -0.01em;
-  display: flex; align-items: center; gap: 8px;
-}
-.content-panel h2::before {
-  content: '▸';
-  font-size: 12px;
-  color: var(--primary);
-  opacity: 0.6;
-}
-
-/* Cardified content blocks */
-.content-card {
-  background: var(--card-solid);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px;
-  margin: 16px 0;
-  box-shadow: var(--shadow);
-  transition: all .25s ease;
-}
-.content-card:hover {
-  box-shadow: var(--shadow-md);
-  transform: translateY(-1px);
-}
-.content-card p:last-child { margin-bottom: 0; }
-
-.content-panel p {
-  font-size:14px; line-height:1.8; margin-bottom:12px;
-  color:var(--text2); letter-spacing: 0.01em;
-}
-.content-panel code.inline {
-  background: var(--primary-bg);
-  color: #be185d;
-  padding:2px 7px; border-radius:4px;
-  font-size:13px; font-family:var(--font-mono);
-  font-weight: 500;
-}
-.dark .content-panel code.inline {
-  color: #f472b6;
-  background: rgba(102,126,234,0.15);
-}
-
-/* Code blocks with macOS dots */
-.content-panel pre {
-  background: var(--code-bg);
-  padding: 0 0 0 0;
-  border-radius: var(--radius-sm);
-  overflow-x:auto; font-size:14px; line-height:1.7;
-  margin:16px 0; position:relative;
-  box-shadow: var(--shadow-md);
-  border: 1px solid rgba(255,255,255,0.05);
-}
-.content-panel pre::before {
-  content: '';
-  display: flex; align-items: center; gap: 7px;
-  padding: 10px 16px;
-  background: rgba(0,0,0,0.25);
-  border-bottom: 1px solid rgba(255,255,255,0.04);
-}
-/* macOS dots via box-shadow trick */
-.content-panel pre .mac-dots {
-  display: flex; gap: 7px; padding: 10px 16px;
-  background: rgba(0,0,0,0.25);
-  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
-}
-.content-panel pre .mac-dots span {
-  width: 10px; height: 10px; border-radius: 50%; display: inline-block;
-}
-.content-panel pre .mac-dots span:nth-child(1) { background: #ff5f57; }
-.content-panel pre .mac-dots span:nth-child(2) { background: #febc2e; }
-.content-panel pre .mac-dots span:nth-child(3) { background: #28c840; }
-.content-panel pre > code {
-  display: block;
-  padding: 12px 16px 16px;
-}
-
-.content-panel pre code {
-  color: #e2e8f0; font-family:var(--font-mono);
-  font-size: 14px;
-}
-
-/* ===== TIP / WARN / INFO BOXES ===== */
-.tip-box, .warn-box, .info-box {
-  padding:14px 16px; border-radius:var(--radius-sm);
-  margin:14px 0; font-size:13px; line-height:1.7;
-  display:flex; gap:10px; align-items:flex-start;
-  box-shadow: var(--shadow-sm);
-  letter-spacing: 0.01em;
-}
-.tip-box {
-  background:linear-gradient(135deg, rgba(17,153,142,0.06), rgba(56,239,125,0.04));
-  border:1px solid rgba(17,153,142,0.2);
-  color:#065f46;
-}
-.dark .tip-box { color:#6ee7b7; }
-.warn-box {
-  background:linear-gradient(135deg, rgba(245,158,11,0.06), rgba(251,191,36,0.04));
-  border:1px solid rgba(245,158,11,0.2);
-  color:#92400e;
-}
-.dark .warn-box { color:#fcd34d; }
-.info-box {
-  background:linear-gradient(135deg, rgba(102,126,234,0.06), rgba(118,75,162,0.04));
-  border:1px solid rgba(102,126,234,0.2);
-  color:#1e40af;
-}
-.dark .info-box { color:#93c5fd; }
-
-/* ===== STEP GUIDE ===== */
-.step-guide { margin:14px 0; }
-.step-guide .step {
-  display:flex; gap:14px; padding:14px 0;
-  border-bottom:1px solid var(--border);
-  transition: all .2s ease;
-}
-.step-guide .step:hover {
-  background: var(--primary-bg);
-  margin: 0 -12px;
-  padding-left: 12px; padding-right: 12px;
-  border-radius: var(--radius-sm);
-}
-.step-guide .step:last-child { border-bottom:none; }
-.step-guide .step .sn {
-  width:32px; height:32px; border-radius:50%;
-  background:linear-gradient(135deg, var(--primary), var(--primary-end));
-  color:#fff; display:flex; align-items:center; justify-content:center;
-  font-size:14px; font-weight:800; flex-shrink:0;
-  box-shadow: 0 2px 8px rgba(102,126,234,0.3);
-}
-.step-guide .step h4 {
-  font-size:14px; font-weight:700; margin-bottom:3px;
-  letter-spacing: 0.01em;
-}
-.step-guide .step p { font-size:12px; margin:0; }
-
-/* ===== EDITOR PANEL ===== */
-.editor-panel {
-  width:420px; min-width:300px;
-  display:flex; flex-direction:column;
-  background:var(--code-bg);
-  border-left: 1px solid rgba(255,255,255,0.04);
-}
-.editor-top {
-  display:flex; align-items:center; padding:10px 16px;
-  background: var(--code-surface);
-  border-bottom:1px solid rgba(255,255,255,0.05);
-  flex-shrink:0;
-}
-.editor-top .tab {
-  padding:6px 14px; background:var(--code-bg);
-  border-radius:8px 8px 0 0;
-  font-size:12px; color:#94a3b8;
-  font-family:var(--font-mono); font-weight:600;
-  letter-spacing: 0.02em;
-}
-.editor-top .tab .dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:#28c840; margin-right:6px; box-shadow: 0 0 6px rgba(40,200,64,0.4); }
-.editor-top .sp { flex:1; }
-.editor-top .act-btn {
-  background:transparent; border:none; color:#64748b;
-  font-size:15px; padding:6px 8px; cursor:pointer;
-  border-radius:6px; transition:all .2s ease;
-}
-.editor-top .act-btn:hover {
-  background:rgba(255,255,255,0.06);
-  color: #94a3b8;
-}
-.editor-top .act-btn:active { background:#334155; transform:scale(.95); }
-
-.editor-body { flex:1; display:flex; overflow:hidden; position:relative; }
-.line-nums {
-  width:48px; min-width:48px;
-  background:var(--code-surface);
-  color:#475569; font-family:var(--font-mono);
-  font-size:13px; padding:14px 0; text-align:right;
-  user-select:none; line-height:1.7; overflow:hidden;
-  border-right: 1px solid rgba(255,255,255,0.03);
-}
-.line-nums span { display:block; padding-right:12px; }
-.code-wrap { flex:1; position:relative; }
-.code-wrap textarea {
-  width:100%; height:100%; background:transparent; color:transparent;
-  border:none; outline:none; resize:none;
-  font-family:var(--font-mono);
-  font-size:14px; line-height:1.7; padding:14px 16px; tab-size:4;
-  caret-color:#facc15; position:absolute; top:0; left:0; z-index:2;
-  -webkit-text-size-adjust:100%;
-}
-.code-wrap textarea::placeholder { color:#475569; opacity:.5; }
-.code-hl {
-  position:absolute; top:0; left:0; width:100%; height:100%;
-  padding:14px 16px; font-family:var(--font-mono);
-  font-size:14px; line-height:1.7; white-space:pre-wrap;
-  pointer-events:none; z-index:1; overflow:hidden;
-  color:transparent;
-}
-
-/* ===== BUTTONS ===== */
-.btn-row {
-  display:flex; gap:8px; padding:10px 14px;
-  background:var(--code-surface);
-  border-top:1px solid rgba(255,255,255,0.04);
-  flex-shrink:0; flex-wrap:wrap;
-}
-.btn-row .btn {
-  padding:8px 16px; border:none; border-radius:10px;
-  font-size:12px; cursor:pointer; font-weight:700;
-  font-family:inherit; display:flex; align-items:center; gap:6px;
-  transition:all .2s ease; white-space:nowrap;
-  letter-spacing: 0.02em;
-}
-.btn.run {
-  background:linear-gradient(135deg, var(--success), #0d9488);
-  color:#fff;
-  box-shadow: 0 2px 8px rgba(17,153,142,0.3);
-}
-.btn.run:hover {
-  box-shadow: 0 4px 16px rgba(17,153,142,0.45);
-  transform: translateY(-1px);
-}
-.btn.run:active { transform:scale(.96); box-shadow: 0 1px 4px rgba(17,153,142,0.3); }
-
-.btn.reset, .btn.copy-btn {
-  background: #334155; color:#e2e8f0;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-}
-.btn.reset:hover, .btn.copy-btn:hover {
-  background: #3b4f6b;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-}
-.btn.reset:active, .btn.copy-btn:active { transform:scale(.96); }
-
-.btn.hint {
-  background:linear-gradient(135deg, #92400e, #78350f);
-  color:#fde68a;
-  box-shadow: 0 2px 8px rgba(146,64,14,0.3);
-}
-.btn.hint:hover {
-  box-shadow: 0 4px 16px rgba(146,64,14,0.45);
-  transform: translateY(-1px);
-}
-.btn.hint:active { transform:scale(.96); }
-
-.btn.next {
-  background:linear-gradient(135deg, var(--primary), var(--primary-end));
-  color:#fff;
-  box-shadow: 0 2px 8px rgba(102,126,234,0.3);
-}
-.btn.next:hover {
-  box-shadow: 0 4px 20px rgba(102,126,234,0.5);
-  transform: translateY(-1px);
-}
-.btn.next:active { transform:scale(.96); }
-
-.btn:disabled { opacity:.3; pointer-events:none; filter: grayscale(0.4); }
-
-/* ===== CONSOLE ===== */
-.console-wrapper {
-  display:flex; flex-direction:column; flex-shrink:0;
-  border-top:2px solid rgba(255,255,255,0.04);
-}
-.console-header {
-  display:flex; align-items:center; padding:6px 16px;
-  background:var(--code-surface);
-  cursor:pointer; user-select:none;
-  transition: background .2s;
-}
-.console-header:hover { background: rgba(255,255,255,0.02); }
-.console-header .ch-title {
-  font-size:11px; color:#64748b;
-  font-family:var(--font-mono); letter-spacing:1px;
-  flex:1; font-weight:600;
-}
-.console-header .ch-toggle {
-  background:transparent; border:none; color:#64748b;
-  font-size:12px; cursor:pointer; padding:3px 6px; line-height:1;
-  transition:transform .3s ease; border-radius: 4px;
-}
-.console-header .ch-toggle:hover { background: rgba(255,255,255,0.04); }
-.console-header .ch-toggle.collapsed { transform:rotate(180deg); }
-
-.console {
-  height:130px; min-height:0;
-  background:var(--code-bg);
-  color:#94a3b8; font-family:var(--font-mono);
-  font-size:13px; padding:12px 16px;
-  overflow-y:auto; line-height:1.7;
-  white-space:pre-wrap;
-  border-top: 1px solid rgba(255,255,255,0.03);
-  transition: height .3s ease, padding .3s ease;
-}
-.console.collapsed { height:0; padding:0; overflow:hidden; border-top: none; }
-.console .out { color:#a7f3d0; }
-.console .err { color:#fda4af; }
-.console .info { color:#93c5fd; }
-.console .ok {
-  color:#34d399; font-weight:700;
-  animation:ok-pop .5s ease-out;
-}
-@keyframes ok-pop {
-  0%{transform:scale(1.3);opacity:.3}
-  100%{transform:scale(1);opacity:1}
-}
-.console .hint-msg { color:#fde68a; }
-
-.console-stats {
-  display:flex; align-items:center; gap:14px;
-  padding:5px 16px; background:var(--code-surface);
-  font-size:11px; color:#475569;
-  font-family:var(--font-mono);
-  border-top:1px solid rgba(255,255,255,0.03);
-  flex-shrink:0;
-}
-.console-stats span { white-space:nowrap; }
-.console-stats b { color: #94a3b8; }
-
-/* ===== MOBILE TABS ===== */
-.mobile-tabs { display:none; border-bottom:1px solid var(--border); background:var(--card); transition:background .4s; }
-.mobile-tabs button {
-  flex:1; padding:12px; border:none; background:transparent;
-  font-size:13px; font-weight:700; color:var(--text2);
-  cursor:pointer; font-family:inherit; position:relative;
-  transition:all .2s ease; letter-spacing: 0.02em;
-}
-.mobile-tabs button:hover { color: var(--primary); }
-.mobile-tabs button:active { transform:scale(.97); }
-.mobile-tabs button.active { color:var(--primary); }
-.mobile-tabs button.active:after {
-  content:''; position:absolute; bottom:0; left:25%; right:25%;
-  height:2px;
-  background:linear-gradient(90deg, var(--primary), var(--primary-end));
-  border-radius:1px;
-}
-
-/* ===== MODALS / OVERLAYS ===== */
-.modal-bg {
-  position:fixed; inset:0; background:rgba(0,0,0,.55);
-  backdrop-filter: blur(4px);
-  display:flex; align-items:center; justify-content:center; z-index:1000;
-}
-.modal {
-  background:var(--card-solid);
-  border-radius:var(--radius);
-  padding:28px; max-width:440px; width:90%;
-  box-shadow: var(--shadow-xl);
-  border: 1px solid var(--border);
-}
-.modal h2 { font-size:18px; margin-bottom:8px; font-weight:800; }
-.modal p { font-size:14px; color:var(--text2); line-height:1.7; margin-bottom:16px; }
-.modal .btns { display:flex; gap:10px; justify-content:flex-end; }
-
-.celeb-bg {
-  position:fixed; inset:0; pointer-events:none; z-index:999;
-  display:flex; flex-direction:column; align-items:center;
-  justify-content:center; gap:14px;
-}
-.celeb-bg .celeb-img {
-  position:absolute; inset:0;
-  background:url('https://sase-public-server-files.oss-cn-hangzhou.aliyuncs.com/saas-1829547276560185%2Fwm_embed_out_WMT_PURE_IMAGE%2F019F59E5-CA02-55A5-A233-6D8BFADACF0F-f1d2e9ce1c6277e31ea9dae738139aaf-1783919660750792524-AkQwJx1w1tV.jpg?Expires=1786511660') center/cover;
-  opacity:.25;
-}
-.celeb-bg .big {
-  font-size:38px; font-weight:900; color:#fbbf24;
-  text-shadow:0 0 30px rgba(245,158,11,.5);
-  z-index:1; animation:bounce .6s;
-  letter-spacing: -0.02em;
-}
-@media (max-width: 768px) { .celeb-bg .big { font-size:28px; } }
-@keyframes bounce {
-  0%{transform:scale(.2)}
-  60%{transform:scale(1.1)}
-  100%{transform:scale(1)}
-}
-.celeb-bg .sub { font-size:15px; color:#fcd34d; z-index:1; font-weight:600; }
-
-.confetti-c { position:fixed; inset:0; pointer-events:none; z-index:998; }
-.confetti-c span {
-  position:absolute; display:block; width:8px; height:8px;
-  border-radius:2px; animation:fall 2s ease-out forwards;
-}
-@keyframes fall {
-  0%{transform:translateY(-100vh) rotate(0)}
-  100%{transform:translateY(100vh) rotate(720deg); opacity:0}
-}
-
-.toast {
-  position:fixed; top:64px; left:50%; transform:translateX(-50%);
-  background: var(--card-solid);
-  color: var(--text);
-  border: 1px solid var(--border);
-  padding:10px 24px; border-radius:24px;
-  font-size:13px; font-weight:700;
-  z-index:2000;
-  box-shadow: var(--shadow-lg);
-  backdrop-filter: blur(12px);
-  letter-spacing: 0.02em;
-}
-
-/* ===== RESPONSIVE - MOBILE ===== */
-@media (max-width: 768px) {
-  .sidebar { display:none; }
-  .hero-banner .hero-img { display:none; }
-  .hero-banner .hero-text { padding:18px; }
-  .hero-banner .hero-text h1 { font-size:18px; }
-  .content-panel { padding:16px 18px; }
-  .content-panel h1 { font-size:19px; }
-  .content-panel pre { font-size:13px; }
-  .content-panel pre code { font-size: 13px; }
-  .main { flex-direction:column; }
-  .editor-panel { width:100%; flex:1; min-width:unset; }
-  .console { height:110px; }
-  .mobile-tabs { display:flex; }
-  .content-panel, .editor-wrap-panel { flex:1; overflow:hidden; }
-  .panel-hidden { display:none !important; }
-  .topbar { height:48px; padding:0 12px; }
-  .topbar .brand { font-size:14px; }
-  .theme-btn { font-size:15px; padding:5px 8px; }
-  .code-wrap textarea { font-size: 14px; }
-  .code-hl { font-size: 14px; }
-}
-
-/* ===== CODE HIGHLIGHT COLORS ===== */
-.hl-kd { color:#93c5fd; font-weight:600; }
-.hl-s { color:#86efac; }
-.hl-c { color:#64748b; font-style:italic; }
-.hl-n { color:#e2e8f0; }
-.hl-fn { color:#fde68a; }
-.hl-kc { color:#c084fc; font-weight:600; }
-
-/* ===== SCROLLBAR STYLING ===== */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover { background: var(--text3); }
-
-/* ===== SELECTION ===== */
-::selection {
-  background: rgba(102,126,234,0.25);
-  color: var(--text);
+/* Desktop */
+@media(min-width:768px){
+  .app{flex-direction:row;flex-wrap:wrap}
+  .top{width:100%}
+  .tabs{display:none}
+  .body{width:50%;border-right:1px solid #eee}
+  .dark-mode .body{border-color:#334155}
+  .right{width:50%;display:flex;flex-direction:column;padding:16px;gap:8px;overflow-y:auto}
+  .lsn{flex-direction:column;margin-bottom:0}
 }
 </style>
 </head>
-<body>
-<div class="app">
-  <!-- Top Bar -->
-  <div class="topbar">
+<body id="bodyEl">
+<div class="app" id="appEl">
+  <div class="top">
     <span class="logo">🐍</span>
-    <span class="brand">Python零基础学堂</span>
-    <span class="spacer"></span>
-    <span class="progress-badge" id="progressBadge">✅ 0/20</span>
-    <div class="mode-tabs">
-      <button id="modePrac" class="active" onclick="setMode('practice')">🔨 练习</button>
-      <button id="modeTeach" onclick="setMode('teach')">📖 讲解</button>
-    </div>
-    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="切换深色/浅色模式">🌙</button>
+    <span class="title">Python零基础学堂</span>
+    <span class="flex"></span>
+    <span class="pct" id="pct">0/20</span>
   </div>
-
-  <!-- Mobile tabs -->
-  <div class="mobile-tabs" id="mobileTabs">
-    <button class="active" id="mobTabContent" onclick="switchMobileTab('content')">📚 教程</button>
-    <button id="mobTabEditor" onclick="switchMobileTab('editor')">💻 写代码</button>
+  <div class="tabs" id="tabsEl">
+    <button class="on" id="tabLsn" onclick="showTab('content')">📚 课程</button>
+    <button id="tabEd" onclick="showTab('editor')">💻 写代码</button>
   </div>
-
-  <div class="main">
-    <!-- Sidebar (desktop) -->
-    <div class="sidebar" id="sidebar">
-      <div class="sidebar-head">📚 课程目录</div>
-      <div class="course-list" id="courseList"></div>
+  <div class="body" id="contentBody"></div>
+  <div class="right" id="rightPanel">
+    <div class="editor" id="editorEl">
+      <div class="ed-top"><span class="fn"><span class="dot"></span>main.py</span></div>
+      <textarea id="codeIn" placeholder="# 在这里写 Python 代码..." spellcheck="false"></textarea>
     </div>
-
-    <!-- Content -->
-    <div class="content-panel" id="contentPanel"></div>
-
-    <!-- Editor + Console -->
-    <div class="editor-panel" id="editorPanel">
-      <div class="editor-top">
-        <div class="tab"><span class="dot"></span>main.py</div>
-        <span class="sp"></span>
-        <button class="act-btn" onclick="copyCode()" title="复制">📋</button>
-        <button class="act-btn" onclick="formatCode()" title="格式化">▦</button>
-      </div>
-      <div class="editor-body" id="editorBody">
-        <div class="line-nums" id="lineNums"></div>
-        <div class="code-wrap">
-          <textarea id="codeIn" spellcheck="false" placeholder="# Python 3 · 写代码，Ctrl+Enter 运行"></textarea>
-          <div class="code-hl" id="codeHl"></div>
-        </div>
-      </div>
-      <div class="btn-row">
-        <button class="btn run" onclick="runCode()" id="btnRun">▶ 运行</button>
-        <button class="btn reset" onclick="resetCode()">↺ 重置</button>
-        <button class="btn hint" onclick="showHint()" id="btnHint">💡 提示</button>
-        <span style="flex:1"></span>
-        <button class="btn next" onclick="nextLesson()" id="btnNext" disabled>下一课 →</button>
-      </div>
-      <!-- Console -->
-      <div class="console-wrapper">
-        <div class="console-header" onclick="toggleConsole()" title="折叠/展开控制台">
-          <span class="ch-title">📟 OUTPUT</span>
-          <span class="ch-toggle" id="consoleToggle">▲</span>
-        </div>
-        <div class="console" id="console">
-          <span style="color:#475569">$ </span><span style="color:#93c5fd">点击 ▶ 运行 执行代码（手机长按绿色按钮）</span>
-        </div>
-        <div class="console-stats" id="consoleStats">
-          <span>📊 已运行: <b id="statRuns">0</b> 次</span>
-          <span>|</span>
-          <span>已通过: <b id="statPassed">0</b>/20 课</span>
-        </div>
-      </div>
+    <div class="btns">
+      <button class="btn-run" onclick="runCode()">▶ 运行</button>
+      <button class="btn-reset" onclick="resetCode()">↺ 重置</button>
+      <button class="btn-hint" onclick="showHint()" id="hintBtn">💡 提示</button>
+      <span class="flex" style="flex:1"></span>
+      <button class="btn-next" onclick="nextLesson()" id="nextBtn" disabled>下一课 →</button>
     </div>
+    <div class="console" id="consoleEl">点击 ▶ 运行 执行代码</div>
   </div>
 </div>
-
-<div id="modalC"></div>
-<div id="celebC"></div>
-<div class="confetti-c" id="confetti"></div>
+<div class="theme-btn" id="themeBtn" onclick="toggleTheme()">🌙</div>
+<div id="toastC"></div>
 
 <script>
-// === COURSES ===
-const courses = [
-  { id:1, title:"你好，Python！", icon:"🐍",
-    content:'<div class="hero-banner"><div class="hero-geo circle-1"></div><div class="hero-geo circle-2"></div><div class="hero-geo triangle"></div><div class="hero-geo square"></div><div class="hero-geo dots"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div><div class="hero-img"></div><div class="hero-text"><h1>欢迎来到 Python 编程世界 🚀</h1><p>零基础入门，20节课从 print() 到完整小项目。每课都有讲解、示例和动手练习。</p><button class="start-btn" onclick="switchMobileTab(\'editor\')">✋ 开始写代码</button></div></div><div class="content-card"><h2>什么是 print()？</h2><p><code class="inline">print()</code> 是 Python 中最常用的函数，在屏幕上显示文字。</p><pre><div class="mac-dots"><span></span><span></span><span></span></div><code>print(\'你好，世界！\')</code></pre></div><div class="warn-box">⚠️ 文字必须用引号包起来！单引号或双引号都可以。</div><div class="content-card"><h2>✏️ 练习</h2><p>在右侧（或上方的写代码区域）把引号里改成 <strong>"你好"</strong>，点运行！</p></div>',
-    starter:"# 在引号里写上：你好\nprint('')",
-    expect:{type:"contains",value:"你好"},
-    hints:["把 你好 写在 print() 的引号里面","例如：print('你好')","试试打印你的名字？"],
-    steps:[
-      {t:"观察",d:"看示例代码，猜猜 print('你好，世界！') 会输出什么？"},
-      {t:"模仿",d:"在编辑器里照抄：print('你好，世界！')"},
-      {t:"修改",d:"把引号里的文字改成你自己的话"},
-      {t:"创造",d:"写多行 print() 打印不同的东西"},
-    ]
+const courses=[
+  {id:1,title:"你好，Python！",
+   html:'<div class="hero"><h2>✨ 欢迎来到 Python 编程世界</h2><p>零基础入门，20节课从 print() 到完整项目。每课都有讲解和动手练习。</p></div><div class="c-section"><h3>什么是 print()？</h3><p><code class="inline">print()</code> 是 Python 最常用的函数，在屏幕上显示文字。</p><pre><code>print(\'你好，世界！\')</code></pre></div><div class="box warn"><span class="box-icon">⚠️</span><span>文字必须用引号包起来！单引号或双引号都可以。</span></div><div class="c-section"><h3>✏️ 练习</h3><p>把引号里改成 <strong>"你好"</strong>，点运行！</p></div>',
+   code:"# 在引号里写上：你好\nprint('')",
+   expect:{type:"contains",val:"你好"},
+   hints:["把 你好 写在 print() 的引号里","例如：print('你好')"],
+   steps:[
+    {t:"观察",d:"看看示例代码，猜猜它会输出什么？"},
+    {t:"模仿",d:"在编辑器里抄一遍 print('你好，世界！')"},
+    {t:"修改",d:"把引号里的文字改成你自己的话"},
+    {t:"创造",d:"写多行 print() 打印不同的内容"}
+   ]},
+  {id:2,title:"变量是个盒子",
+   html:'<div class="c-section"><h3>变量是个盒子</h3><p>变量像有名字的盒子，把数据放进去。</p><pre><code>name = \'小明\'\nage = 18\nprint(name)\nprint(age)</code></pre></div><div class="box tip"><span class="box-icon">💡</span><span>一个 <code class="inline">=</code> 赋值，两个 <code class="inline">==</code> 比较。别搞混！</span></div><div class="c-section"><h3>✏️ 练习</h3><p>创建 <code class="inline">score = 100</code>，打印它。</p></div>',
+   code:"# 创建变量 score = 100\n# 打印\n",
+   expect:{type:"exact",val:"100"},
+   hints:["score = 100","print(score) — 不加引号"],
+   steps:[{t:"理解",d:"变量像标签贴在数据上"},{t:"赋值",d:"score = 100"},{t:"使用",d:"print(score)"},{t:"体验",d:"建更多变量试试"}]
   },
-  { id:2, title:"变量是个盒子", icon:"📦",
-    content:'<h1>📦 变量是个盒子</h1><div class="content-card"><p>变量像有名字的盒子，把数据放进去。</p><pre><div class="mac-dots"><span></span><span></span><span></span></div><code>name = \'小明\'\nage = 18\nprint(name)\nprint(age)</code></pre></div><div class="tip-box">💡 一个 <code class="inline">=</code> 赋值，两个 <code class="inline">==</code> 比较。别搞混！</div><div class="content-card"><h2>✏️ 练习</h2><p>创建变量 <code class="inline">score = 100</code>，然后打印它。</p></div>',
-    starter:"# 创建变量 score = 100\n# 然后用 print() 打印\n",
-    expect:{type:"exact",value:"100"},
-    hints:["score = 100","print(score) — 变量名不加引号！","变量名只能是字母数字下划线"],
-    steps:[{t:"理解",d:"变量像标签贴在数据上。name='小明' 就是用 name 标签贴给 '小明'。"},{t:"赋值",d:"写 score = 100，把数字100存到变量 score 里"},{t:"使用",d:"print(score)，注意这里不加引号"},{t:"体验",d:"创建更多变量：age=20, city='北京'，分别打印"}]
+  {id:3,title:"让程序做选择",
+   html:'<div class="c-section"><h3>让程序做选择</h3><p><code class="inline">if</code> 让程序根据条件走不同分支。</p><pre><code>score = 85\nif score >= 60:\n    print(\'及格了！\')\nelse:\n    print(\'还需要努力\')</code></pre></div><div class="box warn"><span class="box-icon">⚠️</span><span>if 后写冒号 : ，下一行缩进4个空格！</span></div><div class="c-section"><h3>✏️ 练习</h3><p><code class="inline">temperature = 30</code>，大于25打印"好热"，否则"好凉快"。</p></div>',
+   code:"temperature = 30\n# 写 if 判断\n",
+   expect:{type:"exact",val:"好热"},
+   hints:["if temperature > 25:","缩进写 print('好热')"],
+   steps:[{t:"理解",d:'"如果…就…"的逻辑'},{t:"体验",d:"写 if temperature > 25:"},{t:"编写",d:"缩进 print"},{t:"测试",d:"改成20看变化"}]
   },
-  { id:3, title:"让程序做选择", icon:"🔀",
-    content:'<h1>🔀 让程序做选择</h1><div class="content-card"><p><code class="inline">if</code> 语句让程序根据条件走不同分支。</p><pre><div class="mac-dots"><span></span><span></span><span></span></div><code>score = 85\nif score >= 60:\n    print(\'及格了！\')\nelse:\n    print(\'还需要努力\')</code></pre></div><div class="warn-box">⚠️ if 后写冒号 : ，下一行缩进4个空格！</div><div class="content-card"><h2>✏️ 练习</h2><p><code class="inline">temperature = 30</code>，大于25打印"好热"，否则打印"好凉快"。</p></div>',
-    starter:"temperature = 30\n# 写 if 判断\n",
-    expect:{type:"exact",value:"好热"},
-    hints:["if temperature > 25:","缩进写 print('好热')","else: 分支写 print('好凉快')"],
-    steps:[{t:"理解",d:'if 像生活中的"如果…就…"。'},{t:"体验",d:"写 if temperature > 25:，别忘冒号"},{t:"编写",d:"下一行按空格缩进，写 print"},{t:"测试",d:"把 temperature 改20，看输出变化"}]
+  {id:4,title:"重复交给循环",
+   html:'<div class="c-section"><h3>for 循环</h3><p><code class="inline">for</code> 重复执行代码。</p><pre><code>for i in range(5):\n    print(i)</code></pre><p>打印 0,1,2,3,4。</p></div><div class="box info"><span class="box-icon">📖</span><span><code class="inline">range(5)</code> 生成0到4。<code class="inline">range(1,6)</code> 生成1到5。</span></div><div class="c-section"><h3>✏️ 练习</h3><p>用 for 打印 1 到 5。</p></div>',
+   code:"# 用 for 循环打印 1 到 5\n",
+   expect:{type:"exact",val:"1\n2\n3\n4\n5"},
+   hints:["for i in range(1, 6):","缩进 print(i)"],
+   steps:[{t:"理解",d:"for 像复读机"},{t:"计数",d:"range(1,6) 1到5"},{t:"编写",d:"for i in range(1,6): print(i)"},{t:"探索",d:"range(1,101)"}]
   },
-  { id:4, title:"重复交给循环", icon:"🔄",
-    content:'<h1>🔄 重复的事情交给循环</h1><div class="content-card"><p><code class="inline">for</code> 循环重复执行代码。</p><pre><div class="mac-dots"><span></span><span></span><span></span></div><code>for i in range(5):\n    print(i)</code></pre><p>打印 0, 1, 2, 3, 4。</p></div><div class="info-box">📖 <code class="inline">range(5)</code> 生成0到4。<code class="inline">range(1,6)</code> 生成1到5。</div><div class="content-card"><h2>✏️ 练习</h2><p>用 for 循环打印 1 到 5。</p></div>',
-    starter:"# 用 for 循环打印 1 到 5\n",
-    expect:{type:"exact",value:"1\n2\n3\n4\n5"},
-    hints:["for i in range(1, 6):","缩进 print(i)"],
-    steps:[{t:"理解",d:"for 像复读机，执行多次。range(3) 执行3次。"},{t:"计数",d:"range(1,6) 从1到5，i 每次变一个数"},{t:"编写",d:"for i in range(1,6): 缩进 print(i)"},{t:"探索",d:"改 range(1,101)，一次打印1到100！"}]
+  {id:5,title:"函数：打包代码",
+   html:'<div class="c-section"><h3>函数</h3><p><code class="inline">def</code> 定义可重复调用的代码。</p><pre><code>def say_hello():\n    print(\'你好！\')\n\nsay_hello()</code></pre></div><div class="box tip"><span class="box-icon">💡</span><span>先定义（def），再调用（名字+括号）。</span></div><div class="c-section"><h3>✏️ 练习</h3><p>定义 <code class="inline">greet()</code>，打印"欢迎学习Python！"。</p></div>',
+   code:"# 定义函数 greet()\n# 然后调用\n",
+   expect:{type:"exact",val:"欢迎学习Python！"},
+   hints:["def greet():","print('欢迎学习Python！')","greet() 调用"],
+   steps:[{t:"理解",d:"函数像小助手"},{t:"定义",d:"def greet():"},{t:"调用",d:"greet()"},{t:"创造",d:"自定义函数"}]
   },
-  { id:5, title:"函数：打包代码", icon:"🧩",
-    content:'<h1>🧩 函数：打包你的代码</h1><div class="content-card"><p><code class="inline">def</code> 定义函数，可重复调用。</p><pre><div class="mac-dots"><span></span><span></span><span></span></div><code>def say_hello():\n    print(\'你好！\')\n\nsay_hello()  # 调用函数</code></pre></div><div class="tip-box">💡 先定义（def），再调用（函数名+括号）。</div><div class="content-card"><h2>✏️ 练习</h2><p>定义 <code class="inline">greet()</code>，打印"欢迎学习Python！"。</p></div>',
-    starter:"# 定义函数 greet()\n# 然后调用它\n",
-    expect:{type:"exact",value:"欢迎学习Python！"},
-    hints:["def greet():","函数里 print('欢迎学习Python！')","最后调用 greet()"],
-    steps:[{t:"理解",d:"函数像小助手，定义好随时叫它。"},{t:"定义",d:"def greet(): 冒号别忘了"},{t:"调用",d:"greet() 触发执行，可多次调用"},{t:"创造",d:"自己定义一个函数，比如打印古诗"}]
+  {id:6,title:"列表：一排盒子",
+   html:'<div class="c-section"><h3>列表</h3><p>列表用 <code class="inline">[]</code> 存多个数据。</p><pre><code>fruits = [\'苹果\', \'香蕉\', \'橙子\']\nprint(fruits[0])  # 苹果\nfruits.append(\'葡萄\')</code></pre></div><div class="box info"><span class="box-icon">📖</span><span>索引从 <strong>0</strong> 开始！[0]是第一个。</span></div><div class="c-section"><h3>✏️ 练习</h3><p>创建 <code class="inline">colors = [\'红\', \'绿\', \'蓝\']</code>，打印第二个。</p></div>',
+   code:"# 创建 colors 列表\n# 打印第二个（索引1）\n",
+   expect:{type:"exact",val:"绿"},
+   hints:["colors = ['红', '绿', '蓝']","print(colors[1])"],
+   steps:[{t:"理解",d:"列表像编号储物柜，从0起"},{t:"创建",d:"colors = ['红','绿','蓝']"},{t:"访问",d:"print(colors[1])"},{t:"探索",d:".append() 添加"}]
   },
-  { id:6, title:"列表：一排盒子", icon:"📋",
-    content:'<h1>📋 列表：一排数据的盒子</h1><div class="content-card"><p>列表用 <code class="inline">[]</code> 存多个数据。</p><pre><div class="mac-dots"><span></span><span></span><span></span></div><code>fruits = [\'苹果\', \'香蕉\', \'橙子\']\nprint(fruits[0])  # 苹果\nfruits.append(\'葡萄\')</code></pre></div><div class="info-box">📖 索引从 <strong>0</strong> 开始！[0]是第一个，[1]是第二个。</div><div class="content-card"><h2>✏️ 练习</h2><p>创建 <code class="inline">colors = [\'红\', \'绿\', \'蓝\']</code>，打印第二个。</p></div>',
-    starter:"# 创建 colors 列表\n# 打印第二个元素（索引1）\n",
-    expect:{type:"exact",value:"绿"},
-    hints:["colors = ['红', '绿', '蓝']","print(colors[1])","试试 print(colors[0])"],
-    steps:[{t:"理解",d:"列表像编号储物柜，编号从0起。"},{t:"创建",d:"colors = ['红','绿','蓝']"},{t:"访问",d:"print(colors[1]) 拿第二个"},{t:"探索",d:".append('白') 往里加，再打印看变化"}]
+  {id:7,title:"字典：带标签",
+   html:'<div class="c-section"><h3>字典</h3><p>字典用 <code class="inline">{}</code> 键值对存储。</p><pre><code>student = {\'name\': \'小明\', \'age\': 18}\nprint(student[\'name\'])</code></pre></div><div class="box tip"><span class="box-icon">💡</span><span>字典用名字索引，列表用数字。</span></div><div class="c-section"><h3>✏️ 练习</h3><p>创建 <code class="inline">book = {\'title\': \'Python入门\', \'price\': 39}</code>，打印书名。</p></div>',
+   code:"# 创建字典 book\n# 打印书名\n",
+   expect:{type:"exact",val:"Python入门"},
+   hints:["book = {'title': 'Python入门', 'price': 39}","print(book['title'])"],
+   steps:[{t:"理解",d:"字典像查字典：键→值"},{t:"创建",d:"book = {...}"},{t:"访问",d:"book['title']"},{t:"创造",d:"建自己的字典"}]
   },
-  { id:7, title:"字典：带标签", icon:"🏷️",
-    content:'<h1>🏷️ 字典：带标签的盒子</h1><div class="content-card"><p>字典用 <code class="inline">{}</code> 键值对存储。</p><pre><div class="mac-dots"><span></span><span></span><span></span></div><code>student = {\'name\': \'小明\', \'age\': 18}\nprint(student[\'name\'])</code></pre></div><div class="tip-box">💡 列表用数字索引，字典用名字索引。就像查字典。</div><div class="content-card"><h2>✏️ 练习</h2><p>创建 <code class="inline">book = {\'title\': \'Python入门\', \'price\': 39}</code>，打印书名。</p></div>',
-    starter:"# 创建字典 book\n# 打印书名\n",
-    expect:{type:"exact",value:"Python入门"},
-    hints:["book = {'title': 'Python入门', 'price': 39}","print(book['title'])"],
-    steps:[{t:"理解",d:"字典像真正的字典：查词（键），找解释（值）。"},{t:"创建",d:"book = {'title':'Python入门','price':39}"},{t:"访问",d:"print(book['title']) 或 book.get('title')"},{t:"创造",d:"创建自己的字典：姓名、年龄、爱好"}]
+  {id:8,title:"字符串的魔法",
+   html:'<div class="c-section"><h3>字符串方法</h3><pre><code>text = \'hello world\'\nprint(text.upper())          # HELLO WORLD\nprint(text.replace(\'world\', \'Python\'))\nprint(len(text))             # 11</code></pre></div><div class="box info"><span class="box-icon">📖</span><span>方法用 <code class="inline">.</code> 调用。text.upper() 变大写。</span></div><div class="c-section"><h3>✏️ 练习</h3><p><code class="inline">s = \'python\'</code>，变大写打印。</p></div>',
+   code:"# s = 'python'\n# 变大写打印\n",
+   expect:{type:"exact",val:"PYTHON"},
+   hints:["s = 'python'","print(s.upper())"],
+   steps:[{t:"理解",d:"方法是数据自带工具"},{t:"尝试",d:"s.upper()"},{t:"组合",d:"一行搞定"},{t:"探索",d:".replace() .count()"}]
   },
-  { id:8, title:"字符串的魔法", icon:"✨",
-    content:'<h1>✨ 字符串的魔法</h1><div class="content-card"><p>字符串有很多内置方法。</p><pre><div class="mac-dots"><span></span><span></span><span></span></div><code>text = \'hello world\'\nprint(text.upper())          # HELLO WORLD\nprint(text.replace(\'world\', \'Python\'))\nprint(len(text))             # 11</code></pre></div><div class="info-box">📖 方法用 <code class="inline">.</code> 调用。text.upper() 变大写。</div><div class="content-card"><h2>✏️ 练习</h2><p><code class="inline">s = \'python\'</code>，变大写并打印。</p></div>',
-    starter:"# s = 'python'\n# 变大写并打印\n",
-    expect:{type:"exact",value:"PYTHON"},
-    hints:["s = 'python'","print(s.upper())","试试 s.lower() s.replace()"],
-    steps:[{t:"理解",d:"方法就是字符串自带的小工具。"},{t:"尝试",d:"s.upper() 变大写"},{t:"组合",d:"一行搞定：print('hello'.upper())"},{t:"探索",d:".replace() 替换、.count() 计数"}]
+  {id:9,title:"项目：猜数字",
+   html:'<div class="c-section"><h3>🎯 猜数字游戏</h3><p>综合之前所学！目标数字是 7。</p><pre><code>secret = 7\nguess = int(input(\'猜一个数字：\'))\nif guess > secret:\n    print(\'太大了\')\nelif guess < secret:\n    print(\'太小了\')\nelse:\n    print(\'猜对了！\')</code></pre></div><div class="box warn"><span class="box-icon">⚠️</span><span>运行后弹出输入框，输入7。</span></div><div class="c-section"><h3>✏️ 练习</h3><p>完成代码，输入7显示"猜对了！"。</p></div>',
+   code:"secret = 7\nguess = int(input('猜一个数字：'))\nif guess > secret:\n    print('太大了')\nelif guess < secret:\n    print('太小了')\nelse:\n    print('猜对了！')\n",
+   expect:{type:"contains",val:"猜对了"},
+   hints:["运行后输入7","if...elif...else"],
+   steps:[{t:"回顾",d:"变量+input+if+print"},{t:"运行",d:"输入7"},{t:"测试",d:"输入8和6"},{t:"改进",d:"用random.randint"}]
   },
-  { id:9, title:"项目：猜数字", icon:"🎯",
-    content:'<h1>🎯 小项目：猜数字游戏</h1><div class="content-card"><p>综合之前所有知识！目标数字是 7。</p><pre><div class="mac-dots"><span></span><span></span><span></span></div><code>secret = 7\nguess = int(input(\'猜一个数字：\'))\nif guess > secret:\n    print(\'太大了\')\nelif guess < secret:\n    print(\'太小了\')\nelse:\n    print(\'猜对了！\')</code></pre></div><div class="warn-box">⚠️ 运行后弹出输入框。输入7看结果。</div><div class="content-card"><h2>✏️ 练习</h2><p>完成代码，输入7显示"猜对了！"。</p></div>',
-    starter:"secret = 7\nguess = int(input('猜一个数字：'))\nif guess > secret:\n    print('太大了')\nelif guess < secret:\n    print('太小了')\nelse:\n    print('猜对了！')\n",
-    expect:{type:"contains",value:"猜对了"},
-    hints:["运行后输入7","if...elif...else 三个分支","试试改成 random.randint(1,100)"],
-    steps:[{t:"回顾",d:"综合：变量 + input + if + print"},{t:"运行",d:"运行后输入7看结果"},{t:"测试",d:"输入8（太大）和6（太小）"},{t:"改进",d:"改成随机数：import random; secret = random.randint(1,10)"}]
+  {id:10,title:"项目：计算器",
+   html:'<div class="c-section"><h3>🧮 简易计算器</h3><p>输入两个数，算和差积商。</p><pre><code>a = float(input(\'输入第一个数：\'))\nb = float(input(\'输入第二个数：\'))\nprint(\'和:\', a + b)\nprint(\'差:\', a - b)\nprint(\'积:\', a * b)\nprint(\'商:\', a / b)</code></pre></div><div class="c-section"><h3>✏️ 练习</h3><p>获取两个数，打印和差积商。试试10和2！</p></div>',
+   code:"# 获取两个数字\n# 打印和差积商\n",
+   expect:{type:"contains",val:""},
+   hints:["a = float(input('第一个数：'))","print('和差积商：', a+b, a-b, a*b, a/b)"],
+   steps:[{t:"思考",d:"input→float→运算→print"},{t:"编写",d:"获取a,b"},{t:"测试",d:"10和2"},{t:"升级",d:"加除以0判断"}]
   },
-  { id:10, title:"项目：计算器", icon:"🧮",
-    content:'<h1>🧮 小项目：简易计算器</h1><div class="content-card"><p>输入两个数，算和差积商。</p><pre><div class="mac-dots"><span></span><span></span><span></span></div><code>a = float(input(\'输入第一个数：\'))\nb = float(input(\'输入第二个数：\'))\nprint(\'和:\', a + b)\nprint(\'差:\', a - b)\nprint(\'积:\', a * b)\nprint(\'商:\', a / b)</code></pre></div><div class="content-card"><h2>✏️ 练习</h2><p>获取两个数，打印和、差、积、商。试试10和2！</p></div>',
-    starter:"# 获取两个数字\n# 打印和、差、积、商\n",
-    expect:{type:"contains",value:""},
-    hints:["a = float(input('第一个数：'))","b = float(input('第二个数：'))","print('和差积商：', a+b, a-b, a*b, a/b)"],
-    steps:[{t:"思考",d:"需要 input→float→运算→print"},{t:"编写",d:"依次获取a、b，print 四个结果"},{t:"测试",d:"10和2：和12 差8 积20 商5"},{t:"升级",d:"加 if 判断除数不为0"}]
+  {id:11,title:"文件读写",
+   html:'<div class="c-section"><h3>📄 文件读写</h3><pre><code># 写入\nwith open(\'日记.txt\', \'w\') as f:\n    f.write(\'你好，世界！\')\n\n# 读取\nwith open(\'日记.txt\', \'r\') as f:\n    print(f.read())</code></pre></div><div class="box info"><span class="box-icon">📖</span><span>\'w\' 覆盖写入，\'r\' 只读，\'a\' 追加。with 自动关闭文件。</span></div><div class="c-section"><h3>✏️ 练习</h3><p>用 with open 写入"文件测试"并读取打印。</p></div>',
+   code:"with open('test.txt', 'w') as f:\n    f.write('文件测试')\nwith open('test.txt', 'r') as f:\n    print(f.read())\n",
+   expect:{type:"contains",val:"文件测试"},
+   hints:["with open('test.txt','w') as f:","f.write('文件测试')"],
+   steps:[{t:"理解",d:"文件是永久保存的变量"},{t:"写入",d:"with...as f: f.write()"},{t:"读取",d:"f.read()"},{t:"探索",d:"readlines()"}]
   },
-  { id:11, title:"文件读写", icon:"📄",
-    content:'<h1>📄 文件读写：数据持久化</h1><div class="content-card"><p><code class="inline">open()</code> 函数打开文件，<code class="inline">read()</code> 读取内容，<code class="inline">write()</code> 写入内容。</p><pre><div class="mac-dots"><span></span><span></span><span></span></div><code># 写入文件\nwith open(\'日记.txt\', \'w\') as f:\n    f.write(\'今天天气很好\\n\')\n    f.write(\'我学完了Python基础\\n\')\n\n# 读取文件\nwith open(\'日记.txt\', \'r\') as f:\n    content = f.read()\n    print(content)</code></pre></div><div class="tip-box">💡 使用 <code class="inline">with</code> 语句会自动关闭文件，不用担心忘记 f.close()！</div><div class="warn-box">⚠️ \'w\' 模式会覆盖原有内容；\'a\' 模式在末尾追加。</div><div class="info-box">📖 常见模式：\'r\' 只读、\'w\' 写入（覆盖）、\'a\' 追加、\'r+\' 读写。</div><div class="content-card"><h2>✏️ 练习</h2><p>用 <code class="inline">with open</code> 写入"你好，文件！"并读取打印。</p></div>',
-    starter:"# 写入并读取文件\nwith open('test.txt', 'w') as f:\n    f.write('你好，文件！')\n\nwith open('test.txt', 'r') as f:\n    print(f.read())\n",
-    expect:{type:"contains",value:"你好，文件"},
-    hints:["with open('文件名', 'w') 写入，'r' 读取","f.write() 写内容，f.read() 读全部","别忘了 with ... as f: 的冒号"],
-    steps:[{t:"理解",d:"文件就像永久保存的变量，程序关了数据还在"},{t:"写入",d:"with open('test.txt','w') as f: f.write('内容')"},{t:"读取",d:"with open('test.txt','r') as f: print(f.read())"},{t:"探索",d:"试试 readlines() 按行读取，或用 'a' 模式追加内容"}]
+  {id:12,title:"异常处理",
+   html:'<div class="c-section"><h3>🛡️ try/except</h3><pre><code>try:\n    num = int(input(\'输入数字：\'))\n    print(\'你输入了：\', num)\nexcept ValueError:\n    print(\'请输入有效数字！\')</code></pre></div><div class="box tip"><span class="box-icon">💡</span><span>try 放可能出错的代码，except 捕获异常。</span></div><div class="c-section"><h3>✏️ 练习</h3><p>处理除零错误，打印"不能除以零！"。</p></div>',
+   code:"try:\n    result = 10 / 0\n    print(result)\nexcept ZeroDivisionError:\n    print('不能除以零！')\n",
+   expect:{type:"contains",val:"不能除以零"},
+   hints:["try 里放 10 / 0","except ZeroDivisionError:"],
+   steps:[{t:"理解",d:"异常是运行时错误"},{t:"捕获",d:"try/except"},{t:"练习",d:"除零"},{t:"探索",d:"多个except"}]
   },
-  { id:12, title:"异常处理", icon:"🛡️",
-    content:'<h1>🛡️ 异常处理：让程序更健壮</h1><div class="content-card"><p><code class="inline">try/except</code> 捕获错误，让程序不会崩溃。</p><pre><div class="mac-dots"><span></span><span></span><span></span></div><code>try:\n    num = int(input(\'请输入一个数字：\'))\n    print(\'你输入的是：\', num)\nexcept ValueError:\n    print(\'请输入有效的数字！\')\nfinally:\n    print(\'程序结束\')</code></pre></div><div class="tip-box">💡 try 块放可能出错的代码，except 捕获指定类型的异常。</div><div class="warn-box">⚠️ 不要用空的 except 捕获所有异常——你可能隐藏了真正的 bug！</div><div class="info-box">📖 常见异常：ValueError（值错误）、TypeError（类型错误）、ZeroDivisionError（除零）、FileNotFoundError（文件不存在）。</div><div class="content-card"><h2>✏️ 练习</h2><p>用 try/except 处理除零错误，打印"不能除以零！"。</p></div>',
-    starter:"# 处理除零错误\ntry:\n    result = 10 / 0\n    print(result)\nexcept ZeroDivisionError:\n    print('不能除以零！')\n",
-    expect:{type:"contains",value:"不能除以零"},
-    hints:["try 里放 10 / 0","except ZeroDivisionError: 捕获除零错误","可以加 finally 块，无论是否出错都执行"],
-    steps:[{t:"理解",d:"异常是程序运行时的错误，try/except 像安全网"},{t:"捕获",d:"try: 危险代码 except 异常类型: 处理方案"},{t:"练习",d:"处理除零：except ZeroDivisionError: print('不能除以零！')"},{t:"探索",d:"试试多个 except 捕获不同类型，或自定义 raise 抛出异常"}]
+  {id:13,title:"面向对象·类",
+   html:'<div class="c-section"><h3>🏗️ 类和对象</h3><pre><code>class Dog:\n    def __init__(self, name):\n        self.name = name\n    def bark(self):\n        print(f\'{self.name}：汪汪！\')\n\ndog = Dog(\'旺财\')\ndog.bark()</code></pre></div><div class="box tip"><span class="box-icon">💡</span><span>__init__ 是构造方法，self 代表实例本身。</span></div><div class="c-section"><h3>✏️ 练习</h3><p>创建 Student 类，show() 打印"XX的分数是XX"。</p></div>',
+   code:"class Student:\n    def __init__(self, name, score):\n        self.name = name\n        self.score = score\n    def show(self):\n        print(f'{self.name}的分数是{self.score}')\n\ns = Student('小明', 95)\ns.show()\n",
+   expect:{type:"contains",val:"小明"},
+   hints:["class 类名:","__init__(self, 参数)","self.属性 = 值"],
+   steps:[{t:"理解",d:"类是模板，对象是实例"},{t:"定义",d:"class + __init__"},{t:"方法",d:"def show(self):"},{t:"创造",d:"多个实例"}]
   },
-  { id:13, title:"面向对象·类", icon:"🏗️",
-    content:'<h1>🏗️ 面向对象编程：类和对象</h1><div class="content-card"><p><code class="inline">class</code> 定义类——对象的蓝图。每个对象有自己的属性（数据）和方法（行为）。</p><pre><div class="mac-dots"><span></span><span></span><span></span></div><code>class Dog:\n    def __init__(self, name, age):\n        self.name = name\n        self.age = age\n    \n    def bark(self):\n        print(f\'{self.name}：汪汪！\')\n\ndog1 = Dog(\'旺财\', 3)\ndog1.bark()</code></pre></div><div class="tip-box">💡 __init__ 是构造函数，self 代表实例本身。每个方法第一个参数必须是 self。</div><div class="warn-box">⚠️ 别把 self 忘了！没有 self 的方法无法访问对象属性。</div><div class="info-box">📖 类名按惯例首字母大写（Dog、Student），实例小写。</div><div class="content-card"><h2>✏️ 练习</h2><p>创建 <code class="inline">Student</code> 类，name 和 score 属性，show() 打印"XX的分数是XX"。</p></div>',
-    starter:"# 创建 Student 类\nclass Student:\n    def __init__(self, name, score):\n        self.name = name\n        self.score = score\n    \n    def show(self):\n        print(f'{self.name}的分数是{self.score}')\n\ns1 = Student('小明', 95)\ns1.show()\n",
-    expect:{type:"contains",value:"小明"},
-    hints:["class 类名: 定义类","__init__(self, 参数) 初始化属性","self.属性名 = 值，方法用 self 访问属性"],
-    steps:[{t:"理解",d:"类是模板，对象是实例。就像饼干的模具和饼干"},{t:"定义",d:"class Student: def __init__(self, name, score):"},{t:"方法",d:"def show(self): 通过 self.name 访问属性"},{t:"创造",d:"创建多个实例 s1 s2，各自调用 show()"}]
+  {id:14,title:"面向对象·继承",
+   html:'<div class="c-section"><h3>🧬 继承</h3><pre><code>class Animal:\n    def speak(self):\n        print(\'发出声音\')\n\nclass Cat(Animal):\n    def speak(self):\n        print(\'喵喵～\')\n\nCat().speak()</code></pre></div><div class="box info"><span class="box-icon">📖</span><span>子类继承父类方法，可重写。</span></div><div class="c-section"><h3>✏️ 练习</h3><p>创建 Animal→Bird 继承，speak() 打印"叽叽喳喳"。</p></div>',
+   code:"class Animal:\n    def speak(self):\n        print('发出声音')\nclass Bird(Animal):\n    def speak(self):\n        print('叽叽喳喳')\nBird().speak()\n",
+   expect:{type:"contains",val:"叽叽喳喳"},
+   hints:["class 子类(父类):","重写同名方法"],
+   steps:[{t:"理解",d:"继承像遗传"},{t:"继承",d:"class Bird(Animal):"},{t:"重写",d:"同名方法覆盖"},{t:"探索",d:"super()"}]
   },
-  { id:14, title:"面向对象·继承", icon:"🧬",
-    content:'<h1>🧬 继承与多态</h1><div class="content-card"><p>子类继承父类的属性和方法，还能重写（override）或扩展。</p><pre><div class="mac-dots"><span></span><span></span><span></span></div><code>class Animal:\n    def __init__(self, name):\n        self.name = name\n    def speak(self):\n        print(f\'{self.name}发出了声音\')\n\nclass Cat(Animal):\n    def speak(self):\n        print(f\'{self.name}：喵喵～\')\n\nclass Dog(Animal):\n    def speak(self):\n        print(f\'{self.name}：汪汪！\')\n\ncat = Cat(\'小花\')\ndog = Dog(\'旺财\')\ncat.speak()\ndog.speak()</code></pre></div><div class="tip-box">💡 <code class="inline">class 子类(父类)</code> 实现继承。这叫"多态"——同一方法名，不同表现。</div><div class="info-box">📖 super().__init__() 调用父类的初始化方法，避免重复代码。</div><div class="content-card"><h2>✏️ 练习</h2><p>创建 <code class="inline">Animal</code> → <code class="inline">Bird</code> 继承，重写 speak() 打印"XXX：叽叽喳喳"。</p></div>',
-    starter:"# 继承练习\nclass Animal:\n    def __init__(self, name):\n        self.name = name\n    def speak(self):\n        print(f'{self.name}发出了声音')\n\nclass Bird(Animal):\n    def speak(self):\n        print(f'{self.name}：叽叽喳喳')\n\nb = Bird('小翠')\nb.speak()\n",
-    expect:{type:"contains",value:"叽叽喳喳"},
-    hints:["class 子类(父类): 继承父类","重写方法：定义一个跟父类同名的方法","可以用 super().__init__(name) 调用父类构造"],
-    steps:[{t:"理解",d:"继承像遗传——子类自动拥有父类的属性和方法"},{t:"继承",d:"class Bird(Animal): 继承"},{t:"重写",d:"def speak(self): 同名方法覆盖父类行为"},{t:"探索",d:"试试 super() 调用父类方法，或创建更多子类"}]
+  {id:15,title:"模块和包",
+   html:'<div class="c-section"><h3>📦 import</h3><pre><code>import math\nprint(math.sqrt(16))   # 4.0\nprint(math.pi)         # 3.14...\n\nimport random as rd\nprint(rd.randint(1, 10))</code></pre></div><div class="box info"><span class="box-icon">📖</span><span>Python 标准库：math、random、datetime、os、json 等。</span></div><div class="c-section"><h3>✏️ 练习</h3><p>导入 math，计算 2 的平方根。</p></div>',
+   code:"import math\nprint(math.sqrt(2))\n",
+   expect:{type:"contains",val:"1.414"},
+   hints:["import math","math.sqrt(2)"],
+   steps:[{t:"理解",d:"模块是别人写好的代码"},{t:"导入",d:"import math"},{t:"别名",d:"import...as"},{t:"探索",d:"random datetime"}]
   },
-  { id:15, title:"模块和包", icon:"📦",
-    content:'<h1>📦 模块和包：组织代码</h1><div class="content-card"><p><code class="inline">import</code> 导入模块，复用别人写好的代码。</p><pre><div class="mac-dots"><span></span><span></span><span></span></div><code>import math\nprint(math.sqrt(16))   # 4.0\nprint(math.pi)         # 3.1415...\n\nfrom datetime import datetime\nnow = datetime.now()\nprint(now.strftime(\'%Y-%m-%d %H:%M\'))\n\nimport random as rd\nprint(rd.randint(1, 10))</code></pre></div><div class="tip-box">💡 Python 自带"标准库"包含大量实用模块：math、random、datetime、os、json 等。</div><div class="warn-box">⚠️ <code class="inline">from module import *</code> 不推荐——会污染命名空间、难以调试。</div><div class="info-box">📖 自己写的 .py 文件也可以当模块导入！同目录下创建 utils.py，用 <code class="inline">import utils</code> 即可。</div><div class="content-card"><h2>✏️ 练习</h2><p>导入 <code class="inline">math</code> 模块，计算并打印 2 的平方根。</p></div>',
-    starter:"# 导入 math 模块\nimport math\nresult = math.sqrt(2)\nprint(result)\n",
-    expect:{type:"contains",value:"1.414"},
-    hints:["import math","math.sqrt(2) 求平方根","试试 math.pow(2,3) 求幂、math.pi 圆周率"],
-    steps:[{t:"理解",d:"模块就是别人写好的 Python 文件，里面有函数和变量"},{t:"导入",d:"import math → math.sqrt()"},{t:"别名",d:"import math as m → m.sqrt()"},{t:"探索",d:"试试 random 模块：randint()、choice()、shuffle()"}]
+  {id:16,title:"列表推导式",
+   html:'<div class="c-section"><h3>⚡ 列表推导式</h3><pre><code># 一行生成列表\nsquares = [i*i for i in range(1,6)]\nprint(squares)  # [1,4,9,16,25]\n\n# 加条件\nevens = [i for i in range(10) if i%2==0]\nprint(evens)  # [0,2,4,6,8]</code></pre></div><div class="box tip"><span class="box-icon">💡</span><span>语法: <code class="inline">[表达式 for 变量 in 可迭代对象 if 条件]</code></span></div><div class="c-section"><h3>✏️ 练习</h3><p>生成 [2,4,6,8,10] 并打印。</p></div>',
+   code:"result = [i*2 for i in range(1,6)]\nprint(result)\n",
+   expect:{type:"contains",val:"[2, 4, 6, 8, 10]"},
+   hints:["[i*2 for i in range(1,6)]"],
+   steps:[{t:"理解",d:"推导式=for+if+表达式"},{t:"基础",d:"[i*2...]"},{t:"过滤",d:"加 if"},{t:"探索",d:"字典推导式"}]
   },
-  { id:16, title:"列表推导式", icon:"⚡",
-    content:'<h1>⚡ 列表推导式：简洁的列表生成</h1><div class="content-card"><p>一行代码完成"遍历+过滤+转换"。</p><pre><div class="mac-dots"><span></span><span></span><span></span></div><code># 普通写法\nsquares = []\nfor i in range(1, 6):\n    squares.append(i * i)\nprint(squares)  # [1, 4, 9, 16, 25]\n\n# 列表推导式写法\nsquares = [i * i for i in range(1, 6)]\nprint(squares)\n\n# 加条件过滤\nevens = [i for i in range(10) if i % 2 == 0]\nprint(evens)  # [0, 2, 4, 6, 8]\n\n# 字典推导式\nd = {i: i*i for i in range(3)}\nprint(d)  # {0:0, 1:1, 2:4}</code></pre></div><div class="tip-box">💡 语法：<code class="inline">[表达式 for 变量 in 可迭代对象 if 条件]</code></div><div class="warn-box">⚠️ 推导式让代码简洁，但别嵌套太深——可读性比简洁更重要！</div><div class="content-card"><h2>✏️ 练习</h2><p>用列表推导式生成 [2, 4, 6, 8, 10] 并打印。</p></div>',
-    starter:"# 列表推导式\nresult = [i * 2 for i in range(1, 6)]\nprint(result)\n",
-    expect:{type:"contains",value:"[2, 4, 6, 8, 10]"},
-    hints:["[i*2 for i in range(1, 6)]","range(1,6) 生成 1到5","试试 [i for i in range(20) if i%3==0] 3的倍数"],
-    steps:[{t:"理解",d:"推导式 = for循环 + if过滤 + 表达式，揉成一行"},{t:"基础",d:"[i*2 for i in range(1,6)] → [2,4,6,8,10]"},{t:"过滤",d:"[i for i in range(10) if i>5] 只取大于5的"},{t:"探索",d:"试试集合推导式 {i for i in ...} 或生成器推导式 (i for i in ...)"}]
+  {id:17,title:"装饰器基础",
+   html:'<div class="c-section"><h3>🎀 装饰器</h3><pre><code>def my_deco(func):\n    def wrapper():\n        print(\'开始\')\n        func()\n        print(\'结束\')\n    return wrapper\n\n@my_deco\ndef greet():\n    print(\'你好！\')\n\ngreet()</code></pre></div><div class="box tip"><span class="box-icon">💡</span><span>@装饰器名 放在函数上方，给函数增加前后处理。</span></div><div class="c-section"><h3>✏️ 练习</h3><p>写装饰器 my_decorator，打印"开始"→调用函数→"完成"。</p></div>',
+   code:"def my_decorator(func):\n    def wrapper():\n        print('开始执行...')\n        func()\n        print('已完成')\n    return wrapper\n\n@my_decorator\ndef greet():\n    print('Hello Python！')\n\ngreet()\n",
+   expect:{type:"contains",val:"已完成"},
+   hints:["装饰器=返回新函数的高阶函数","@放在def上一行"],
+   steps:[{t:"理解",d:"装饰器像包装纸"},{t:"结构",d:"外层+内层wrapper"},{t:"使用",d:"@装饰器名"},{t:"探索",d:"带参数的装饰器"}]
   },
-  { id:17, title:"装饰器基础", icon:"🎀",
-    content:'<h1>🎀 装饰器：给函数"穿衣服"</h1><div class="content-card"><p>装饰器在不修改原函数的情况下，给它增加新功能。</p><pre><div class="mac-dots"><span></span><span></span><span></span></div><code>def log_decorator(func):\n    def wrapper(*args, **kwargs):\n        print(f\'调用 {func.__name__}\')\n        result = func(*args, **kwargs)\n        print(f\'{func.__name__} 执行完毕\')\n        return result\n    return wrapper\n\n@log_decorator\ndef say_hello():\n    print(\'你好！\')\n\nsay_hello()</code></pre></div><div class="tip-box">💡 <code class="inline">@装饰器名</code> 写在函数定义上方，等价于 <code class="inline">say_hello = log_decorator(say_hello)</code></div><div class="info-box">📖 内置装饰器：@staticmethod、@classmethod、@property。它们各有特定用途。</div><div class="content-card"><h2>✏️ 练习</h2><p>写一个装饰器 <code class="inline">my_decorator</code>，打印"开始执行..."、调用函数，再打印"已完成"。</p></div>',
-    starter:"# 装饰器练习\ndef my_decorator(func):\n    def wrapper():\n        print('开始执行...')\n        func()\n        print('已完成')\n    return wrapper\n\n@my_decorator\ndef greet():\n    print('Hello Python！')\n\ngreet()\n",
-    expect:{type:"contains",value:"已完成"},
-    hints:["装饰器是接收函数、返回新函数的高阶函数","@装饰器名 放在 def 上一行","wrapper 函数里先做额外操作，再调用原函数"],
-    steps:[{t:"理解",d:"装饰器像包装纸：包裹函数，添加前后处理"},{t:"结构",d:"外层函数接收func，内层wrapper添加逻辑并调用func"},{t:"使用",d:"@装饰器名 放在目标函数上方"},{t:"探索",d:"试试带参数的装饰器，或用 functools.wraps 保留元信息"}]
+  {id:18,title:"正则表达式",
+   html:'<div class="c-section"><h3>🔍 正则表达式</h3><pre><code>import re\ntext = \'I have 3 apples and 5 oranges\'\nnumbers = re.findall(r\'\\d+\', text)\nprint(numbers)  # [\'3\', \'5\']</code></pre></div><div class="box info"><span class="box-icon">📖</span><span>\\d 数字，\\d+ 连续数字，\\w 字母，\\s 空白。</span></div><div class="c-section"><h3>✏️ 练习</h3><p>提取字符串中的数字并打印。</p></div>',
+   code:"import re\ntext = '我有3个苹果和5个橘子'\nnumbers = re.findall(r'\\d+', text)\nprint(numbers)\n",
+   expect:{type:"contains",val:"3"},
+   hints:["import re","re.findall(r'\\\\d+', text)"],
+   steps:[{t:"理解",d:"正则像高级通配符"},{t:"数字",d:"\\\\d+"},{t:"提取",d:"re.findall"},{t:"探索",d:"re.sub re.search"}]
   },
-  { id:18, title:"正则表达式入门", icon:"🔍",
-    content:'<h1>🔍 正则表达式：文本匹配利器</h1><div class="content-card"><p><code class="inline">re</code> 模块用模式匹配和提取文本。</p><pre><div class="mac-dots"><span></span><span></span><span></span></div><code>import re\n\n# 匹配手机号\ntext = \'联系方式：13812345678，备用：13987654321\'\npattern = r\'1[3-9]\\d{9}\'\nphones = re.findall(pattern, text)\nprint(phones)  # [\'13812345678\', \'13987654321\']\n\n# 匹配并替换\nresult = re.sub(r\'\\d\', \'*\', \'密码123456\')\nprint(result)  # 密码******\n\n# 搜索\nmatch = re.search(r\'\\d+\', \'年龄：25岁\')\nprint(match.group())  # 25</code></pre></div><div class="tip-box">💡 常用：\\d 数字、\\w 字母数字、\\s 空白、+ 一到多个、* 零到多个、? 零或一个。</div><div class="warn-box">⚠️ 正则虽强但难读！写完后加注释解释模式含义。</div><div class="content-card"><h2>✏️ 练习</h2><p>用正则提取字符串中所有的数字，并打印列表。</p></div>',
-    starter:"# 正则提取数字\nimport re\ntext = '我有3个苹果和5个橘子'\nnumbers = re.findall(r'\\d+', text)\nprint(numbers)\n",
-    expect:{type:"contains",value:"3"},
-    hints:["import re","re.findall(r'\\\\d+', text) 提取所有数字","\\d+ 表示一个或多个数字"],
-    steps:[{t:"理解",d:"正则像高级通配符，用模式语言描述要匹配的文本"},{t:"数字",d:"\\d 匹配数字，\\d+ 匹配连续数字"},{t:"提取",d:"re.findall(r'\\d+', text) 返回匹配列表"},{t:"探索",d:"试试 re.sub() 替换、re.search() 定位、re.match() 开头匹配"}]
+  {id:19,title:"项目：待办管理器",
+   html:'<div class="c-section"><h3>✅ 待办事项管理器</h3><p>综合：列表+函数+文件。</p><pre><code>import json\ntodos = []\ndef add(task):\n    todos.append({\'task\':task,\'done\':False})\n    print(f\'已添加：{task}\')\n\nadd(\'学完Python\')\nadd(\'做个小项目\')\nprint(todos)</code></pre></div><div class="box tip"><span class="box-icon">💡</span><span>JSON 方便存储结构化数据。</span></div><div class="c-section"><h3>✏️ 练习</h3><p>定义 add_todo(task) 打印"任务：XXX已添加"。</p></div>',
+   code:"def add_todo(task):\n    print(f'任务：{task}已添加')\n\nadd_todo('学习Python')\nadd_todo('做运动')\n",
+   expect:{type:"contains",val:"已添加"},
+   hints:["def add_todo(task):","f'任务：{task}已添加'"],
+   steps:[{t:"设计",d:"先想功能"},{t:"实现",d:"列表+函数"},{t:"持久化",d:"json"},{t:"完善",d:"异常处理"}]
   },
-  { id:19, title:"项目：待办事项管理器", icon:"✅",
-    content:'<h1>✅ 综合项目：待办事项管理器</h1><div class="content-card"><p>综合列表、函数、文件读写——做一个完整的命令行待办应用！</p><pre><div class="mac-dots"><span></span><span></span><span></span></div><code>import json\n\nTODO_FILE = \'todos.json\'\n\ndef load_todos():\n    try:\n        with open(TODO_FILE, \'r\') as f:\n            return json.load(f)\n    except FileNotFoundError:\n        return []\n\ndef save_todos(todos):\n    with open(TODO_FILE, \'w\') as f:\n        json.dump(todos, f)\n\ndef add_todo(todos, task):\n    todos.append({"task": task, "done": False})\n    save_todos(todos)\n    print(f\'已添加：{task}\')\n\ndef show_todos(todos):\n    for i, t in enumerate(todos, 1):\n        status = \'✓\' if t[\'done\'] else \' \'\n        print(f\'[{status}] {i}. {t["task"]}\')\n\ntodos = load_todos()\nadd_todo(todos, \'学完Python基础\')\nadd_todo(todos, \'做一个小项目\')\nshow_todos(todos)</code></pre></div><div class="tip-box">💡 JSON 格式方便存储结构化数据。json.dump() 写，json.load() 读。</div><div class="info-box">📖 这个项目用到了：函数、列表、字典、文件读写、异常处理——完美综合！</div><div class="content-card"><h2>✏️ 练习</h2><p>定义一个函数 <code class="inline">add_todo</code> 接收任务名，打印"任务：XXX已添加"。</p></div>',
-    starter:"# 待办管理器核心函数\ndef add_todo(task):\n    print(f'任务：{task}已添加')\n\nadd_todo('学习Python')\nadd_todo('做运动')\n",
-    expect:{type:"contains",value:"已添加"},
-    hints:["def add_todo(task): 定义函数","用 f-string 拼接输出","可以扩展：用列表存储所有任务"],
-    steps:[{t:"设计",d:"先想清楚功能：添加、查看、删除、标记完成"},{t:"实现",d:"用列表存任务，函数操作列表"},{t:"持久化",d:"用 json 模块读写文件保存数据"},{t:"完善",d:"加入异常处理，让程序更健壮"}]
-  },
-  { id:20, title:"项目：天气查询器", icon:"🌤️",
-    content:'<h1>🌤️ 综合项目：天气查询器</h1><div class="content-card"><p>综合字典、函数、API概念——做一个天气查询工具！</p><pre><div class="mac-dots"><span></span><span></span><span></span></div><code>weather_data = {\n    \'北京\': {\'temp\': 28, \'condition\': \'晴\', \'humidity\': 40},\n    \'上海\': {\'temp\': 32, \'condition\': \'多云\', \'humidity\': 65},\n    \'广州\': {\'temp\': 35, \'condition\': \'雷阵雨\', \'humidity\': 80},\n    \'成都\': {\'temp\': 26, \'condition\': \'阴\', \'humidity\': 55},\n}\n\ndef get_weather(city):\n    data = weather_data.get(city)\n    if data:\n        print(f\'🏙️ {city}\')\n        print(f\'🌡️ 温度：{data["temp"]}°C\')\n        print(f\'☁️ 天气：{data["condition"]}\')\n        print(f\'💧 湿度：{data["humidity"]}%\')\n    else:\n        print(f\'未找到{city}的天气信息\')\n\nget_weather(\'北京\')\nget_weather(\'上海\')</code></pre></div><div class="tip-box">💡 真实项目中，天气数据来自 API（如 OpenWeatherMap）。API 就像"数据自动售货机"——你请求，它返回数据。</div><div class="info-box">📖 API 概念：向网址发 HTTP 请求，获取 JSON 数据。Python 用 <code class="inline">requests</code> 库实现。</div><div class="content-card"><h2>✏️ 练习</h2><p>创建 <code class="inline">weather</code> 字典，包含一个城市数据。定义函数打印城市天气。</p></div>',
-    starter:"# 天气查询器\nweather = {\n    '北京': {'temp': 28, 'condition': '晴'}\n}\n\ndef show_weather(city):\n    data = weather.get(city)\n    if data:\n        print(f'{city}：{data[\"temp\"]}°C，{data[\"condition\"]}')\n    else:\n        print('城市未找到')\n\nshow_weather('北京')\n",
-    expect:{type:"contains",value:"北京"},
-    hints:["用字典嵌套存储城市天气数据","weather.get(city) 安全访问，不存在返回 None","用 f-string 格式化输出"],
-    steps:[{t:"设计",d:"数据结构：城市名→{温度,天气,湿度} 的嵌套字典"},{t:"查询",d:"get_weather(city) 函数：查字典、格式化输出"},{t:"扩展",d:"加入多个城市，试试循环遍历所有城市"},{t:"展望",d:"了解 API 概念：真实数据来自网络请求→JSON解析"}]
-  },
+  {id:20,title:"项目：天气查询器",
+   html:'<div class="c-section"><h3>🌤️ 天气查询器</h3><p>综合：字典+函数+API概念。</p><pre><code>weather = {\'北京\':{\'temp\':28,\'cond\':\'晴\'}}\ndef show(city):\n    d = weather.get(city)\n    if d:\n      print(f\'{city}：{d[\"temp\"]}°C {d[\"cond\"]}\')\n    else:\n      print(\'未找到\')\n\nshow(\'北京\')</code></pre></div><div class="box tip"><span class="box-icon">💡</span><span>真实项目用 API 获取天气数据。</span></div><div class="c-section"><h3>✏️ 练习</h3><p>建 weather 字典，函数打印城市天气。</p></div>',
+   code:"weather = {'北京': {'temp': 28, 'condition': '晴'}}\n\ndef show_weather(city):\n    d = weather.get(city)\n    if d:\n        print(f'{city}：{d[\"temp\"]}°C，{d[\"condition\"]}')\n    else:\n        print('城市未找到')\n\nshow_weather('北京')\n",
+   expect:{type:"contains",val:"北京"},
+   hints:["weather = {'北京': {...}}","weather.get(city) 安全访问"],
+   steps:[{t:"设计",d:"嵌套字典"},{t:"查询",d:"get_weather函数"},{t:"扩展",d:"多城市"},{t:"展望",d:"API概念"}]
+  }
 ];
 
-// === STATE ===
-let cur = 0, mode = 'practice';
-let prog = { done:0, hints:{}, runs:{} };
-let outLog = '', runN = 0, hintI = 0;
-let totalRuns = 0;
+let cur=0,mode='learn',prog={done:0,hints:{}},runN=0,hintI=0,totalRuns=0;
+function ld(){try{let p=JSON.parse(localStorage.pl2||'{}');if(p.done!=null)prog=p}catch(e){}}
+function sv(){localStorage.pl2=JSON.stringify(prog)}
 
-function loadProg() { try { let p=JSON.parse(localStorage.pylearn||'{}'); if(p.done!==undefined) prog=p; } catch(e){} }
-function saveProg() { localStorage.pylearn=JSON.stringify(prog); }
+function setMode(m){mode=m;loadLsn(cur)}
 
-// === THEME ===
-function loadTheme() {
-  const t = localStorage.theme || 'light';
-  document.documentElement.className = t;
-  document.body.className = t;
-  updateThemeBtn(t);
-}
-function updateThemeBtn(t) {
-  const btn = document.getElementById('themeBtn');
-  btn.textContent = t === 'dark' ? '☀️' : '🌙';
-  btn.title = t === 'dark' ? '切换到浅色模式' : '切换到深色模式';
-}
-function toggleTheme() {
-  const curTheme = document.documentElement.className === 'dark' ? 'dark' : 'light';
-  const next = curTheme === 'dark' ? 'light' : 'dark';
-  document.documentElement.className = next;
-  document.body.className = next;
-  localStorage.theme = next;
-  updateThemeBtn(next);
+function showTab(t){
+  document.getElementById('tabLsn').classList.toggle('on',t==='content');
+  document.getElementById('tabEd').classList.toggle('on',t==='editor');
+  document.getElementById('contentBody').style.display=t==='content'?'block':'none';
+  document.getElementById('rightPanel').style.display=t==='editor'?'flex':'none';
+  if(t==='editor') document.getElementById('codeIn').focus();
 }
 
-// === MOBILE TAB ===
-function switchMobileTab(tab) {
-  document.getElementById('mobTabContent').classList.toggle('active', tab==='content');
-  document.getElementById('mobTabEditor').classList.toggle('active', tab==='editor');
-  document.getElementById('contentPanel').classList.toggle('panel-hidden', tab!=='content');
-  document.getElementById('editorPanel').classList.toggle('panel-hidden', tab!=='editor');
-  if (tab==='editor') document.getElementById('codeIn').focus();
+let isDark=false;
+function toggleTheme(){
+  isDark=!isDark;
+  document.getElementById('bodyEl').classList.toggle('dark-mode',isDark);
+  document.getElementById('themeBtn').textContent=isDark?'☀️':'🌙';
+  localStorage.theme=isDark?'dark':'light';
 }
+document.getElementById('bodyEl').classList.toggle('dark-mode',localStorage.theme==='dark');
+isDark=localStorage.theme==='dark';
+document.getElementById('themeBtn').textContent=isDark?'☀️':'🌙';
 
-// === CONSOLE TOGGLE ===
-let consoleCollapsed = false;
-function toggleConsole() {
-  consoleCollapsed = !consoleCollapsed;
-  const cel = document.getElementById('console');
-  const toggle = document.getElementById('consoleToggle');
-  cel.classList.toggle('collapsed', consoleCollapsed);
-  toggle.classList.toggle('collapsed', consoleCollapsed);
-}
-
-// === MODE ===
-function setMode(m) {
-  mode=m;
-  document.getElementById('modePrac').classList.toggle('active',m==='practice');
-  document.getElementById('modeTeach').classList.toggle('active',m==='teach');
-  loadLesson(cur);
-}
-
-// === RENDER ===
-function renderSidebar() {
-  const el=document.getElementById('courseList');
-  el.innerHTML='';
-  courses.forEach((c,i)=>{
-    const d=document.createElement('div');
-    d.className='course-item';
-    if(i<prog.done) d.classList.add('done');
-    if(i===cur) d.classList.add('active');
-    if(i>prog.done) d.classList.add('locked');
-    d.innerHTML=`<span class="idx">${i<prog.done?'✓':c.icon}</span><span class="name">${c.title}</span>`;
-    if(i<=prog.done) d.onclick=()=>{cur=i; loadLesson(i); if(window.innerWidth<768) switchMobileTab('content');};
-    el.appendChild(d);
-  });
-}
-
-function loadLesson(i) {
-  cur=i; hintI=prog.hints[i]||0; runN=prog.runs[i]||0;
+function loadLsn(i){
+  cur=i;hintI=prog.hints[i]||0;
   const c=courses[i];
   let html;
-  if(mode==='teach'&&c.steps) {
-    html=`<h1>📖 ${c.title}</h1><p style="color:var(--text3); font-size:13px">教学模式 — 跟着走</p><div class="step-guide">`;
-    c.steps.forEach((s,si)=>html+=`<div class="step"><div class="sn">${si+1}</div><div><h4>${s.t}</h4><p>${s.d}</p></div></div>`);
-    html+=`</div><div class="tip-box">💡 完成后切换到<strong>练习</strong>模式动手试试！</div>`;
-  } else { html=c.content; }
-
-  // Course transition: fade out content + slide code
-  const cp = document.getElementById('contentPanel');
-  const cw = document.querySelector('.code-wrap');
-  if (cp && cw) {
-    cp.classList.add('transitioning');
-    cw.classList.add('transitioning');
+  if(mode==='learn'){
+    html=c.html;
+  }else{
+    html=`<h3 style="margin-bottom:12px">📖 ${c.title} — 跟着走</h3>`;
+    c.steps.forEach((s,si)=>html+=`<div class="step"><div class="sn">${si+1}</div><div><strong>${s.t}</strong>${s.d}</div></div>`);
+    html+='<div class="box tip"><span class="box-icon">💡</span><span>完成后切换到<strong>编辑</strong>动手试试！</span></div>';
   }
-
-  setTimeout(() => {
-    document.getElementById('contentPanel').innerHTML=html;
-    document.getElementById('codeIn').value=c.starter;
-    document.getElementById('console').innerHTML='<span style="color:#475569">$ </span><span style="color:#93c5fd">点击 ▶ 运行 执行代码</span>';
-    document.getElementById('btnNext').disabled=(i+1>prog.done);
-    document.getElementById('btnHint').textContent='💡 提示 ('+(c.hints.length-hintI)+')';
-    document.getElementById('btnHint').disabled=(hintI>=c.hints.length);
-    outLog=''; updateEditor(); renderSidebar();
-    updateStats();
-
-    // Remove transition classes to fade back in
-    cp.classList.remove('transitioning');
-    document.querySelector('.code-wrap').classList.remove('transitioning');
-  }, 200);
-}
-function updateTopbar() {
-  document.getElementById('progressBadge').textContent = '✅ ' + prog.done + '/' + courses.length;
+  document.getElementById('contentBody').innerHTML=html;
+  document.getElementById('codeIn').value=c.code;
+  document.getElementById('consoleEl').innerHTML='点击 ▶ 运行 执行代码';
+  document.getElementById('nextBtn').disabled=i+1>prog.done;
+  document.getElementById('hintBtn').textContent='💡 提示('+(c.hints.length-hintI)+')';
+  document.getElementById('hintBtn').disabled=hintI>=c.hints.length;
+  renderChips();
+  document.getElementById('pct').textContent=prog.done+'/20';
 }
 
-// === STATS ===
-function updateStats() {
-  document.getElementById('statRuns').textContent = totalRuns;
-  document.getElementById('statPassed').textContent = prog.done;
+function renderChips(){
+  const el=document.getElementById('contentBody');
+  const existing=el.querySelector('.lsn');
+  let chips='<div class="lsn">';
+  courses.forEach((c,i)=>{
+    let cls='chip';
+    if(i<prog.done) cls+=' done';
+    if(i===cur) cls+=' on';
+    if(i>prog.done) cls+=' lock';
+    const icon=i<prog.done?'✓':(c.title.slice(0,2));
+    chips+=`<span class="${cls}" onclick="loadLsn(${i});document.getElementById('contentBody').scrollTop=0">${icon} ${c.title}</span>`;
+  });
+  chips+='</div>';
+  el.insertAdjacentHTML('afterbegin',chips);
 }
 
-// === EDITOR ===
-const ci=document.getElementById('codeIn'), ln=document.getElementById('lineNums'), hl=document.getElementById('codeHl');
-
-function highlight(t) {
-  let h=t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  h=h.replace(/(#.*)/g,'<span class="hl-c">$1</span>');
-  h=h.replace(/(["'])(?:(?=(\\?))\2.)*?\1/g,'<span class="hl-s">$&</span>');
-  'def|class|if|elif|else|for|while|in|return|import|from|as|try|except|finally|with|and|or|not|is|pass|break|continue'.split('|').forEach(k=>h=h.replace(new RegExp('\\b'+k+'\\b','g'),'<span class="hl-kd">$&</span>'));
-  'print|int|float|str|list|dict|set|tuple|range|input|len|append|upper|lower|replace|count|split|join|strip|sum|min|max|abs|round'.split('|').forEach(b=>h=h.replace(new RegExp('\\b('+b+')\\s*\\(','g'),'<span class="hl-fn">$1</span>('));
-  h=h.replace(/\b(True|False|None)\b/g,'<span class="hl-kc">$&</span>');
-  h=h.replace(/\b(\d+\.?\d*)\b/g,'<span class="hl-n">$1</span>');
-  return h;
-}
-function updateEditor() {
-  const t=ci.value, ls=t.split('\n');
-  ln.innerHTML=Array.from({length:Math.max(ls.length,1)},(_,i)=>'<span>'+(i+1)+'</span>').join('');
-  hl.innerHTML=highlight(t)+'\n';
-  hl.style.transform='translateY(-'+ci.scrollTop+'px)';
-  // Parallax for line numbers
-  document.getElementById('lineNums').style.transform = 'translateY(-' + (ci.scrollTop * 0.92) + 'px)';
-}
-ci.addEventListener('input',updateEditor);
-ci.addEventListener('scroll',()=>{
-  // Parallax: line numbers lag slightly behind
-  document.getElementById('lineNums').style.transform = 'translateY(-' + (ci.scrollTop * 0.92) + 'px)';
-  hl.style.transform='translateY(-'+ci.scrollTop+'px)';
-});
-ci.addEventListener('keydown',e=>{
-  if(e.key==='Tab'){e.preventDefault();let s=ci.selectionStart;ci.value=ci.value.slice(0,s)+'    '+ci.value.slice(ci.selectionEnd);ci.selectionStart=ci.selectionEnd=s+4;updateEditor();}
-  if(e.ctrlKey&&e.key==='Enter'){e.preventDefault();runCode();}
-});
-
-function formatCode(){const ls=ci.value.split('\n');ci.value=ls.map(l=>{if(!l.trim())return'';let ind=l.match(/^(\s*)/)[0].length;return ' '.repeat(Math.round(ind/4)*4)+l.trimStart();}).join('\n');updateEditor();}
-function copyCode(){navigator.clipboard.writeText(ci.value).then(()=>{const t=document.createElement('div');t.className='toast';t.textContent='✅ 已复制';document.body.appendChild(t);setTimeout(()=>t.remove(),1500);});}
-
-// === EXECUTION ===
-function runCode() {
-  const code=ci.value.trim(), cel=document.getElementById('console');
-  const btnRun = document.getElementById('btnRun');
-  if(!code){cel.innerHTML='<span style="color:#475569">$ </span><span style="color:#fda4af">请先输入代码</span>';return;}
-
-  // Button press + pulse animation
-  btnRun.classList.add('pressed');
-  setTimeout(() => btnRun.classList.remove('pressed'), 500);
-
-  // Loading dots animation
-  cel.innerHTML='<span style="color:#475569">$ </span><span style="color:#93c5fd">⏳ 运行中<span class="loading-dot">.</span><span class="loading-dot">.</span><span class="loading-dot">.</span></span>';
-
-  if(consoleCollapsed){consoleCollapsed=false;cel.classList.remove('collapsed');document.getElementById('consoleToggle').classList.remove('collapsed');}
-  setTimeout(()=>{
-    runN++; totalRuns++; prog.runs[cur]=runN; saveProg();
-    updateStats();
-    const r=execPy(code);
-    if(r.ok){
-      const o=r.out||'(无输出 — 代码运行成功)';
-      cel.innerHTML='<span style="color:#475569">$ </span><span style="color:#a7f3d0">'+o.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')+'</span>';
-      outLog=(r.out||'').trim();
-      // Console green glow
-      cel.classList.add('glow-green');
-      setTimeout(() => cel.classList.remove('glow-green'), 600);
-      checkAns(outLog);
-    } else {
-      cel.innerHTML='<span style="color:#475569">$ </span><span style="color:#fda4af">'+translateErr(r.err)+'</span>';
-      document.getElementById('btnNext').disabled=true;
-      // Console red glow
-      cel.classList.add('glow-red');
-      setTimeout(() => cel.classList.remove('glow-red'), 600);
-    }
-  },100);
-}
-function execPy(code) {
-  let p=code;
-  p=p.replace(/#.*/g,'');
-  p=p.replace(/print\((.*)\)/g,'_p($1)');
+function execPy(code){
+  let p=code.replace(/#.*/g,'').replace(/print\((.*)\)/g,'_p($1)');
   p=p.replace(/input\((.*)\)/g,'_in($1)');
   p=p.replace(/int\((.*)\)/g,'parseInt($1)');
   p=p.replace(/float\((.*)\)/g,'parseFloat($1)');
-  p=p.replace(/str\((.*)\)/g,'String($1)');
   p=p.replace(/(\w+)\.append\((.*)\)/g,'$1.push($2)');
   p=p.replace(/(\w+)\.upper\(\)/g,'$1.toUpperCase()');
   p=p.replace(/(\w+)\.lower\(\)/g,'$1.toLowerCase()');
@@ -1392,144 +362,125 @@ function execPy(code) {
   p=p.replace(/elif /g,'else if ');
   p=p.replace(/def (\w+)\(([^)]*)\):/g,'function $1($2){');
   p=p.replace(/:$/gm,'{');
-  p=p.replace(/true/g,'true'); p=p.replace(/false/g,'false');
-  p=p.replace(/None/g,'null'); p=p.replace(/ and /g,'&&'); p=p.replace(/ or /g,'||'); p=p.replace(/ not /g,'!');
+  p=p.replace(/True/g,'true');p=p.replace(/False/g,'false');
+  p=p.replace(/None/g,'null');p=p.replace(/\band\b/g,'&&');p=p.replace(/\bor\b/g,'||');
   p=p.replace(/for (\w+) in (\w+):/g,'for(let $1 of $2){');
   p=p.replace(/import random\n?/g,'');
-  p=p.replace(/random\.randint\((\d+),\s*(\d+)\)/g,'Math.floor(Math.random()*($2-$1+1))+$1');
-  let bc=0; const ls=p.split('\n').map(l=>{if(!l.trim())return l; bc+=(l.match(/\{/g)||[]).length; bc-=(l.match(/\}/g)||[]).length; return l;});
-  for(let i=0;i<bc;i++) ls.push('}');
+  p=p.replace(/random\.randint\((\d+),(\d+)\)/g,'Math.floor(Math.random()*($2-$1+1))+$1');
+  let bc=0;const ls=p.split('\n').map(l=>{if(!l.trim())return l;bc+=(l.match(/\{/g)||[]).length;bc-=(l.match(/\}/g)||[]).length;return l});
+  for(let i=0;i<bc;i++)ls.push('}');
   p=ls.join('\n');
-  const sandbox='const _o=[];const _p=(...a)=>_o.push(a.join(" "));const _in=p=>{let v=prompt(p||"输入：","");return v===null?"":v};try{'+p+'}catch(e){_o.push("ERR:"+e.message)}return _o.join("\\n");';
-  try{const fn=new Function(sandbox);const r=fn(); return r.startsWith('ERR:')?{ok:false,err:r.slice(4)}:{ok:true,out:r};}
-  catch(e){return{ok:false,err:e.message};}
+  const sb='const _o=[];const _p=(...a)=>_o.push(a.join(" "));const _in=p=>{let v=prompt(p||"输入：","");return v===null?"":v};try{'+p+'}catch(e){_o.push("ERR:"+e.message)}return _o.join("\\n");';
+  try{const fn=new Function(sb);const r=fn();return r.startsWith('ERR:')?{ok:false,err:r.slice(4)}:{ok:true,out:r}}
+  catch(e){return{ok:false,err:e.message}}
 }
-function translateErr(m) {
-  const tbl=[{p:/SyntaxError|unexpected|missing \)/i,m:'语法错误：检查括号、引号、冒号是否成对',t:'if 后要写冒号 :，print 的括号要闭合'},
-  {p:/not defined|is not defined/i,m:'名称错误：变量名拼错或没定义',t:'先赋值再使用，比如 name="小明"'},
-  {p:/cannot read|null|undefined/i,m:'属性错误：方法或属性不存在',t:'数字没有 .upper() 方法'},
-  {p:/infinite|Maximum call/i,m:'可能无限循环了',t:'检查 range() 参数'},
-  {p:/division by zero|zero/i,m:'除零错误：分母是0',t:'计算前检查除数'},
-  {p:/NaN/i,m:'数值错误：非数字做数学运算',t:'用 int() 或 float() 转换'}];
-  for(let t of tbl) if(t.p.test(m)) return '❌ '+t.m+'\n💡 '+t.t;
-  return '❌ '+m.split('\n')[0]+'\n💡 检查代码拼写和语法';
+function trErr(m){
+  const t=[{p:/SyntaxError|unexpected/i,m:'语法错误：检查括号引号冒号',tip:'if后写冒号，括号成对'},
+  {p:/not defined/i,m:'名称错误：变量没定义或拼错',tip:'先赋值再用'},
+  {p:/cannot read|null/i,m:'属性错误：方法不存在',tip:'数字没有.upper()'},
+  {p:/infinite/i,m:'可能无限循环',tip:'检查range()'},
+  {p:/zero/i,m:'除零错误',tip:'分母不能是0'},
+  {p:/NaN/i,m:'数值错误',tip:'用int()或float()转换'}];
+  for(let e of t)if(e.p.test(m))return'❌ '+e.m+'\n💡 '+e.tip;
+  return'❌ '+m.split('\n')[0]+'\n💡 检查代码';
 }
 
-function checkAns(o) {
-  const c=courses[cur], ex=c.expect, cel=document.getElementById('console');
-  let pass=false;
-  if(ex.type==='exact') pass=(o===ex.value);
-  else if(ex.type==='contains') pass=o.includes(ex.value);
-  if(!pass&&(cur===9||cur===10)&&o.length>10) pass=true;
-  if(pass&&cur>=prog.done) {
-    prog.done=cur+1; saveProg(); document.getElementById('btnNext').disabled=false;
-    cel.innerHTML+='\n\n<span class="ok">🎉 太棒了！通过了！</span>';
-    updateStats();
-    celebrate();
-    setTimeout(()=>{
-      renderSidebar();
-      if(window.innerWidth<768) switchMobileTab('content');
-    },600);
-  } else if(pass) {
-    document.getElementById('btnNext').disabled=false;
-    cel.innerHTML+='\n\n<span style="color:#93c5fd">✅ 正确！</span>';
-  } else if(o) {
-    cel.innerHTML+='\n\n<span style="color:#93c5fd">🤔 结果不太对？试试"提示"按钮</span>';
-  }
-}
-function celebrate() {
-  // Stage 1 (0-0.5s): Star burst from center
-  const starsC = document.createElement('div');
-  starsC.className = 'stars-overlay';
-  const starEmojis = ['⭐','🌟','✨','💫','🎯','⚡','🔮','💎'];
-  for (let i = 0; i < 10; i++) {
-    const s = document.createElement('span');
-    s.className = 'star';
-    s.textContent = starEmojis[i % starEmojis.length];
-    s.style.cssText = `
-      left:${30 + Math.random()*40}%; top:${30 + Math.random()*40}%;
-      animation-delay:${Math.random()*0.3}s;
-      font-size:${24 + Math.random()*20}px;
-    `;
-    starsC.appendChild(s);
-  }
-  document.body.appendChild(starsC);
-
-  // Stage 2 (0.5-1s): Confetti drop
-  setTimeout(() => {
-    const cf = document.getElementById('confetti');
-    let h = '';
-    const colors = ['#fbbf24','#f472b6','#818cf8','#34d399','#fb923c','#a78bfa','#facc15','#2dd4bf'];
-    for (let i = 0; i < 50; i++) {
-      const x = Math.random() * 100;
-      const delay = Math.random() * 0.6;
-      const dur = 1.5 + Math.random() * 2;
-      const size = 6 + Math.random() * 10;
-      const isCircle = Math.random() > 0.5;
-      h += '<span style="' +
-        'left:'+x+'%;' +
-        'width:'+size+'px; height:'+size+'px;' +
-        'border-radius:'+(isCircle?'50%':'2px')+';' +
-        'background:'+colors[i%colors.length]+';' +
-        'animation-delay:'+delay+'s;' +
-        'animation-duration:'+dur+'s;' +
-        'animation-name:confettiDrop;' +
-        '"></span>';
+function runCode(){
+  const code=document.getElementById('codeIn').value.trim();
+  const ce=document.getElementById('consoleEl');
+  if(!code){ce.innerHTML='<span class="c-err">请先输入代码</span>';return}
+  ce.innerHTML='⏳ 运行中...';
+  setTimeout(()=>{
+    runN++;totalRuns++;
+    const r=execPy(code);
+    if(r.ok){
+      const o=r.out||'(无输出)';
+      ce.innerHTML='<span class="c-out">'+o.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')+'</span>';
+      check(o.trim());
+    }else{
+      ce.innerHTML='<span class="c-err">'+trErr(r.err).replace(/\n/g,'<br>')+'</span>';
+      document.getElementById('nextBtn').disabled=true;
     }
-    cf.innerHTML = h;
-  }, 500);
-
-  // Stage 3 (1-2s): Big text bounce in with ding vibrate
-  setTimeout(() => {
-    document.getElementById('celebC').innerHTML =
-      '<div class="celeb-bg"><div class="celeb-img"></div><div class="big multi-stage">🎉 通关！</div><div class="sub">第'+(cur+1)+'课完成</div></div>';
-  }, 1000);
-
-  // Cleanup
-  setTimeout(() => {
-    document.getElementById('celebC').innerHTML = '';
-    document.getElementById('confetti').innerHTML = '';
-    if (starsC.parentNode) starsC.remove();
-  }, 3500);
+  },100);
 }
 
-function resetCode() {
-  ci.value=courses[cur].starter; updateEditor();
-  document.getElementById('console').innerHTML='<span style="color:#475569">$ </span><span style="color:#93c5fd">代码已重置</span>';
-  document.getElementById('btnNext').disabled=(cur+1>prog.done);
-  outLog=''; runN=0;
-}
-function showHint() {
-  const c=courses[cur]; const idx=prog.hints[cur]||0;
-  if(idx<c.hints.length) {
-    const btnHint = document.getElementById('btnHint');
-    // Bounce animation
-    btnHint.classList.add('bouncing');
-    setTimeout(() => btnHint.classList.remove('bouncing'), 450);
-
-    document.getElementById('console').innerHTML+='\n\n<span class="hint-msg">💡 '+(idx+1)+'/'+c.hints.length+'：'+c.hints[idx]+'</span>';
-    prog.hints[cur]=idx+1; saveProg(); hintI=idx+1;
-    document.getElementById('btnHint').textContent='💡 提示 ('+(c.hints.length-hintI)+')';
-    if(hintI>=c.hints.length) document.getElementById('btnHint').disabled=true;
-  }
-}
-function nextLesson() {
-  if(cur+1<courses.length&&cur+1<=prog.done) {
-    cur++; loadLesson(cur);
-    if(window.innerWidth<768) switchMobileTab('content');
+function check(o){
+  const c=courses[cur],ex=c.expect,ce=document.getElementById('consoleEl');
+  let pass=ex.type==='exact'?o===ex.val:o.includes(ex.val);
+  if(!pass&&(cur===9||cur===10)&&o.length>10) pass=true;
+  if(pass&&cur>=prog.done){
+    prog.done=cur+1;sv();
+    document.getElementById('nextBtn').disabled=false;
+    document.getElementById('pct').textContent=prog.done+'/20';
+    ce.innerHTML+='<br><br><span class="c-ok">🎉 太棒了！通过了！</span>';
+    spawnConfetti();
+    setTimeout(()=>{renderChips();if(window.innerWidth<768)showTab('content')},500);
+  }else if(pass){
+    document.getElementById('nextBtn').disabled=false;
+    ce.innerHTML+='<br><br><span class="c-info">✅ 正确！</span>';
+  }else if(o){
+    ce.innerHTML+='<br><br><span class="c-info">🤔 不太对？点"提示"看看</span>';
   }
 }
 
-// === INIT ===
-loadProg();
-loadTheme();
-cur=Math.min(prog.done, courses.length-1);
-loadLesson(cur);
-renderSidebar();
-updateTopbar();
-updateEditor();
-updateStats();
-setTimeout(()=>{if(prog.done===0&&window.innerWidth>768) ci.focus();},200);
+function resetCode(){
+  document.getElementById('codeIn').value=courses[cur].code;
+  document.getElementById('consoleEl').innerHTML='代码已重置';
+  document.getElementById('nextBtn').disabled=cur+1>prog.done;
+  runN=0;
+}
+
+function showHint(){
+  const c=courses[cur],idx=prog.hints[cur]||0;
+  if(idx<c.hints.length){
+    document.getElementById('consoleEl').innerHTML+='\n\n<span class="c-hint">💡 '+(idx+1)+'/'+c.hints.length+'：'+c.hints[idx]+'</span>';
+    prog.hints[cur]=idx+1;sv();hintI=idx+1;
+    document.getElementById('hintBtn').textContent='💡 提示('+(c.hints.length-hintI)+')';
+    if(hintI>=c.hints.length)document.getElementById('hintBtn').disabled=true;
+  }
+}
+
+function nextLesson(){
+  if(cur+1<courses.length&&cur+1<=prog.done){
+    loadLsn(cur+1);
+    document.getElementById('contentBody').scrollTop=0;
+  }
+}
+
+function spawnConfetti(){
+  const colors=['#fbbf24','#f472b6','#818cf8','#34d399','#fb923c'];
+  for(let i=0;i<30;i++){
+    const el=document.createElement('div');
+    Object.assign(el.style,{
+      position:'fixed',zIndex:999,pointerEvents:'none',
+      left:Math.random()*100+'%',top:'-10px',
+      width:8+Math.random()*8+'px',height:8+Math.random()*8+'px',
+      background:colors[i%5],borderRadius:'2px',
+      animation:'confettiDrop '+(1.5+Math.random()*1.5)+'s ease-out '+Math.random()*0.5+'s forwards'
+    });
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),2500);
+  }
+}
+
+function toast(msg){
+  const el=document.createElement('div');
+  el.className='toast';el.textContent=msg;
+  document.getElementById('toastC').appendChild(el);
+  setTimeout(()=>el.remove(),1500);
+}
+
+// Keyboard
+document.addEventListener('keydown',e=>{
+  if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();runCode()}
+});
+
+// Init
+ld();
+cur=Math.min(prog.done,courses.length-1);
+document.getElementById('pct').textContent=prog.done+'/20';
+loadLsn(cur);
+showTab('content');
 </script>
 </body>
 </html>
