@@ -140,6 +140,51 @@ html,body{height:100%; font-family:-apple-system,'PingFang SC','Microsoft YaHei'
   .editor textarea{min-height:120px}
   .ed-wrap{min-height:120px}
 }
+
+/* AI Chat */
+.ai-chat{background:#fff;border-radius:10px;padding:12px;margin-top:10px;border:1px solid #e2e8f0;display:none}
+.dark-mode .ai-chat{background:#1e293b;border-color:#334155}
+.ai-chat.show{display:block}
+.ai-chat .ai-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:13px;font-weight:700;color:#4f46e5}
+.ai-chat .ai-msg{background:#f8fafc;border-radius:8px;padding:10px 12px;font-size:13px;line-height:1.6;margin-bottom:6px;max-height:150px;overflow-y:auto}
+.dark-mode .ai-chat .ai-msg{background:#0f172a}
+.ai-chat .ai-input{display:flex;gap:6px}
+.ai-chat .ai-input input{flex:1;padding:8px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:13px;font-family:inherit;outline:none}
+.dark-mode .ai-chat .ai-input input{background:#0f172a;border-color:#334155;color:#e2e8f0}
+.ai-chat .ai-input button{padding:8px 14px;background:linear-gradient(135deg,#4f46e5,#6366f1);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+/* Achievement badges */
+.ach-bar{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.ach-badge{padding:4px 10px;border-radius:14px;font-size:11px;font-weight:600;opacity:.4;border:1px solid #ddd;background:#fff}
+.ach-badge.earned{opacity:1;border-color:#10b981;background:#ecfdf5;color:#065f46}
+.dark-mode .ach-badge{background:#1e293b;border-color:#334155}
+.dark-mode .ach-badge.earned{background:#064e3b;border-color:#065f46;color:#6ee7b7}
+.ach-popup{position:fixed;top:60px;left:50%;transform:translateX(-50%);background:#fff;border-radius:12px;padding:14px 20px;box-shadow:0 8px 24px rgba(0,0,0,.15);z-index:500;font-size:14px;font-weight:700;display:flex;align-items:center;gap:10px;animation:slideIn .4s ease}
+@keyframes slideIn{from{opacity:0;transform:translateX(-50%) translateY(-20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+
+/* ---- Dashboard ---- */
+.dash-toggle{position:fixed;bottom:72px;right:20px;width:44px;height:44px;border-radius:50%;background:#fff;border:1px solid #ddd;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);z-index:100;display:flex;align-items:center;justify-content:center}
+.dark-mode .dash-toggle{background:#1e293b;border-color:#334155}
+.dash-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:900;display:none;align-items:flex-end;justify-content:center}
+.dash-overlay.show{display:flex}
+.dash-panel{background:#fff;width:100%;max-width:500px;max-height:80vh;border-radius:16px 16px 0 0;padding:20px;overflow-y:auto;animation:slideUp .3s ease}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.dark-mode .dash-panel{background:#1e293b}
+.dash-panel h3{font-size:17px;font-weight:800;margin-bottom:14px}
+.dash-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
+.dash-card{background:#f8fafc;border-radius:10px;padding:14px;text-align:center;border:1px solid #e2e8f0}
+.dark-mode .dash-card{background:#0f172a;border-color:#334155}
+.dash-card .dv{font-size:28px;font-weight:900;color:#4f46e5}
+.dash-card .dl{font-size:11px;color:#94a3b8;margin-top:2px;font-weight:600}
+.dash-stats{display:flex;flex-direction:column;gap:8px}
+.dash-row{display:flex;justify-content:space-between;font-size:13px;color:#64748b;padding:8px 0;border-bottom:1px solid #f1f5f9}
+.dark-mode .dash-row{border-color:#334155}
+.dash-row b{color:#333}
+.dark-mode .dash-row b{color:#e2e8f0}
+.dash-close{display:block;margin:16px auto 0;padding:8px 24px;border:none;background:#4f46e5;color:#fff;border-radius:8px;font-weight:600;cursor:pointer;font-family:inherit;font-size:13px}
+.dash-progress-bar{width:100%;height:6px;background:#e2e8f0;border-radius:3px;overflow:hidden;margin-top:4px}
+.dark-mode .dash-progress-bar{background:#334155}
+.dash-progress-fill{height:100%;background:#10b981;border-radius:3px;transition:width .3s ease}
+
 </style>
 </head>
 <body id="bodyEl">
@@ -162,6 +207,7 @@ html,body{height:100%; font-family:-apple-system,'PingFang SC','Microsoft YaHei'
     </div>
     <div class="btns">
       <button class="btn-run" onclick="runCode()">▶ 运行</button>
+      <button class="btn-reset" onclick="toggleAiChat()" id="aiBtn" style="background:linear-gradient(135deg,#4f46e5,#6366f1);color:#fff">🤖 问老师</button>
       <button class="btn-reset" onclick="resetCode()">↺ 重置</button>
       <button class="btn-hint" onclick="showHint()" id="hintBtn">💡 提示</button>
       <span class="flex" style="flex:1"></span>
@@ -325,9 +371,21 @@ const courses=[
   }
 ];
 
-let cur=0,mode='learn',prog={done:0,hints:{}},runN=0,hintI=0,totalRuns=0;
-function ld(){try{let p=JSON.parse(localStorage.pl2||'{}');if(p.done!=null)prog=p}catch(e){}}
-function sv(){localStorage.pl2=JSON.stringify(prog)}
+let cur=0,mode='learn',prog={done:0,hints:{}},runN=0,hintI=0,totalRuns=0,totalAttempts=0,totalPasses=0,streak=0,lessonTimes={},noHintThisLesson=true,speedStartTime=0;
+const achievements=[
+  {id:'first_run',name:'初次运行',desc:'运行了第一段代码',icon:'🚀',check:()=>totalRuns>=1},
+  {id:'five_runs',name:'勤学苦练',desc:'运行了10次代码',icon:'🔥',check:()=>totalRuns>=10},
+  {id:'first_pass',name:'初窥门径',desc:'通过了第1课',icon:'🎓',check:()=>prog.done>=1},
+  {id:'halfway',name:'学有小成',desc:'通过了10课',icon:'⭐',check:()=>prog.done>=10},
+  {id:'all_done',name:'大功告成',desc:'通过了全部20课',icon:'🏆',check:()=>prog.done>=20},
+  {id:'no_hint',name:'独立思考',desc:'一课中没有使用提示',icon:'🧠'},
+  {id:'speed',name:'闪电手',desc:'1秒内完成一课',icon:'⚡'},
+  {id:'try_hard',name:'百折不挠',desc:'同一课运行了5次以上',icon:'💪',check:()=>runN>=5},
+];
+let earnedAch={};try{earnedAch=JSON.parse(localStorage.pl2_ach||'{}')}catch(e){}
+function ld(){try{let p=JSON.parse(localStorage.pl2||'{}');if(p.done!=null)prog=p;let s=JSON.parse(localStorage.pl2stats||'{}');totalAttempts=s.totalAttempts||0;totalPasses=s.totalPasses||0;lessonTimes=s.lessonTimes||{};streak=calcStreak()}catch(e){}}
+function sv(){localStorage.pl2=JSON.stringify(prog);localStorage.pl2stats=JSON.stringify({totalAttempts,totalPasses,lessonTimes,lastDate:localStorage.pl2lastDate||''})}
+function calcStreak(){let d=localStorage.pl2lastDate,today=new Date().toDateString();if(d===today)return parseInt(localStorage.pl2streak||'0');let y=new Date();y.setDate(y.getDate()-1);if(d===y.toDateString()){let s=parseInt(localStorage.pl2streak||'0')+1;localStorage.pl2streak=s;localStorage.pl2lastDate=today;return s}localStorage.pl2streak='1';localStorage.pl2lastDate=today;return 1}
 
 function setMode(m){mode=m;loadLsn(cur)}
 
@@ -428,6 +486,8 @@ function loadLsn(i){
   document.getElementById('hintBtn').disabled=hintI>=c.hints.length;
   renderChips();
   document.getElementById('pct').textContent=prog.done+'/20';
+  noHintThisLesson=true;
+  speedStartTime=Date.now();
   syncHighlight();
 }
 
@@ -558,7 +618,7 @@ function runCode(){
   btn.textContent='⏳';btn.style.pointerEvents='none';
   setTimeout(()=>{
     btn.textContent='▶ 运行';btn.style.pointerEvents='';
-    runN++;totalRuns++;updateStats();
+    totalAttempts++;runN++;totalRuns++;sv();speedStartTime=Date.now();updateStats();
     const r=execPy(code);
     if(r.ok){
       const o=r.out||'(无输出)';
@@ -578,13 +638,14 @@ function check(o){
   let pass = ex.type==='exact'?o===ex.val:o.includes(ex.val);
   if(!pass&&ex.type==='contains'&&(cur===9||cur===10)&&o.length>8) pass=true;
   if(pass&&cur>=prog.done){
-    prog.done=cur+1;sv();updateStats();
+    prog.done=cur+1;totalPasses++;sv();if(speedStartTime){lessonTimes[cur]=(Date.now()-speedStartTime)/1000;speedStartTime=0}updateStats();
     document.getElementById('nextBtn').disabled=false;
     document.getElementById('pct').textContent=prog.done+'/20';
     ce.innerHTML+='<br><br><span class="c-ok">🎉 太棒了！通过了！</span>';
     spawnConfetti();
     setTimeout(()=>{renderChips();if(window.innerWidth<768){showTab('content');document.getElementById('contentBody').scrollTop=0}},400);
   }else if(pass){
+    totalPasses++;sv();
     document.getElementById('nextBtn').disabled=false;
     ce.innerHTML+='<br><br><span class="c-info">✅ 正确！</span>';
   }else if(o){
@@ -609,6 +670,7 @@ function showHint(){
   if(hintI>=c.hints.length) prog.hints[cur]=0;
   document.getElementById('hintBtn').textContent='💡 提示(♾)';
   document.getElementById('hintBtn').disabled=false;
+  noHintThisLesson=false;
 }
 
 function nextLesson(){
@@ -621,7 +683,45 @@ function nextLesson(){
   }
 }
 
+/* ===== AI Chat Engine ===== */
+function toggleAiChat(){
+  var c=document.getElementById('aiChat');
+  if(!c) return;
+  c.classList.toggle('show');
+  if(c.classList.contains('show')){setTimeout(function(){var i=document.getElementById('aiInput');if(i)i.focus();},100)}
+}
+function aiReply(q){
+  var t=q.trim();
+  if(!t) return '请把问题写详细一点，我帮你看看！😊';
+  var l=t.toLowerCase();
+  if(l.indexOf('print')!==-1) return '📖 <b>print() 用法</b><br><br>print() 在屏幕上显示内容：<br><code>print("你好")</code> → 输出 你好<br><code>print(1+2)</code> → 输出 3<br><br>多个参数逗号分隔：<code>print("结果是",100)</code>';
+  if(l.indexOf('变量')!==-1||l.indexOf('赋值')!==-1) return '📦 <b>变量与赋值</b><br><br>变量就像带名字的盒子：<br><code>name="小明"</code><br><code>score=95</code><br><br>使用时写变量名：<code>print(score)</code><br>⚠️ 一个=赋值，两个==比较！';
+  if(l.indexOf('if')!==-1||l.indexOf('判断')!==-1) return '🔀 <b>if 条件判断</b><br><br><code>if 条件:</code><br>&nbsp;&nbsp;&nbsp;&nbsp;<code>print("成立")</code><br><code>else:</code><br>&nbsp;&nbsp;&nbsp;&nbsp;<code>print("不成立")</code><br><br>⚠️ if 后写冒号，下一行缩进4个空格！';
+  if(l.indexOf('for')!==-1||l.indexOf('循环')!==-1) return '🔄 <b>for 循环</b><br><br><code>for i in range(5):</code><br>&nbsp;&nbsp;&nbsp;&nbsp;<code>print(i)</code><br>输出 0 1 2 3 4。<br><br><code>range(1,6)</code> 生成1到5。<br>⚠️ for 后也要写冒号！';
+  if(l.indexOf('函数')!==-1||l.indexOf('def')!==-1) return '🛠️ <b>定义函数 def</b><br><br><code>def 函数名():</code><br>&nbsp;&nbsp;&nbsp;&nbsp;<code>print("内容")</code><br><br>调用：<code>函数名()</code><br>先定义再调用！';
+  if(l.indexOf('错误')!==-1||l.indexOf('报错')!==-1||l.indexOf('不对')!==-1) return '🔧 <b>常见错误排查</b><br><br>检查一下引号配对、冒号写对、缩进用4个空格。把错误信息发给我帮你看看！';
+  return '💪 <b>别急，慢慢来！</b><br><br>编程是一步步学会的。你可以问：<br>• print 怎么用？<br>• 变量怎么赋值？<br>• if 怎么写？<br>• 我的代码报错了怎么办？<br><br>把具体问题发给我！😊';
+}
+(function(){
+  var sb=document.getElementById('statsBar');
+  if(!sb) return;
+  var d=document.createElement('div');
+  d.id='aiChat';
+  d.className='ai-chat';
+  d.innerHTML='<div class="ai-header">🤖 AI 答疑助手</div>'+'<div class="ai-msg" id="aiMsg">你好！我是你的 Python 学习助手～<br>有问题随时问我，比如：print 怎么用？</div>'+'<div class="ai-input">'+'<input id="aiInput" placeholder="比如：为什么我的代码报错了？" onkeydown="if(event.key===' + "'" + 'Enter' + "'" + ')askAi()">'+'<button onclick="askAi()">发送</button>'+'</div>';
+  sb.insertAdjacentElement('afterend',d);
+})();
+function askAi(){
+  var i=document.getElementById('aiInput');
+  var m=document.getElementById('aiMsg');
+  if(!i||!m) return;
+  m.innerHTML=aiReply(i.value);
+  i.value='';
+  i.focus();
+}
+
 function spawnConfetti(){
+  checkAchievements();
   const colors=['#fbbf24','#f472b6','#818cf8','#34d399','#fb923c'];
   for(let i=0;i<30;i++){
     const el=document.createElement('div');
@@ -644,11 +744,80 @@ function toast(msg){
   setTimeout(()=>el.remove(),1500);
 }
 
+function checkAchievements(){
+  let changed=false;
+  achievements.forEach(a=>{
+    if(earnedAch[a.id])return;
+    let pass=false;
+    if(a.id==='speed'){pass=Date.now()-speedStartTime<1000}
+    else if(a.id==='no_hint'){pass=noHintThisLesson}
+    else if(a.check){pass=a.check()}
+    if(pass){earnedAch[a.id]=Date.now();changed=true;showAchPopup(a)}
+  });
+  if(changed){localStorage.setItem('pl2_ach',JSON.stringify(earnedAch));renderAchBar()}
+}
+
+function showAchPopup(a){
+  const el=document.createElement('div');
+  el.className='ach-popup';
+  el.innerHTML=`<span style="font-size:24px">${a.icon}</span><span>🏅 成就解锁：${a.name}<br><small style="font-weight:400;opacity:.7">${a.desc}</small></span>`;
+  document.body.appendChild(el);
+  setTimeout(()=>{el.style.opacity='0';el.style.transition='opacity .3s';setTimeout(()=>el.remove(),300)},2500);
+}
+
+function renderAchBar(){
+  let bar=document.getElementById('achBar');
+  if(!bar){
+    bar=document.createElement('div');
+    bar.id='achBar';
+    bar.className='ach-bar';
+    const sb=document.getElementById('statsBar');
+    if(sb)sb.insertAdjacentElement('afterend',bar);
+  }
+  bar.innerHTML=achievements.map(a=>`<span class="ach-badge${earnedAch[a.id]?' earned':''}">${a.icon} ${a.name}</span>`).join('');
+}
+
 // Keyboard
 document.addEventListener('keydown',e=>{
   if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();runCode()}
 });
 
+// ---- Dashboard ----
+function insertDashboard(){
+  document.body.insertAdjacentHTML('beforeend',
+    '<div class="dash-overlay" id="dashOverlay" onclick="if(event.target===this)closeDashboard()">'+
+    '<div class="dash-panel" id="dashPanel">'+
+    '<h3>📊 学习仪表盘</h3>'+
+    '<div class="dash-grid">'+
+    '<div class="dash-card"><div class="dv" id="dTotalRuns">0</div><div class="dl">总运行次数</div></div>'+
+    '<div class="dash-card"><div class="dv" id="dPassed">0</div><div class="dl">已通关课程</div></div>'+
+    '<div class="dash-card"><div class="dv" id="dAccuracy">0%</div><div class="dl">正确率</div></div>'+
+    '<div class="dash-card"><div class="dv" id="dStreak">0</div><div class="dl">连续天数</div></div>'+
+    '</div>'+
+    '<div class="dash-stats" id="dashStats"></div>'+
+    '<button class="dash-close" onclick="closeDashboard()">关闭</button>'+
+    '</div></div>');
+}
+function openDashboard(){
+  document.getElementById('dTotalRuns').textContent=totalRuns;
+  document.getElementById('dPassed').textContent=prog.done;
+  document.getElementById('dAccuracy').textContent=Math.round(totalPasses/Math.max(totalAttempts,1)*100)+'%';
+  document.getElementById('dStreak').textContent=streak;
+  buildDashProgress();
+  document.getElementById('dashOverlay').classList.add('show');
+}
+function closeDashboard(){document.getElementById('dashOverlay').classList.remove('show')}
+function buildDashProgress(){
+  let html='';
+  courses.forEach((c,i)=>{
+    let done=i<prog.done;
+    let time=lessonTimes[i];
+    html+='<div class="dash-row"><span>'+(done?'✅ ':'⬜ ')+c.title+'</span>'+
+      '<span><b>'+(done?'通关':'未完成')+'</b>'+(time?' · '+Math.round(time)+'s':'')+'</span></div>'+
+      '<div class="dash-progress-bar"><div class="dash-progress-fill" style="width:'+(done?'100':'0')+'"></div></div>';
+  });
+  document.getElementById('dashStats').innerHTML=html;
+}
 // Init
 ld();
 cur=Math.min(prog.done,courses.length-1);
@@ -656,7 +825,12 @@ document.getElementById('pct').textContent=prog.done+'/20';
 updateStats();
 loadLsn(cur);
 showTab('content');
+renderAchBar();
 setupEditor();
+speedStartTime=Date.now();
+insertDashboard();
+document.getElementById('pct').style.cursor='pointer';
+document.getElementById('pct').addEventListener('click',openDashboard);
 
 // Console clear button (inserted dynamically after console)
 (function(){
