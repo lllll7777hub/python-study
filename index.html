@@ -463,14 +463,16 @@ function execPy(code){
   p=p.replace(/import json\n?/g,'');
   p=p.replace(/json\.loads\((.+?)\)/g,'JSON.parse($1)');
   p=p.replace(/json\.dumps\((.+?)\)/g,'JSON.stringify($1)');
-  // ---- 4: import re ----
+  // ---- 4: import re - WITH ESCAPED BACKSLASH HANDLING ----
   p=p.replace(/import re\n?/g,'');
-  p=p.replace(/re\.findall\(r'([^']*)',\s*(.+?)\)/g,'($2.match(new RegExp("$1","g"))||[])');
-  p=p.replace(/re\.findall\(r"([^"]*)",\s*(.+?)\)/g,'($2.match(new RegExp("$1","g"))||[])');
-  p=p.replace(/re\.sub\(r'([^']*)',\s*'([^']*)',\s*(.+?)\)/g,'$3.replace(new RegExp("$1","g"),"$2")');
-  p=p.replace(/re\.sub\(r"([^"]*)",\s*"([^"]*)",\s*(.+?)\)/g,'$3.replace(new RegExp("$1","g"),"$2")');
-  p=p.replace(/re\.search\(r'([^']*)',\s*(.+?)\)/g,'new RegExp("$1").test($2)');
-  p=p.replace(/re\.search\(r"([^"]*)",\s*(.+?)\)/g,'new RegExp("$1").test($2)');
+  // Handle raw strings: re.findall(r'\d+', text) -> text.match(/\d+/g)
+  p=p.replace(/re\.findall\(r'([^']*)',\s*(.+?)\)/g,'($2.match(new RegExp(String.raw`$1`,"g"))||[])');
+  p=p.replace(/re\.findall\(r"([^"]*)",\s*(.+?)\)/g,'($2.match(new RegExp(String.raw`$1`,"g"))||[])');
+  p=p.replace(/re\.findall\(([^,]+),\s*([^)]+)\)/g,'($2.match(new RegExp($1,"g"))||[])');
+  p=p.replace(/re\.sub\(r'([^']*)',\s*'([^']*)',\s*(.+?)\)/g,'$3.replace(new RegExp(String.raw`$1`,"g"),"$2")');
+  p=p.replace(/re\.sub\(r"([^"]*)",\s*"([^"]*)",\s*(.+?)\)/g,'$3.replace(new RegExp(String.raw`$1`,"g"),"$2")');
+  p=p.replace(/re\.search\(r'([^']*)',\s*(.+?)\)/g,'new RegExp(String.raw`$1`).test($2)');
+  p=p.replace(/re\.search\(r"([^"]*)",\s*(.+?)\)/g,'new RegExp(String.raw`$1`).test($2)');
   // ---- 5: import math ----
   p=p.replace(/import math\n?/g,'');
   p=p.replace(/math\.sqrt\((.+?)\)/g,'Math.sqrt($1)');
@@ -511,8 +513,15 @@ function execPy(code){
   let bc=0;const ls=p.split('\n').map(l=>{if(!l.trim())return l;bc+=(l.match(/\{/g)||[]).length;bc-=(l.match(/\}/g)||[]).length;return l});
   for(let i=0;i<bc;i++)ls.push('}');
   p=ls.join('\n');
-  // ---- 14: sandbox ----
-  const sb='const _o=[];const _p=(...a)=>_o.push(a.join(" "));const _in=p=>{try{let v=prompt(p||"输入：","");return v===null?"":v}catch(e){return""}};const _fw=(n,c)=>{try{localStorage.setItem("_f_"+n,String(c))}catch(e){}};const _fr=n=>{try{return localStorage.getItem("_f_"+n)||""}catch(e){return""}};const _dtf=(d,f)=>{try{const y=d.getFullYear(),m=d.getMonth()+1,da=d.getDate(),h=d.getHours(),mn=d.getMinutes(),s=d.getSeconds();let r=f.replace("%Y",y).replace("%m",String(m).padStart(2,"0")).replace("%d",String(da).padStart(2,"0")).replace("%H",String(h).padStart(2,"0")).replace("%M",String(mn).padStart(2,"0")).replace("%S",String(s).padStart(2,"0"));return r}catch(e){return""}};try{'+p+'}catch(e){_o.push("ERR:"+e.message)}return _o.join("\\n");';
+  // ---- sandbox with file I/O simulation ----
+  const sb='const _o=[];const _p=(...a)=>_o.push(a.join(" "));'+
+    'const _in=p=>{try{let v=prompt(p||"输入：","");return v===null?"":v}catch(e){return""}};'+
+    'const _fw=(n,c)=>{try{localStorage.setItem("_f_"+n,String(c))}catch(e){}};'+
+    'const _fr=n=>{try{return localStorage.getItem("_f_"+n)||""}catch(e){return""}};'+
+    'const _fread=n=>{try{return localStorage.getItem("_f_"+n)||""}catch(e){return""}};'+
+    'const _dtf=(d,f)=>{try{const y=d.getFullYear(),m=d.getMonth()+1,da=d.getDate(),h=d.getHours(),mn=d.getMinutes(),s=d.getSeconds();let r=f.replace("%Y",y).replace("%m",String(m).padStart(2,"0")).replace("%d",String(da).padStart(2,"0")).replace("%H",String(h).padStart(2,"0")).replace("%M",String(mn).padStart(2,"0")).replace("%S",String(s).padStart(2,"0"));return r}catch(e){return""}};'+
+    'const _open=(n,m)=>({write:c=>_fw(n,c),read:()=>_fr(n),__str:n});'+
+    'try{'+p+'}catch(e){_o.push("ERR:"+e.message)}return _o.join("\\n");';
   try{const fn=new Function(sb);const r=fn();return r.startsWith('ERR:')?{ok:false,err:r.slice(4)}:{ok:true,out:r}}
   catch(e){return{ok:false,err:e.message||'未知执行错误'}}
 }
@@ -543,9 +552,12 @@ function updateStats(){
 function runCode(){
   const code=document.getElementById('codeIn').value.trim();
   const ce=document.getElementById('consoleEl');
-  if(!code){ce.innerHTML='<span class="c-err">请先输入代码</span>';return}
+  if(!code){ce.innerHTML='<span class="c-err">请输入代码后再运行</span>';return}
   ce.innerHTML='<span class="c-info">⏳ 运行中...</span>';
+  const btn=document.querySelector('.btn-run');
+  btn.textContent='⏳';btn.style.pointerEvents='none';
   setTimeout(()=>{
+    btn.textContent='▶ 运行';btn.style.pointerEvents='';
     runN++;totalRuns++;updateStats();
     const r=execPy(code);
     if(r.ok){
@@ -561,10 +573,10 @@ function runCode(){
 
 function check(o){
   const c=courses[cur],ex=c.expect,ce=document.getElementById('consoleEl');
-  let pass = ex.type === 'exact' ? o === ex.val : o.includes(ex.val);
-  if(!pass&&(cur===9||cur===10)&&o.length>10) pass=true;
-  // 错误边界
+  // Guard: missing expect data
   if(!ex||!ex.type){document.getElementById('nextBtn').disabled=false;return;}
+  let pass = ex.type==='exact'?o===ex.val:o.includes(ex.val);
+  if(!pass&&ex.type==='contains'&&(cur===9||cur===10)&&o.length>8) pass=true;
   if(pass&&cur>=prog.done){
     prog.done=cur+1;sv();updateStats();
     document.getElementById('nextBtn').disabled=false;
@@ -603,6 +615,9 @@ function nextLesson(){
   if(cur+1<courses.length&&cur+1<=prog.done){
     loadLsn(cur+1);
     document.getElementById('contentBody').scrollTop=0;
+    // Auto switch to code tab on mobile
+    if(window.innerWidth<768) showTab('editor');
+    toast('已进入第'+(cur+2)+'课');
   }
 }
 
