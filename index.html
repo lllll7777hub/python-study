@@ -2,851 +2,669 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Python零基础学堂</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Python 零基础学堂</title>
 <style>
+:root{--p:#6366f1;--s:#10b981;--w:#f59e0b;--e:#ef4444;--bg:#f8fafc;--c:#fff;--b:#e2e8f0;--t:#1e293b;--t2:#64748b;--t3:#94a3b8;--code:#1e293b;--r:12px;--f:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;--fm:Consolas,'Courier New',monospace}
+.dark{--bg:#0f172a;--c:#1e293b;--b:#334155;--t:#e2e8f0;--t2:#94a3b8;--t3:#64748b;--code:#080d14}
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%; font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif; background:#f5f5f5; color:#333; -webkit-text-size-adjust:100%}
-.app{display:flex;flex-direction:column;height:100vh;height:100dvh;max-width:900px;margin:0 auto}
+html,body{height:100%;font-family:var(--f);background:var(--bg);color:var(--t);overflow:hidden}
+.app{display:flex;flex-direction:column;height:100dvh;max-width:100%}
 
-/* Top */
-.top{display:flex;align-items:center;gap:8px;padding:10px 16px;background:#fff;border-bottom:1px solid #eee;flex-shrink:0}
-.top .logo{font-size:20px}
-.top .title{font-size:15px;font-weight:700;color:#4f46e5}
-.top .flex{flex:1}
-.top .pct{font-size:12px;color:#10b981;font-weight:600;background:#ecfdf5;padding:4px 10px;border-radius:10px}
+.topbar{display:flex;align-items:center;gap:8px;padding:8px 14px;background:var(--c);border-bottom:1px solid var(--b);height:48px;flex-shrink:0}
+.topbar .logo{font-size:20px}
+.topbar h1{font-size:15px;font-weight:800;background:linear-gradient(135deg,#6366f1,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.topbar .sp{flex:1}
+.topbar .badge{font-size:12px;font-weight:700;padding:4px 10px;border-radius:10px;background:#ecfdf5;color:var(--s);cursor:pointer;user-select:none}
+.dark .topbar .badge{background:#064e3b;color:#6ee7b7}
+.topbar .badge:active{opacity:.7}
+.topbar .icon-btn{width:34px;height:34px;border:1px solid var(--b);border-radius:10px;background:transparent;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.topbar .icon-btn:active{transform:scale(.93);background:var(--b)}
 
-/* Tabs */
-.tabs{display:flex;border-bottom:1px solid #eee;background:#fff;flex-shrink:0}
-.tabs button{flex:1;padding:12px;border:none;background:transparent;font-size:14px;font-weight:600;color:#999;cursor:pointer;position:relative;font-family:inherit}
-.tabs button.on{color:#4f46e5}
-.tabs button.on:after{content:'';position:absolute;bottom:0;left:30%;right:30%;height:2px;background:#4f46e5;border-radius:1px}
+.tab-bar{display:none;border-bottom:1px solid var(--b);background:var(--c)}
+@media(max-width:768px){.tab-bar{display:flex}}
+.tab-bar button{flex:1;padding:10px;border:none;background:none;font-size:13px;font-weight:700;color:var(--t3);cursor:pointer;font-family:inherit;position:relative}
+.tab-bar button.on{color:var(--p)}
+.tab-bar button.on::after{content:'';position:absolute;bottom:0;left:30%;right:30%;height:2px;background:var(--p);border-radius:1px}
 
-/* Body */
-.body{flex:1;overflow-y:auto;padding:16px}
+.wrap{flex:1;display:flex;overflow:hidden}
+.panel{flex:1;overflow-y:auto;background:var(--c);padding:16px}
+.panel.hide{display:none}
+.panel::-webkit-scrollbar{width:4px}
+.panel::-webkit-scrollbar-thumb{background:var(--b);border-radius:2px}
 
-/* Lesson */
-.lsn{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
-.lsn .chip{padding:6px 12px;border-radius:14px;font-size:12px;font-weight:600;border:1px solid #ddd;background:#fff;cursor:pointer;color:#666;font-family:inherit}
-.lsn .chip.done{background:#d1fae5;border-color:#a7f3d0;color:#065f46}
-.lsn .chip.on{background:#eef2ff;border-color:#4f46e5;color:#4f46e5}
-.lsn .chip.lock{opacity:.4;pointer-events:none}
+/* Hero */
+.hero{background:linear-gradient(135deg,#3730a3,#6366f1,#a855f7);border-radius:var(--r);padding:20px;color:#fff;margin-bottom:14px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;bottom:-30px;right:-20px;width:100px;height:100px;border-radius:50%;border:3px solid rgba(255,255,255,.08)}
+.hero h2{font-size:18px;margin-bottom:4px}
+.hero p{font-size:13px;opacity:.85;line-height:1.6}
+.hero .btn{display:inline-flex;gap:6px;margin-top:10px;padding:8px 18px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:20px;color:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+.hero .btn:active{background:rgba(255,255,255,.25)}
 
-.hero{background:linear-gradient(135deg,#4338ca,#6366f1,#8b5cf6);border-radius:12px;padding:20px;color:#fff;margin-bottom:16px}
-.hero h2{font-size:18px;margin-bottom:6px}
-.hero p{font-size:13px;opacity:.9;line-height:1.6}
+/* Course chips */
+.chips{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px}
+.chip{padding:5px 10px;border-radius:12px;font-size:11px;font-weight:600;border:1px solid var(--b);background:var(--c);cursor:pointer;color:var(--t2);font-family:inherit}
+.chip:active{transform:scale(.96)}
+.chip.done{background:#d1fae5;border-color:#a7f3d0;color:#065f46}
+.dark .chip.done{background:#064e3b;color:#6ee7b7;border-color:#065f46}
+.chip.on{border-color:var(--p);color:var(--p);background:rgba(99,102,241,.08)}
 
-.c-section{margin-bottom:14px}
-.c-section h3{font-size:15px;font-weight:700;color:#4f46e5;margin-bottom:6px;display:flex;align-items:center;gap:6px}
-.c-section p{font-size:14px;line-height:1.75;color:#555}
-.c-section code.inline{background:#f0f0f0;color:#c7254e;padding:1px 5px;border-radius:3px;font-size:13px}
-.c-section pre{background:#1e293b;color:#e2e8f0;padding:12px 14px;border-radius:8px;font-size:13px;line-height:1.6;overflow-x:auto;margin:8px 0;font-family:Consolas,monospace}
-.c-section pre code{font-family:inherit}
-.box{border-radius:8px;padding:12px 14px;margin:10px 0;font-size:13px;line-height:1.6;display:flex;gap:8px}
+/* Content */
+.sec h3{font-size:15px;font-weight:700;color:var(--p);margin:14px 0 6px;display:flex;align-items:center;gap:6px}
+.sec p{font-size:13px;line-height:1.75;color:var(--t2);margin-bottom:8px}
+.sec pre{background:var(--code);color:#e2e8f0;padding:12px 14px;border-radius:8px;font-size:13px;line-height:1.6;overflow-x:auto;margin:8px 0;font-family:var(--fm)}
+.sec code.kbd{background:rgba(99,102,241,.1);color:#c7254e;padding:1px 5px;border-radius:3px;font-size:12px}
+.dark .sec code.kbd{color:#f472b6}
+
+.box{border-radius:8px;padding:10px 12px;margin:10px 0;font-size:12px;line-height:1.6;display:flex;gap:7px}
 .box.tip{background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46}
 .box.warn{background:#fffbeb;border:1px solid #fde68a;color:#92400e}
 .box.info{background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af}
-.box .box-icon{font-size:16px;flex-shrink:0}
+.dark .box.tip{background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.2);color:#6ee7b7}
+.dark .box.warn{background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.2);color:#fcd34d}
+.dark .box.info{background:rgba(99,102,241,.1);border-color:rgba(99,102,241,.2);color:#a5b4fc}
+.box .ico{font-size:15px;flex-shrink:0}
 
-.step{padding:10px 0;display:flex;gap:10px;align-items:start}
-.step .sn{width:28px;height:28px;border-radius:50%;background:#4f46e5;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
-.step div:last-child{font-size:13px}
-.step div:last-child strong{display:block;margin-bottom:2px}
+.goal{margin-bottom:10px}
+.goal .g{display:flex;gap:8px;align-items:center;font-size:12px;padding:3px 0;color:var(--t2)}
+.goal .g::before{content:'▸';color:var(--p);font-size:10px}
 
-/* Editor — overlay approach for syntax highlighting + line numbers */
-.editor{background:#1e293b;border-radius:10px;overflow:hidden;margin-bottom:10px;flex-shrink:0}
-.editor .ed-top{display:flex;align-items:center;padding:8px 14px;background:#0f172a;border-bottom:1px solid #334155}
-.editor .ed-top .fn{font-size:11px;color:#94a3b8;font-weight:600;font-family:Consolas,monospace}
-.editor .ed-top .dot{width:7px;height:7px;border-radius:50%;background:#10b981;display:inline-block;margin-right:5px}
-.editor .ed-top .flex{flex:1}
+/* Steps */
+.step{padding:8px 0;display:flex;gap:10px}
+.step .n{width:26px;height:26px;border-radius:50%;background:var(--p);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.step b{font-size:13px;display:block;margin-bottom:2px}
+.step span{font-size:12px;color:var(--t2)}
 
-/* Highlight overlay wrapper */
-.ed-wrap{position:relative;min-height:140px}
-.ed-ln{position:absolute;top:0;left:0;width:48px;bottom:0;padding:14px 8px 14px 12px;font-family:Consolas,monospace;font-size:14px;line-height:1.6;color:#64748b;text-align:right;user-select:none;pointer-events:none;overflow:hidden;white-space:pre;border-right:1px solid #334155;background:rgba(0,0,0,.15)}
-.ed-hl{position:absolute;top:0;left:48px;right:0;bottom:0;padding:14px;font-family:Consolas,monospace;font-size:14px;line-height:1.6;color:#e2e8f0;white-space:pre-wrap;word-wrap:break-word;overflow:hidden;pointer-events:none;margin:0;tab-size:4}
-.hl-kw{color:#60a5fa}
-.hl-str{color:#34d399}
-.hl-cm{color:#6b7280}
+/* Editor */
+.editor{background:var(--code);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;flex:1;min-height:0}
+.ed-top{display:flex;align-items:center;padding:7px 12px;background:rgba(0,0,0,.2);gap:8px}
+.ed-top .dot{width:8px;height:8px;border-radius:50%}
+.ed-top .dot:nth-child(1){background:#ff5f57}
+.ed-top .dot:nth-child(2){background:#febc2e}
+.ed-top .dot:nth-child(3){background:#28c840}
+.ed-top .fn{font-size:11px;color:#64748b;font-family:var(--fm);margin-left:4px}
+.ed-top .sp{flex:1}
+.ed-top button{background:none;border:none;color:#64748b;font-size:14px;cursor:pointer;padding:2px 6px;border-radius:4px;font-family:var(--fm)}
+.ed-top button:active{background:rgba(255,255,255,.06);color:#94a3b8}
+.ed-body{flex:1;display:flex;overflow:hidden}
+.ln{width:42px;background:rgba(0,0,0,.15);color:#475569;font-family:var(--fm);font-size:12px;padding:10px 0;text-align:right;user-select:none;line-height:1.6;overflow:hidden}
+.ln span{display:block;padding-right:8px}
+.cw{flex:1;position:relative}
+.cw textarea{width:100%;height:100%;background:transparent;color:transparent;border:none;outline:none;resize:none;font:13px/1.6 var(--fm);padding:10px 12px;tab-size:4;caret-color:#facc15;position:absolute;inset:0;z-index:2}
+.cw textarea::placeholder{color:#475569}
+.cw .hl-box{position:absolute;inset:0;padding:10px 12px;font:13px/1.6 var(--fm);white-space:pre-wrap;pointer-events:none;z-index:1;overflow:hidden;color:transparent}
+.cw .hl-kw{color:#93c5fd}.cw .hl-str{color:#86efac}.cw .hl-cm{color:#64748b;font-style:italic}.cw .hl-fn{color:#fde68a}.cw .hl-num{color:#c084fc}.cw .hl-op{color:#f472b6}
 
-.editor textarea{width:100%;min-height:140px;background:transparent;color:transparent;border:none;outline:none;padding:14px 14px 14px 62px;font-family:Consolas,monospace;font-size:14px;line-height:1.6;resize:vertical;tab-size:4;caret-color:#facc15;position:relative;z-index:1}
-.editor textarea::placeholder{color:rgba(200,200,210,.3)}
-.editor textarea::selection{background:rgba(100,150,255,.35)}
+/* Console */
+.console{background:rgba(0,0,0,.3);color:#94a3b8;font:12px/1.6 var(--fm);padding:10px 12px;max-height:140px;overflow-y:auto;white-space:pre-wrap;flex-shrink:0}
+.console .out{color:#a7f3d0}.console .err{color:#fda4af}.console .info{color:#93c5fd}.console .ok{color:#34d399;font-weight:700}.console .hint{color:#fde68a}
 
-.btns{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
-.btns button{padding:10px 16px;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s}
-.btns button:active{transform:scale(.96)}
-.btn-run{background:linear-gradient(135deg,#10b981,#059669);color:#fff}
+/* Buttons */
+.acts{display:flex;gap:6px;padding:8px 12px;flex-wrap:wrap;flex-shrink:0;background:rgba(0,0,0,.15)}
+.acts button, .panel-acts button{padding:8px 14px;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;transition:.15s}
+.acts button:active,.panel-acts button:active{transform:scale(.96)}
+.acts button:disabled,.panel-acts button:disabled{opacity:.35;pointer-events:none}
+.btn-run{background:linear-gradient(135deg,#10b981,#059669);color:#fff;box-shadow:0 2px 8px rgba(16,185,129,.3)}
 .btn-reset{background:#475569;color:#e2e8f0}
 .btn-hint{background:#78350f;color:#fde68a}
-.btn-next{background:linear-gradient(135deg,#4f46e5,#6366f1);color:#fff}
-.btns button:disabled{opacity:.35;pointer-events:none}
-.btn-clear{padding:4px 12px;border:1px solid #ddd;border-radius:6px;background:#fff;color:#666;font-size:11px;cursor:pointer;font-family:inherit;transition:.15s}
-.btn-clear:hover{background:#f5f5f5}
-.btn-clear:active{transform:scale(.95)}
+.btn-ai{background:#334155;color:#e2e8f0}
+.btn-next{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;box-shadow:0 2px 8px rgba(99,102,241,.3)}
 
-.console{background:#080d14;color:#94a3b8;border-radius:8px;padding:12px 14px;font-family:Consolas,monospace;font-size:13px;line-height:1.6;min-height:80px;max-height:200px;overflow-y:auto;white-space:pre-wrap;margin-bottom:4px}
-.console .c-out{color:#a7f3d0}
-.console .c-err{color:#fda4af}
-.console .c-info{color:#93c5fd}
-.console .c-ok{color:#34d399;font-weight:700}
-.console .c-hint{color:#fde68a}
+.panel-acts{margin-top:10px;display:flex;gap:6px}
+.panel-acts .btn-run{flex:1}
 
-.theme-btn{position:fixed;bottom:20px;right:20px;width:44px;height:44px;border-radius:50%;background:#fff;border:1px solid #ddd;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);z-index:100;display:flex;align-items:center;justify-content:center;transition:background .2s,border-color .2s}
-.toast{position:fixed;top:16px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:8px 20px;border-radius:20px;font-size:13px;font-weight:600;z-index:200;pointer-events:none;animation:toastIn .3s ease}
-@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(-10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+/* Stats */
+.stats{display:flex;gap:16px;font-size:11px;color:var(--t3);padding:6px 12px;background:rgba(0,0,0,.1);flex-shrink:0;font-family:var(--fm)}
+.dark .stats{background:rgba(0,0,0,.25)}
+.stats b{color:var(--t2)}
 
-@keyframes confettiDrop{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+/* AI */
+.ai-box{background:var(--c);border:1px solid var(--b);border-radius:var(--r);padding:12px;margin-top:10px;display:none}
+.ai-box.show{display:block}
+.ai-box h4{font-size:13px;font-weight:700;color:var(--p);margin-bottom:6px}
+.ai-box .ai-msg{background:var(--bg);border-radius:8px;padding:8px 10px;font-size:12px;line-height:1.6;max-height:120px;overflow-y:auto;margin-bottom:6px}
+.ai-box .ai-row{display:flex;gap:6px}
+.ai-box input{flex:1;padding:7px 10px;border:1px solid var(--b);border-radius:8px;font-size:12px;font-family:inherit;outline:none;background:var(--bg);color:var(--t)}
+.ai-box button{padding:7px 14px;background:var(--p);color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}
 
-/* ---- Dark mode ---- */
-.dark-mode{background:#0f172a;color:#e2e8f0}
-.dark-mode .top{background:#1e293b;border-color:#334155}
-.dark-mode .tabs{background:#1e293b;border-color:#334155}
-.dark-mode .body{background:#0f172a}
-.dark-mode .lsn .chip{background:#1e293b;border-color:#334155;color:#94a3b8}
-.dark-mode .lsn .chip.done{background:#064e3b;border-color:#065f46;color:#6ee7b7}
-.dark-mode .lsn .chip.on{background:#312e81;border-color:#4f46e5;color:#a5b4fc}
-.dark-mode .c-section p{color:#94a3b8}
-.dark-mode .c-section h3{color:#818cf8}
-.dark-mode .c-section code.inline{background:#1e293b;color:#f472b6}
-.dark-mode .box.tip{background:#064e3b;border-color:#065f46;color:#a7f3d0}
-.dark-mode .box.warn{background:#78350f;border-color:#92400e;color:#fde68a}
-.dark-mode .box.info{background:#1e3a5f;border-color:#1e40af;color:#bfdbfe}
-.dark-mode .step .sn{background:#6366f1}
-.dark-mode .theme-btn{background:#1e293b;border-color:#475569;color:#e2e8f0}
-.dark-mode .btns button{color:#e2e8f0}
-.dark-mode .btn-reset{background:#334155}
-.dark-mode .btn-clear{background:#1e293b;border-color:#475569;color:#94a3b8}
-.dark-mode .btn-clear:hover{background:#334155;color:#e2e8f0}
-.dark-mode .console{background:#020617;color:#94a3b8}
-.dark-mode .editor{border:1px solid #334155}
-.dark-mode .editor .ed-top{background:#020617;border-color:#1e293b}
-.dark-mode .ed-ln{color:#475569;border-color:#334155;background:rgba(0,0,0,.25)}
-.dark-mode .ed-hl{color:#e2e8f0}
+/* Dashboard */
+.dash-bg{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:900;display:none;align-items:flex-end;justify-content:center}
+.dash-bg.show{display:flex}
+.dash{background:var(--c);width:100%;max-width:500px;max-height:80vh;border-radius:16px 16px 0 0;padding:20px;overflow-y:auto;animation:up .25s ease}
+@keyframes up{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.dash h3{font-size:16px;margin-bottom:12px;font-weight:800}
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.dash-card{background:var(--bg);border-radius:10px;padding:12px;text-align:center;border:1px solid var(--b)}
+.dash-card .v{font-size:24px;font-weight:900;color:var(--p)}
+.dash-card .l{font-size:11px;color:var(--t3);margin-top:2px;font-weight:600}
+.dash-progress{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px}
+.dash-progress span{width:18px;height:18px;border-radius:4px;background:var(--b);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--t3)}
+.dash-progress span.done{background:var(--s);color:#fff}
+.dash-close{display:block;margin:12px auto 0;padding:8px 24px;background:var(--p);color:#fff;border:none;border-radius:8px;font-weight:600;cursor:pointer;font-family:inherit;font-size:12px}
+
+/* Ach */
+.ach-bar{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.ach-badge{padding:4px 8px;border-radius:10px;font-size:10px;font-weight:600;opacity:.35;border:1px solid var(--b);background:var(--c)}
+.ach-badge.got{opacity:1;border-color:var(--s);background:#ecfdf5;color:#065f46}
+.dark .ach-badge.got{background:#064e3b;color:#6ee7b7;border-color:#065f46}
+.ach-pop{position:fixed;top:56px;left:50%;transform:translateX(-50%);background:var(--c);border:1px solid var(--b);border-radius:12px;padding:12px 18px;box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:500;font-size:13px;font-weight:700;display:flex;gap:8px;align-items:center;animation:d-in .4s ease}
+@keyframes d-in{from{opacity:0;transform:translateX(-50%) translateY(-16px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+
+/* FABs */
+.fab{position:fixed;right:16px;width:44px;height:44px;border-radius:50%;border:1px solid var(--b);background:var(--c);font-size:18px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.1);z-index:100;display:flex;align-items:center;justify-content:center}
+.fab.theme{bottom:20px}
+.fab.dash{bottom:72px}
+
+/* Confetti */
+.cf-p{position:fixed;inset:0;pointer-events:none;z-index:999}
+.cf-p span{position:absolute;display:block;animation:drop 2s ease-out forwards}
+@keyframes drop{0%{transform:translateY(-100vh) rotate(0)}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
 
 /* Desktop */
-@media(min-width:768px){
+@media(min-width:769px){
   .app{flex-direction:row;flex-wrap:wrap}
-  .top{width:100%}
-  .tabs{display:none}
-  .body{width:50%;border-right:1px solid #eee;overflow-y:auto}
-  .dark-mode .body{border-color:#334155}
-  .right{width:50%;display:flex;flex-direction:column;padding:16px;gap:8px;overflow-y:auto}
-  .lsn{flex-direction:column;margin-bottom:0}
+  .topbar{width:100%}
+  .tab-bar{display:none}
+  #panel-lesson{width:50%;border-right:1px solid var(--b)}
+  #panel-editor{width:50%;padding:0}
+  .editor{border-radius:0}
+  #panel-editor .panel-acts{display:none}
 }
 
-/* Mobile: editor takes more space */
-@media(max-width:767px){
-  .right{padding:12px;display:flex;flex-direction:column;gap:8px}
-  .editor textarea{min-height:120px}
-  .ed-wrap{min-height:120px}
-}
-
-/* AI Chat */
-.ai-chat{background:#fff;border-radius:10px;padding:12px;margin-top:10px;border:1px solid #e2e8f0;display:none}
-.dark-mode .ai-chat{background:#1e293b;border-color:#334155}
-.ai-chat.show{display:block}
-.ai-chat .ai-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:13px;font-weight:700;color:#4f46e5}
-.ai-chat .ai-msg{background:#f8fafc;border-radius:8px;padding:10px 12px;font-size:13px;line-height:1.6;margin-bottom:6px;max-height:150px;overflow-y:auto}
-.dark-mode .ai-chat .ai-msg{background:#0f172a}
-.ai-chat .ai-input{display:flex;gap:6px}
-.ai-chat .ai-input input{flex:1;padding:8px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:13px;font-family:inherit;outline:none}
-.dark-mode .ai-chat .ai-input input{background:#0f172a;border-color:#334155;color:#e2e8f0}
-.ai-chat .ai-input button{padding:8px 14px;background:linear-gradient(135deg,#4f46e5,#6366f1);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
-/* Achievement badges */
-.ach-bar{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.ach-badge{padding:4px 10px;border-radius:14px;font-size:11px;font-weight:600;opacity:.4;border:1px solid #ddd;background:#fff}
-.ach-badge.earned{opacity:1;border-color:#10b981;background:#ecfdf5;color:#065f46}
-.dark-mode .ach-badge{background:#1e293b;border-color:#334155}
-.dark-mode .ach-badge.earned{background:#064e3b;border-color:#065f46;color:#6ee7b7}
-.ach-popup{position:fixed;top:60px;left:50%;transform:translateX(-50%);background:#fff;border-radius:12px;padding:14px 20px;box-shadow:0 8px 24px rgba(0,0,0,.15);z-index:500;font-size:14px;font-weight:700;display:flex;align-items:center;gap:10px;animation:slideIn .4s ease}
-@keyframes slideIn{from{opacity:0;transform:translateX(-50%) translateY(-20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
-
-/* ---- Dashboard ---- */
-.dash-toggle{position:fixed;bottom:72px;right:20px;width:44px;height:44px;border-radius:50%;background:#fff;border:1px solid #ddd;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);z-index:100;display:flex;align-items:center;justify-content:center}
-.dark-mode .dash-toggle{background:#1e293b;border-color:#334155}
-.dash-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:900;display:none;align-items:flex-end;justify-content:center}
-.dash-overlay.show{display:flex}
-.dash-panel{background:#fff;width:100%;max-width:500px;max-height:80vh;border-radius:16px 16px 0 0;padding:20px;overflow-y:auto;animation:slideUp .3s ease}
-@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-.dark-mode .dash-panel{background:#1e293b}
-.dash-panel h3{font-size:17px;font-weight:800;margin-bottom:14px}
-.dash-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
-.dash-card{background:#f8fafc;border-radius:10px;padding:14px;text-align:center;border:1px solid #e2e8f0}
-.dark-mode .dash-card{background:#0f172a;border-color:#334155}
-.dash-card .dv{font-size:28px;font-weight:900;color:#4f46e5}
-.dash-card .dl{font-size:11px;color:#94a3b8;margin-top:2px;font-weight:600}
-.dash-stats{display:flex;flex-direction:column;gap:8px}
-.dash-row{display:flex;justify-content:space-between;font-size:13px;color:#64748b;padding:8px 0;border-bottom:1px solid #f1f5f9}
-.dark-mode .dash-row{border-color:#334155}
-.dash-row b{color:#333}
-.dark-mode .dash-row b{color:#e2e8f0}
-.dash-close{display:block;margin:16px auto 0;padding:8px 24px;border:none;background:#4f46e5;color:#fff;border-radius:8px;font-weight:600;cursor:pointer;font-family:inherit;font-size:13px}
-.dash-progress-bar{width:100%;height:6px;background:#e2e8f0;border-radius:3px;overflow:hidden;margin-top:4px}
-.dark-mode .dash-progress-bar{background:#334155}
-.dash-progress-fill{height:100%;background:#10b981;border-radius:3px;transition:width .3s ease}
-
+.toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:var(--t);color:var(--c);padding:8px 18px;border-radius:16px;font-size:12px;font-weight:600;z-index:200;pointer-events:none;animation:t-in .3s ease}
+@keyframes t-in{from{opacity:0;transform:translateX(-50%) translateY(-8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 </style>
 </head>
-<body id="bodyEl">
-<div class="app" id="appEl">
-  <div class="top">
-    <span class="logo">🐍</span>
-    <span class="title">Python零基础学堂</span>
-    <span class="flex"></span>
-    <span class="pct" id="pct">0/20</span>
+<body id="root">
+<div class="app">
+  <div class="topbar">
+    <span class="logo">🐍</span><h1>Python 零基础学堂</h1>
+    <span class="sp"></span>
+    <span class="badge" onclick="openDash()" id="badgePct">0/20</span>
+    <button class="icon-btn" onclick="toggleTheme()" id="themeBtn" title="深色/浅色">🌙</button>
   </div>
-  <div class="tabs" id="tabsEl">
-    <button class="on" id="tabLsn" onclick="showTab('content')">📚 课程</button>
-    <button id="tabEd" onclick="showTab('editor')">💻 写代码</button>
+  <div class="tab-bar">
+    <button class="on" id="tbLsn" onclick="swTab('lesson')">📚 课程</button>
+    <button id="tbEd" onclick="swTab('editor')">💻 写代码</button>
   </div>
-  <div class="body" id="contentBody"></div>
-  <div class="right" id="rightPanel">
-    <div class="editor" id="editorEl">
-      <div class="ed-top"><span class="fn"><span class="dot"></span>main.py</span></div>
-      <textarea id="codeIn" placeholder="# 在这里写 Python 代码..." spellcheck="false"></textarea>
-    </div>
-    <div class="btns">
-      <button class="btn-run" onclick="runCode()">▶ 运行</button>
-      <button class="btn-reset" onclick="toggleAiChat()" id="aiBtn" style="background:linear-gradient(135deg,#4f46e5,#6366f1);color:#fff">🤖 问老师</button>
-      <button class="btn-reset" onclick="resetCode()">↺ 重置</button>
-      <button class="btn-hint" onclick="showHint()" id="hintBtn">💡 提示</button>
-      <span class="flex" style="flex:1"></span>
-      <button class="btn-next" onclick="nextLesson()" id="nextBtn" disabled>下一课 →</button>
-    </div>
-    <div class="console" id="consoleEl">点击 ▶ 运行 执行代码</div>
-    <div id="statsBar" style="display:flex;justify-content:space-between;align-items:center;padding:6px 14px;font-size:12px;color:#94a3b8;background:#1e293b;border-radius:8px;margin-top:2px">
-      <span>▶ 运行次数：<strong style="color:#e2e8f0" id="statRuns">0</strong></span>
-      <span>✅ 已通关：<strong style="color:#34d399" id="statDone">0</strong></span>
+  <div class="wrap">
+    <div class="panel" id="panel-lesson"></div>
+    <div class="panel hide" id="panel-editor" style="padding:0;display:flex;flex-direction:column">
+      <div class="panel-acts" style="padding:8px 12px 0">
+        <button class="btn-run" onclick="exec()">▶ 运行</button>
+        <button class="btn-reset" onclick="reset()">↺ 重置</button>
+        <button class="btn-hint" id="hintBtn" onclick="hint()">💡 提示</button>
+        <button class="btn-ai" onclick="toggleAI()">🤖</button>
+        <span style="flex:1"></span>
+        <button class="btn-next" id="nextBtn" onclick="next()" disabled>下一课</button>
+      </div>
+      <div class="editor">
+        <div class="ed-top">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          <span class="fn">main.py</span><span class="sp"></span>
+          <button onclick="fmt()" title="格式化">▦</button>
+          <button onclick="cpy()" title="复制">📋</button>
+        </div>
+        <div class="ed-body">
+          <div class="ln" id="lnEl"></div>
+          <div class="cw">
+            <textarea id="codeEl" placeholder="# Python 3 · 写代码，Ctrl+Enter 运行" spellcheck="false"></textarea>
+            <div class="hl-box" id="hlEl"></div>
+          </div>
+        </div>
+      </div>
+      <div class="acts">
+        <button class="btn-run" onclick="exec()">▶ 运行</button>
+        <button class="btn-reset" onclick="reset()">↺ 重置</button>
+        <button class="btn-hint" id="hintBtn2" onclick="hint()">💡 提示</button>
+        <button class="btn-ai" onclick="toggleAI()">🤖 问老师</button>
+        <span style="flex:1"></span>
+        <button class="btn-next" id="nextBtn2" onclick="next()" disabled>下一课 →</button>
+      </div>
+      <div class="console" id="conEl">▶ 点击「运行」执行代码 · Ctrl+Enter</div>
+      <div class="ai-box" id="aiBox">
+        <h4>🤖 AI 学习助手</h4>
+        <div class="ai-msg" id="aiMsg">你好！有什么问题直接问，我帮你~</div>
+        <div class="ai-row">
+          <input id="aiIn" placeholder="比如：我的代码为什么报错？" onkeydown="if(event.key==='Enter')askAI()">
+          <button onclick="askAI()">发送</button>
+        </div>
+      </div>
+      <div class="stats">
+        <span>已运行 <b id="statRuns">0</b></span><span>已通过 <b id="statDone">0</b></span><span>正确率 <b id="statAcc">--</b></span>
+      </div>
     </div>
   </div>
 </div>
-<div class="theme-btn" id="themeBtn" onclick="toggleTheme()">🌙</div>
-<div id="toastC"></div>
+<div class="ach-bar" id="achBar"></div>
+<div class="dash-bg" id="dashBg" onclick="closeDash()">
+  <div class="dash" onclick="event.stopPropagation()">
+    <h3>📊 学习报告</h3>
+    <div class="dash-grid">
+      <div class="dash-card"><div class="v" id="dv1">0</div><div class="l">总运行次数</div></div>
+      <div class="dash-card"><div class="v" id="dv2">0</div><div class="l">已通关课程</div></div>
+      <div class="dash-card"><div class="v" id="dv3">--</div><div class="l">正确率</div></div>
+      <div class="dash-card"><div class="v" id="dv4">0</div><div class="l">连续天数</div></div>
+    </div>
+    <div class="dash-progress" id="dashProg"></div>
+    <button class="dash-close" onclick="closeDash()">关闭</button>
+  </div>
+</div>
+<button class="fab dash" onclick="openDash()" title="学习报告">📊</button>
+<button class="fab theme" onclick="toggleTheme()" id="fabTheme" title="深色/浅色">🌙</button>
+<div class="cf-p" id="cfEl"></div>
 
 <script>
-const courses=[
-  {id:1,title:"你好，Python！",
-   html:'<div class="hero"><h2>✨ 欢迎来到 Python 编程世界</h2><p>零基础入门，20节课从 print() 到完整项目。每课都有讲解和动手练习。</p></div><div class="c-section"><h3>什么是 print()？</h3><p><code class="inline">print()</code> 是 Python 最常用的函数，在屏幕上显示文字。</p><pre><code>print(\'你好，世界！\')</code></pre></div><div class="box warn"><span class="box-icon">⚠️</span><span>文字必须用引号包起来！单引号或双引号都可以。</span></div><div class="c-section"><h3>✏️ 练习</h3><p>把引号里改成 <strong>"你好"</strong>，点运行！</p></div>',
-   code:"# 在引号里写上：你好\nprint('')",
-   expect:{type:"contains",val:"你好"},
-   hints:["把 你好 写在 print() 的引号里","例如：print('你好')"],
-   steps:[
-    {t:"观察",d:"看看示例代码，猜猜它会输出什么？"},
-    {t:"模仿",d:"在编辑器里抄一遍 print('你好，世界！')"},
-    {t:"修改",d:"把引号里的文字改成你自己的话"},
-    {t:"创造",d:"写多行 print() 打印不同的内容"}
-   ]},
-  {id:2,title:"变量是个盒子",
-   html:'<div class="c-section"><h3>变量是个盒子</h3><p>变量像有名字的盒子，把数据放进去。</p><pre><code>name = \'小明\'\nage = 18\nprint(name)\nprint(age)</code></pre></div><div class="box tip"><span class="box-icon">💡</span><span>一个 <code class="inline">=</code> 赋值，两个 <code class="inline">==</code> 比较。别搞混！</span></div><div class="c-section"><h3>✏️ 练习</h3><p>创建 <code class="inline">score = 100</code>，打印它。</p></div>',
-   code:"# 创建变量 score = 100\n# 打印\n",
-   expect:{type:"exact",val:"100"},
-   hints:["score = 100","print(score) — 不加引号"],
-   steps:[{t:"理解",d:"变量像标签贴在数据上"},{t:"赋值",d:"score = 100"},{t:"使用",d:"print(score)"},{t:"体验",d:"建更多变量试试"}]
-  },
-  {id:3,title:"让程序做选择",
-   html:'<div class="c-section"><h3>让程序做选择</h3><p><code class="inline">if</code> 让程序根据条件走不同分支。</p><pre><code>score = 85\nif score >= 60:\n    print(\'及格了！\')\nelse:\n    print(\'还需要努力\')</code></pre></div><div class="box warn"><span class="box-icon">⚠️</span><span>if 后写冒号 : ，下一行缩进4个空格！</span></div><div class="c-section"><h3>✏️ 练习</h3><p><code class="inline">temperature = 30</code>，大于25打印"好热"，否则"好凉快"。</p></div>',
+const C=[
+  {id:1,ti:"你好，Python！",
+   html:'<div class="hero"><h2>✨ 欢迎来到 Python 编程世界</h2><p>零基础入门，20节课从 print() 到完整项目。每课都有讲解和动手练习。</p><button class="btn" onclick="jumpEd()">✋ 开始写代码</button></div><div class="sec"><h3>什么是 print()？</h3><p><code class="kbd">print()</code> 是 Python 最常用的函数，在屏幕上显示文字。</p><pre>print(\'你好，世界！\')</pre></div><div class="box warn"><span class="ico">⚠️</span><span>文字必须用引号包起来！单引号或双引号都可以。</span></div><div class="goal"><div class="g">学会使用 print() 输出文字</div><div class="g">理解引号的作用</div><div class="g">运行你的第一行 Python 代码</div></div><div class="sec"><h3>✏️ 练习</h3><p>把引号里改成<strong>"你好"</strong>，点运行！</p></div>',
+   code:"# 把你好写在引号里\nprint('')",
+   ans:{t:"contains",v:"你好"},
+   hints:["把 你好 写在引号里","print('你好')","试试打印你的名字"],
+   steps:[{t:"观察",d:"看看示例代码，它会输出什么？"},{t:"模仿",d:"照抄 print('你好，世界！')"},{t:"修改",d:"把文字改成你的名字"},{t:"创造",d:"用多行 print() 打印不同的内容"}]},
+  {id:2,ti:"变量是个盒子",
+   html:'<div class="sec"><h3>变量是个盒子</h3><p>变量像有名字的盒子，把数据放进去。</p><pre>name = \'小明\'\nage = 18\nprint(name)\nprint(age)</pre></div><div class="box tip"><span class="ico">💡</span><span>一个 <code class="kbd">=</code> 赋值，两个 <code class="kbd">==</code> 比较。别搞混！</span></div><div class="goal"><div class="g">理解变量的概念（有名字的盒子）</div><div class="g">学会用 = 给变量赋值</div><div class="g">用 print() 打印变量的值</div></div><div class="sec"><h3>✏️ 练习</h3><p>创建 <code class="kbd">score = 100</code>，打印它。</p></div>',
+   code:"# 创建变量 score = 100\n# 然后用 print() 打印\n",
+   ans:{t:"exact",v:"100"},
+   hints:["score = 100","print(score) — 变量名不加引号","变量名只能是字母数字下划线"],
+   steps:[{t:"理解",d:"变量像标签贴在数据上"},{t:"赋值",d:"score = 100"},{t:"使用",d:"print(score)"},{t:"体验",d:"建更多变量试试"}]},
+  {id:3,ti:"让程序做选择",
+   html:'<div class="sec"><h3>让程序做选择</h3><p><code class="kbd">if</code> 让程序根据条件走不同分支。</p><pre>score = 85\nif score >= 60:\n    print(\'及格了！\')\nelse:\n    print(\'还需要努力\')</pre></div><div class="box warn"><span class="ico">⚠️</span><span>if 后写冒号 : ，下一行缩进4个空格！</span></div><div class="sec"><h3>✏️ 练习</h3><p><code class="kbd">temperature = 30</code>，大于25打印"好热"，否则"好凉快"。</p></div>',
    code:"temperature = 30\n# 写 if 判断\n",
-   expect:{type:"exact",val:"好热"},
-   hints:["if temperature > 25:","缩进写 print('好热')"],
-   steps:[{t:"理解",d:'"如果…就…"的逻辑'},{t:"体验",d:"写 if temperature > 25:"},{t:"编写",d:"缩进 print"},{t:"测试",d:"改成20看变化"}]
-  },
-  {id:4,title:"重复交给循环",
-   html:'<div class="c-section"><h3>for 循环</h3><p><code class="inline">for</code> 重复执行代码。</p><pre><code>for i in range(5):\n    print(i)</code></pre><p>打印 0,1,2,3,4。</p></div><div class="box info"><span class="box-icon">📖</span><span><code class="inline">range(5)</code> 生成0到4。<code class="inline">range(1,6)</code> 生成1到5。</span></div><div class="c-section"><h3>✏️ 练习</h3><p>用 for 打印 1 到 5。</p></div>',
+   ans:{t:"exact",v:"好热"},
+   hints:["if temperature > 25:","缩进写 print('好热')","else: 分支写 print('好凉快')"],
+   steps:[{t:"理解",d:'"如果…就…"的逻辑'},{t:"体验",d:"写 if temperature > 25:"},{t:"编写",d:"缩进 print"},{t:"测试",d:"改成20看变化"}]},
+  {id:4,ti:"重复交给循环",
+   html:'<div class="sec"><h3>for 循环</h3><p><code class="kbd">for</code> 重复执行代码。</p><pre>for i in range(5):\n    print(i)</pre><p>打印 0,1,2,3,4。</p></div><div class="box info"><span class="ico">📖</span><span><code class="kbd">range(5)</code> 生成0到4。<code class="kbd">range(1,6)</code> 生成1到5。</span></div><div class="sec"><h3>✏️ 练习</h3><p>用 for 打印 1 到 5。</p></div>',
    code:"# 用 for 循环打印 1 到 5\n",
-   expect:{type:"exact",val:"1\n2\n3\n4\n5"},
+   ans:{t:"exact",v:"1\n2\n3\n4\n5"},
    hints:["for i in range(1, 6):","缩进 print(i)"],
-   steps:[{t:"理解",d:"for 像复读机"},{t:"计数",d:"range(1,6) 1到5"},{t:"编写",d:"for i in range(1,6): print(i)"},{t:"探索",d:"range(1,101)"}]
-  },
-  {id:5,title:"函数：打包代码",
-   html:'<div class="c-section"><h3>函数</h3><p><code class="inline">def</code> 定义可重复调用的代码。</p><pre><code>def say_hello():\n    print(\'你好！\')\n\nsay_hello()</code></pre></div><div class="box tip"><span class="box-icon">💡</span><span>先定义（def），再调用（名字+括号）。</span></div><div class="c-section"><h3>✏️ 练习</h3><p>定义 <code class="inline">greet()</code>，打印"欢迎学习Python！"。</p></div>',
+   steps:[{t:"理解",d:"for 像复读机"},{t:"计数",d:"range(1,6)=1到5"},{t:"编写",d:"for + print"},{t:"探索",d:"range(1,101)"}]},
+  {id:5,ti:"函数：打包代码",
+   html:'<div class="sec"><h3>函数</h3><p><code class="kbd">def</code> 定义可重复调用的代码块。</p><pre>def say_hello():\n    print(\'你好！\')\n\nsay_hello()</pre></div><div class="box tip"><span class="ico">💡</span><span>先定义（def），再调用（名字+括号）。</span></div><div class="sec"><h3>✏️ 练习</h3><p>定义 <code class="kbd">greet()</code>，打印"欢迎学习Python！"。</p></div>',
    code:"# 定义函数 greet()\n# 然后调用\n",
-   expect:{type:"exact",val:"欢迎学习Python！"},
+   ans:{t:"exact",v:"欢迎学习Python！"},
    hints:["def greet():","print('欢迎学习Python！')","greet() 调用"],
-   steps:[{t:"理解",d:"函数像小助手"},{t:"定义",d:"def greet():"},{t:"调用",d:"greet()"},{t:"创造",d:"自定义函数"}]
-  },
-  {id:6,title:"列表：一排盒子",
-   html:'<div class="c-section"><h3>列表</h3><p>列表用 <code class="inline">[]</code> 存多个数据。</p><pre><code>fruits = [\'苹果\', \'香蕉\', \'橙子\']\nprint(fruits[0])  # 苹果\nfruits.append(\'葡萄\')</code></pre></div><div class="box info"><span class="box-icon">📖</span><span>索引从 <strong>0</strong> 开始！[0]是第一个。</span></div><div class="c-section"><h3>✏️ 练习</h3><p>创建 <code class="inline">colors = [\'红\', \'绿\', \'蓝\']</code>，打印第二个。</p></div>',
+   steps:[{t:"理解",d:"函数像小助手"},{t:"定义",d:"def greet():"},{t:"调用",d:"greet()"},{t:"创造",d:"自定义函数"}]},
+  {id:6,ti:"列表：一排盒子",
+   html:'<div class="sec"><h3>列表</h3><p>列表用 <code class="kbd">[]</code> 存多个数据。</p><pre>fruits = [\'苹果\', \'香蕉\', \'橙子\']\nprint(fruits[0])  # 苹果\nfruits.append(\'葡萄\')</pre></div><div class="box info"><span class="ico">📖</span><span>索引从 <strong>0</strong> 开始！[0]是第一个。</span></div><div class="sec"><h3>✏️ 练习</h3><p>创建 <code class="kbd">colors = [\'红\', \'绿\', \'蓝\']</code>，打印第二个。</p></div>',
    code:"# 创建 colors 列表\n# 打印第二个（索引1）\n",
-   expect:{type:"exact",val:"绿"},
+   ans:{t:"exact",v:"绿"},
    hints:["colors = ['红', '绿', '蓝']","print(colors[1])"],
-   steps:[{t:"理解",d:"列表像编号储物柜，从0起"},{t:"创建",d:"colors = ['红','绿','蓝']"},{t:"访问",d:"print(colors[1])"},{t:"探索",d:".append() 添加"}]
-  },
-  {id:7,title:"字典：带标签",
-   html:'<div class="c-section"><h3>字典</h3><p>字典用 <code class="inline">{}</code> 键值对存储。</p><pre><code>student = {\'name\': \'小明\', \'age\': 18}\nprint(student[\'name\'])</code></pre></div><div class="box tip"><span class="box-icon">💡</span><span>字典用名字索引，列表用数字。</span></div><div class="c-section"><h3>✏️ 练习</h3><p>创建 <code class="inline">book = {\'title\': \'Python入门\', \'price\': 39}</code>，打印书名。</p></div>',
+   steps:[{t:"理解",d:"列表像编号储物柜，编号从0起"},{t:"创建",d:"colors=['红','绿','蓝']"},{t:"访问",d:"colors[1]"},{t:"探索",d:".append()添加"}]},
+  {id:7,ti:"字典：带标签",
+   html:'<div class="sec"><h3>字典</h3><p>字典用 <code class="kbd">{}</code> 键值对存储。</p><pre>student = {\'name\': \'小明\', \'age\': 18}\nprint(student[\'name\'])</pre></div><div class="box tip"><span class="ico">💡</span><span>字典用名字索引，列表用数字。</span></div><div class="sec"><h3>✏️ 练习</h3><p>创建 <code class="kbd">book = {\'title\': \'Python入门\', \'price\': 39}</code>，打印书名。</p></div>',
    code:"# 创建字典 book\n# 打印书名\n",
-   expect:{type:"exact",val:"Python入门"},
+   ans:{t:"exact",v:"Python入门"},
    hints:["book = {'title': 'Python入门', 'price': 39}","print(book['title'])"],
-   steps:[{t:"理解",d:"字典像查字典：键→值"},{t:"创建",d:"book = {...}"},{t:"访问",d:"book['title']"},{t:"创造",d:"建自己的字典"}]
-  },
-  {id:8,title:"字符串的魔法",
-   html:'<div class="c-section"><h3>字符串方法</h3><pre><code>text = \'hello world\'\nprint(text.upper())          # HELLO WORLD\nprint(text.replace(\'world\', \'Python\'))\nprint(len(text))             # 11</code></pre></div><div class="box info"><span class="box-icon">📖</span><span>方法用 <code class="inline">.</code> 调用。text.upper() 变大写。</span></div><div class="c-section"><h3>✏️ 练习</h3><p><code class="inline">s = \'python\'</code>，变大写打印。</p></div>',
+   steps:[{t:"理解",d:"字典像查字典：键→值"},{t:"创建",d:"book={...}"},{t:"访问",d:"book['title']"},{t:"创造",d:"建自己的字典"}]},
+  {id:8,ti:"字符串的魔法",
+   html:'<div class="sec"><h3>字符串方法</h3><pre>text = \'hello world\'\nprint(text.upper())          # HELLO WORLD\nprint(text.replace(\'world\', \'Python\'))\nprint(len(text))             # 11</pre></div><div class="box info"><span class="ico">📖</span><span>方法用 <code class="kbd">.</code> 调用。text.upper() 变大写。</span></div><div class="sec"><h3>✏️ 练习</h3><p><code class="kbd">s = \'python\'</code>，变大写打印。</p></div>',
    code:"# s = 'python'\n# 变大写打印\n",
-   expect:{type:"exact",val:"PYTHON"},
+   ans:{t:"exact",v:"PYTHON"},
    hints:["s = 'python'","print(s.upper())"],
-   steps:[{t:"理解",d:"方法是数据自带工具"},{t:"尝试",d:"s.upper()"},{t:"组合",d:"一行搞定"},{t:"探索",d:".replace() .count()"}]
-  },
-  {id:9,title:"项目：猜数字",
-   html:'<div class="c-section"><h3>🎯 猜数字游戏</h3><p>综合之前所学！目标数字是 7。</p><pre><code>secret = 7\nguess = int(input(\'猜一个数字：\'))\nif guess > secret:\n    print(\'太大了\')\nelif guess < secret:\n    print(\'太小了\')\nelse:\n    print(\'猜对了！\')</code></pre></div><div class="box warn"><span class="box-icon">⚠️</span><span>运行后弹出输入框，输入7。</span></div><div class="c-section"><h3>✏️ 练习</h3><p>完成代码，输入7显示"猜对了！"。</p></div>',
+   steps:[{t:"理解",d:"方法是数据自带工具"},{t:"尝试",d:"s.upper()"},{t:"组合",d:"一行搞定"},{t:"探索",d:".replace().count()"}]},
+  {id:9,ti:"项目：猜数字",
+   html:'<div class="sec"><h3>🎯 猜数字游戏</h3><p>综合之前所学！目标数字是 7。</p><pre>secret = 7\nguess = int(input(\'猜一个数字：\'))\nif guess > secret:\n    print(\'太大了\')\nelif guess < secret:\n    print(\'太小了\')\nelse:\n    print(\'猜对了！\')</pre></div><div class="box warn"><span class="ico">⚠️</span><span>运行后弹出输入框，输入7试试。</span></div><div class="sec"><h3>✏️ 练习</h3><p>完成代码，输入7显示"猜对了！"。</p></div>',
    code:"secret = 7\nguess = int(input('猜一个数字：'))\nif guess > secret:\n    print('太大了')\nelif guess < secret:\n    print('太小了')\nelse:\n    print('猜对了！')\n",
-   expect:{type:"contains",val:"猜对了"},
-   hints:["运行后输入7","if...elif...else"],
-   steps:[{t:"回顾",d:"变量+input+if+print"},{t:"运行",d:"输入7"},{t:"测试",d:"输入8和6"},{t:"改进",d:"用random.randint"}]
-  },
-  {id:10,title:"项目：计算器",
-   html:'<div class="c-section"><h3>🧮 简易计算器</h3><p>输入两个数，算和差积商。</p><pre><code>a = float(input(\'输入第一个数：\'))\nb = float(input(\'输入第二个数：\'))\nprint(\'和:\', a + b)\nprint(\'差:\', a - b)\nprint(\'积:\', a * b)\nprint(\'商:\', a / b)</code></pre></div><div class="c-section"><h3>✏️ 练习</h3><p>获取两个数，打印和差积商。试试10和2！</p></div>',
+   ans:{t:"contains",v:"猜对了"},
+   hints:["运行后输入7","if...elif...else 三个分支"],
+   steps:[{t:"回顾",d:"变量+input+if+print"},{t:"运行",d:"输入7"},{t:"测试",d:"输入8和6"},{t:"改进",d:"用random.randint"}]},
+  {id:10,ti:"项目：计算器",
+   html:'<div class="sec"><h3>🧮 简易计算器</h3><p>输入两个数，算和差积商。</p><pre>a = float(input(\'输入第一个数：\'))\nb = float(input(\'输入第二个数：\'))\nprint(\'和:\', a + b)\nprint(\'差:\', a - b)\nprint(\'积:\', a * b)\nprint(\'商:\', a / b)</pre></div><div class="sec"><h3>✏️ 练习</h3><p>获取两个数，打印和差积商。试试10和2！</p></div>',
    code:"# 获取两个数字\n# 打印和差积商\n",
-   expect:{type:"contains",val:""},
-   hints:["a = float(input('第一个数：'))","print('和差积商：', a+b, a-b, a*b, a/b)"],
-   steps:[{t:"思考",d:"input→float→运算→print"},{t:"编写",d:"获取a,b"},{t:"测试",d:"10和2"},{t:"升级",d:"加除以0判断"}]
-  },
-  {id:11,title:"文件读写",
-   html:'<div class="c-section"><h3>📄 文件读写</h3><pre><code># 写入\nwith open(\'日记.txt\', \'w\') as f:\n    f.write(\'你好，世界！\')\n\n# 读取\nwith open(\'日记.txt\', \'r\') as f:\n    print(f.read())</code></pre></div><div class="box info"><span class="box-icon">📖</span><span>\'w\' 覆盖写入，\'r\' 只读，\'a\' 追加。with 自动关闭文件。</span></div><div class="c-section"><h3>✏️ 练习</h3><p>用 with open 写入"文件测试"并读取打印。</p></div>',
+   ans:{t:"contains",v:""},
+   hints:["a = float(input('第一个数：'))","b = float(input('第二个数：'))","print('和差积商：', a+b, a-b, a*b, a/b)"],
+   steps:[{t:"思考",d:"input→float→运算→print"},{t:"编写",d:"获取a和b"},{t:"测试",d:"输入10和2"},{t:"升级",d:"加除以0判断"}]},
+  {id:11,ti:"文件读写",
+   html:'<div class="sec"><h3>📄 文件读写</h3><pre># 写入\nwith open(\'日记.txt\', \'w\') as f:\n    f.write(\'你好，世界！\')\n\n# 读取\nwith open(\'日记.txt\', \'r\') as f:\n    print(f.read())</pre></div><div class="box info"><span class="ico">📖</span><span>\'w\' 覆盖写入，\'r\' 只读，\'a\' 追加。with 自动关闭文件。</span></div><div class="sec"><h3>✏️ 练习</h3><p>用 with open 写入"文件测试"并读取打印。</p></div>',
    code:"with open('test.txt', 'w') as f:\n    f.write('文件测试')\nwith open('test.txt', 'r') as f:\n    print(f.read())\n",
-   expect:{type:"contains",val:"文件测试"},
+   ans:{t:"contains",v:"文件测试"},
    hints:["with open('test.txt','w') as f:","f.write('文件测试')"],
-   steps:[{t:"理解",d:"文件是永久保存的变量"},{t:"写入",d:"with...as f: f.write()"},{t:"读取",d:"f.read()"},{t:"探索",d:"readlines()"}]
-  },
-  {id:12,title:"异常处理",
-   html:'<div class="c-section"><h3>🛡️ try/except</h3><pre><code>try:\n    num = int(input(\'输入数字：\'))\n    print(\'你输入了：\', num)\nexcept ValueError:\n    print(\'请输入有效数字！\')</code></pre></div><div class="box tip"><span class="box-icon">💡</span><span>try 放可能出错的代码，except 捕获异常。</span></div><div class="c-section"><h3>✏️ 练习</h3><p>处理除零错误，打印"不能除以零！"。</p></div>',
+   steps:[{t:"理解",d:"文件是永久保存的变量"},{t:"写入",d:"with...as f:f.write()"},{t:"读取",d:"f.read()"},{t:"探索",d:"readlines()"}]},
+  {id:12,ti:"异常处理",
+   html:'<div class="sec"><h3>🛡️ try/except</h3><pre>try:\n    num = int(input(\'输入数字：\'))\n    print(\'你输入了：\', num)\nexcept ValueError:\n    print(\'请输入有效数字！\')</pre></div><div class="box tip"><span class="ico">💡</span><span>try 放可能出错的代码，except 捕获异常。</span></div><div class="sec"><h3>✏️ 练习</h3><p>处理除零错误，打印"不能除以零！"。</p></div>',
    code:"try:\n    result = 10 / 0\n    print(result)\nexcept ZeroDivisionError:\n    print('不能除以零！')\n",
-   expect:{type:"contains",val:"不能除以零"},
+   ans:{t:"contains",v:"不能除以零"},
    hints:["try 里放 10 / 0","except ZeroDivisionError:"],
-   steps:[{t:"理解",d:"异常是运行时错误"},{t:"捕获",d:"try/except"},{t:"练习",d:"除零"},{t:"探索",d:"多个except"}]
-  },
-  {id:13,title:"面向对象·类",
-   html:'<div class="c-section"><h3>🏗️ 类和对象</h3><pre><code>class Dog:\n    def __init__(self, name):\n        self.name = name\n    def bark(self):\n        print(f\'{self.name}：汪汪！\')\n\ndog = Dog(\'旺财\')\ndog.bark()</code></pre></div><div class="box tip"><span class="box-icon">💡</span><span>__init__ 是构造方法，self 代表实例本身。</span></div><div class="c-section"><h3>✏️ 练习</h3><p>创建 Student 类，show() 打印"XX的分数是XX"。</p></div>',
+   steps:[{t:"理解",d:"异常是运行时错误"},{t:"捕获",d:"try/except"},{t:"练习",d:"除零"},{t:"探索",d:"多个except"}]},
+  {id:13,ti:"面向对象·类",
+   html:'<div class="sec"><h3>🏗️ 类和对象</h3><pre>class Dog:\n    def __init__(self, name):\n        self.name = name\n    def bark(self):\n        print(f\'{self.name}：汪汪！\')\n\ndog = Dog(\'旺财\')\ndog.bark()</pre></div><div class="box tip"><span class="ico">💡</span><span>__init__ 是构造方法，self 代表实例本身。</span></div><div class="sec"><h3>✏️ 练习</h3><p>创建 Student 类，show() 打印"XX的分数是XX"。</p></div>',
    code:"class Student:\n    def __init__(self, name, score):\n        self.name = name\n        self.score = score\n    def show(self):\n        print(f'{self.name}的分数是{self.score}')\n\ns = Student('小明', 95)\ns.show()\n",
-   expect:{type:"contains",val:"小明"},
+   ans:{t:"contains",v:"小明"},
    hints:["class 类名:","__init__(self, 参数)","self.属性 = 值"],
-   steps:[{t:"理解",d:"类是模板，对象是实例"},{t:"定义",d:"class + __init__"},{t:"方法",d:"def show(self):"},{t:"创造",d:"多个实例"}]
-  },
-  {id:14,title:"面向对象·继承",
-   html:'<div class="c-section"><h3>🧬 继承</h3><pre><code>class Animal:\n    def speak(self):\n        print(\'发出声音\')\n\nclass Cat(Animal):\n    def speak(self):\n        print(\'喵喵～\')\n\nCat().speak()</code></pre></div><div class="box info"><span class="box-icon">📖</span><span>子类继承父类方法，可重写。</span></div><div class="c-section"><h3>✏️ 练习</h3><p>创建 Animal→Bird 继承，speak() 打印"叽叽喳喳"。</p></div>',
+   steps:[{t:"理解",d:"类是模板，对象是实例"},{t:"定义",d:"class+__init__"},{t:"方法",d:"def show(self):"},{t:"创造",d:"多个实例"}]},
+  {id:14,ti:"面向对象·继承",
+   html:'<div class="sec"><h3>🧬 继承</h3><pre>class Animal:\n    def speak(self):\n        print(\'发出声音\')\n\nclass Cat(Animal):\n    def speak(self):\n        print(\'喵喵～\')\n\nCat().speak()</pre></div><div class="box info"><span class="ico">📖</span><span>子类继承父类方法，可重写。</span></div><div class="sec"><h3>✏️ 练习</h3><p>创建 Animal→Bird 继承，speak() 打印"叽叽喳喳"。</p></div>',
    code:"class Animal:\n    def speak(self):\n        print('发出声音')\nclass Bird(Animal):\n    def speak(self):\n        print('叽叽喳喳')\nBird().speak()\n",
-   expect:{type:"contains",val:"叽叽喳喳"},
+   ans:{t:"contains",v:"叽叽喳喳"},
    hints:["class 子类(父类):","重写同名方法"],
-   steps:[{t:"理解",d:"继承像遗传"},{t:"继承",d:"class Bird(Animal):"},{t:"重写",d:"同名方法覆盖"},{t:"探索",d:"super()"}]
-  },
-  {id:15,title:"模块和包",
-   html:'<div class="c-section"><h3>📦 import</h3><pre><code>import math\nprint(math.sqrt(16))   # 4.0\nprint(math.pi)         # 3.14...\n\nimport random as rd\nprint(rd.randint(1, 10))</code></pre></div><div class="box info"><span class="box-icon">📖</span><span>Python 标准库：math、random、datetime、os、json 等。</span></div><div class="c-section"><h3>✏️ 练习</h3><p>导入 math，计算 2 的平方根。</p></div>',
+   steps:[{t:"理解",d:"继承像遗传"},{t:"继承",d:"class Bird(Animal):"},{t:"重写",d:"同名方法覆盖"},{t:"探索",d:"super()"}]},
+  {id:15,ti:"模块和包",
+   html:'<div class="sec"><h3>📦 import</h3><pre>import math\nprint(math.sqrt(16))   # 4.0\nprint(math.pi)         # 3.14...\n\nimport random as rd\nprint(rd.randint(1, 10))</pre></div><div class="box info"><span class="ico">📖</span><span>Python 标准库：math、random、datetime、os、json 等。</span></div><div class="sec"><h3>✏️ 练习</h3><p>导入 math，计算 2 的平方根。</p></div>',
    code:"import math\nprint(math.sqrt(2))\n",
-   expect:{type:"contains",val:"1.414"},
+   ans:{t:"contains",v:"1.414"},
    hints:["import math","math.sqrt(2)"],
-   steps:[{t:"理解",d:"模块是别人写好的代码"},{t:"导入",d:"import math"},{t:"别名",d:"import...as"},{t:"探索",d:"random datetime"}]
-  },
-  {id:16,title:"列表推导式",
-   html:'<div class="c-section"><h3>⚡ 列表推导式</h3><pre><code># 一行生成列表\nsquares = [i*i for i in range(1,6)]\nprint(squares)  # [1,4,9,16,25]\n\n# 加条件\nevens = [i for i in range(10) if i%2==0]\nprint(evens)  # [0,2,4,6,8]</code></pre></div><div class="box tip"><span class="box-icon">💡</span><span>语法: <code class="inline">[表达式 for 变量 in 可迭代对象 if 条件]</code></span></div><div class="c-section"><h3>✏️ 练习</h3><p>生成 [2,4,6,8,10] 并打印。</p></div>',
+   steps:[{t:"理解",d:"模块是别人写好的代码"},{t:"导入",d:"import math"},{t:"别名",d:"import...as"},{t:"探索",d:"random datetime"}]},
+  {id:16,ti:"列表推导式",
+   html:'<div class="sec"><h3>⚡ 列表推导式</h3><pre># 一行生成列表\nsquares = [i*i for i in range(1,6)]\nprint(squares)  # [1,4,9,16,25]\n\n# 加条件\nevens = [i for i in range(10) if i%2==0]\nprint(evens)  # [0,2,4,6,8]</pre></div><div class="box tip"><span class="ico">💡</span><span>语法: <code class="kbd">[表达式 for 变量 in 可迭代对象 if 条件]</code></span></div><div class="sec"><h3>✏️ 练习</h3><p>生成 [2,4,6,8,10] 并打印。</p></div>',
    code:"result = [i*2 for i in range(1,6)]\nprint(result)\n",
-   expect:{type:"contains",val:"[2, 4, 6, 8, 10]"},
-   hints:["[i*2 for i in range(1,6)]"],
-   steps:[{t:"理解",d:"推导式=for+if+表达式"},{t:"基础",d:"[i*2...]"},{t:"过滤",d:"加 if"},{t:"探索",d:"字典推导式"}]
-  },
-  {id:17,title:"装饰器基础",
-   html:'<div class="c-section"><h3>🎀 装饰器</h3><pre><code>def my_deco(func):\n    def wrapper():\n        print(\'开始\')\n        func()\n        print(\'结束\')\n    return wrapper\n\n@my_deco\ndef greet():\n    print(\'你好！\')\n\ngreet()</code></pre></div><div class="box tip"><span class="box-icon">💡</span><span>@装饰器名 放在函数上方，给函数增加前后处理。</span></div><div class="c-section"><h3>✏️ 练习</h3><p>写装饰器 my_decorator，打印"开始"→调用函数→"完成"。</p></div>',
+   ans:{t:"contains",v:"[2, 4, 6, 8, 10]"},
+   hints:["[i*2 for i in range(1,6)]","range(1,6)=1到5"],
+   steps:[{t:"理解",d:"推导式=for+if合并"},{t:"基础",d:"[i*2...]"},{t:"过滤",d:"加 if"},{t:"探索",d:"字典推导式"}]},
+  {id:17,ti:"装饰器基础",
+   html:'<div class="sec"><h3>🎀 装饰器</h3><pre>def my_deco(func):\n    def wrapper():\n        print(\'开始\')\n        func()\n        print(\'结束\')\n    return wrapper\n\n@my_deco\ndef greet():\n    print(\'你好！\')\n\ngreet()</pre></div><div class="box tip"><span class="ico">💡</span><span>@装饰器名 放在函数上方，给函数增加前后处理。</span></div><div class="sec"><h3>✏️ 练习</h3><p>写装饰器 my_decorator，打印"开始"→调用函数→"完成"。</p></div>',
    code:"def my_decorator(func):\n    def wrapper():\n        print('开始执行...')\n        func()\n        print('已完成')\n    return wrapper\n\n@my_decorator\ndef greet():\n    print('Hello Python！')\n\ngreet()\n",
-   expect:{type:"contains",val:"已完成"},
+   ans:{t:"contains",v:"已完成"},
    hints:["装饰器=返回新函数的高阶函数","@放在def上一行"],
-   steps:[{t:"理解",d:"装饰器像包装纸"},{t:"结构",d:"外层+内层wrapper"},{t:"使用",d:"@装饰器名"},{t:"探索",d:"带参数的装饰器"}]
-  },
-  {id:18,title:"正则表达式",
-   html:'<div class="c-section"><h3>🔍 正则表达式</h3><pre><code>import re\ntext = \'I have 3 apples and 5 oranges\'\nnumbers = re.findall(r\'\\d+\', text)\nprint(numbers)  # [\'3\', \'5\']</code></pre></div><div class="box info"><span class="box-icon">📖</span><span>\\d 数字，\\d+ 连续数字，\\w 字母，\\s 空白。</span></div><div class="c-section"><h3>✏️ 练习</h3><p>提取字符串中的数字并打印。</p></div>',
+   steps:[{t:"理解",d:"装饰器像包装纸"},{t:"结构",d:"外层+内层wrapper"},{t:"使用",d:"@装饰器名"},{t:"探索",d:"带参数的装饰器"}]},
+  {id:18,ti:"正则表达式",
+   html:'<div class="sec"><h3>🔍 正则表达式</h3><pre>import re\ntext = \'I have 3 apples and 5 oranges\'\nnumbers = re.findall(r\'\\d+\', text)\nprint(numbers)  # [\'3\', \'5\']</pre></div><div class="box info"><span class="ico">📖</span><span>\\d 数字，\\d+ 连续数字，\\w 字母，\\s 空白。</span></div><div class="sec"><h3>✏️ 练习</h3><p>提取字符串中的数字并打印。</p></div>',
    code:"import re\ntext = '我有3个苹果和5个橘子'\nnumbers = re.findall(r'\\d+', text)\nprint(numbers)\n",
-   expect:{type:"contains",val:"3"},
+   ans:{t:"contains",v:"3"},
    hints:["import re","re.findall(r'\\\\d+', text)"],
-   steps:[{t:"理解",d:"正则像高级通配符"},{t:"数字",d:"\\\\d+"},{t:"提取",d:"re.findall"},{t:"探索",d:"re.sub re.search"}]
-  },
-  {id:19,title:"项目：待办管理器",
-   html:'<div class="c-section"><h3>✅ 待办事项管理器</h3><p>综合：列表+函数+文件。</p><pre><code>import json\ntodos = []\ndef add(task):\n    todos.append({\'task\':task,\'done\':False})\n    print(f\'已添加：{task}\')\n\nadd(\'学完Python\')\nadd(\'做个小项目\')\nprint(todos)</code></pre></div><div class="box tip"><span class="box-icon">💡</span><span>JSON 方便存储结构化数据。</span></div><div class="c-section"><h3>✏️ 练习</h3><p>定义 add_todo(task) 打印"任务：XXX已添加"。</p></div>',
+   steps:[{t:"理解",d:"正则像高级通配符"},{t:"数字",d:"\\\\d+"},{t:"提取",d:"re.findall"},{t:"探索",d:"re.sub re.search"}]},
+  {id:19,ti:"项目：待办管理器",
+   html:'<div class="sec"><h3>✅ 待办事项管理器</h3><p>综合：列表+函数+文件。</p><pre>import json\ntodos = []\ndef add(task):\n    todos.append({\'task\':task,\'done\':False})\n    print(f\'已添加：{task}\')\n\nadd(\'学完Python\')\nadd(\'做个小项目\')\nprint(todos)</pre></div><div class="box tip"><span class="ico">💡</span><span>JSON 方便存储结构化数据。</span></div><div class="sec"><h3>✏️ 练习</h3><p>定义 add_todo(task) 打印"任务：XXX已添加"。</p></div>',
    code:"def add_todo(task):\n    print(f'任务：{task}已添加')\n\nadd_todo('学习Python')\nadd_todo('做运动')\n",
-   expect:{type:"contains",val:"已添加"},
+   ans:{t:"contains",v:"已添加"},
    hints:["def add_todo(task):","f'任务：{task}已添加'"],
-   steps:[{t:"设计",d:"先想功能"},{t:"实现",d:"列表+函数"},{t:"持久化",d:"json"},{t:"完善",d:"异常处理"}]
-  },
-  {id:20,title:"项目：天气查询器",
-   html:'<div class="c-section"><h3>🌤️ 天气查询器</h3><p>综合：字典+函数+API概念。</p><pre><code>weather = {\'北京\':{\'temp\':28,\'cond\':\'晴\'}}\ndef show(city):\n    d = weather.get(city)\n    if d:\n      print(f\'{city}：{d[\"temp\"]}°C {d[\"cond\"]}\')\n    else:\n      print(\'未找到\')\n\nshow(\'北京\')</code></pre></div><div class="box tip"><span class="box-icon">💡</span><span>真实项目用 API 获取天气数据。</span></div><div class="c-section"><h3>✏️ 练习</h3><p>建 weather 字典，函数打印城市天气。</p></div>',
+   steps:[{t:"设计",d:"先想功能"},{t:"实现",d:"列表+函数"},{t:"持久化",d:"json"},{t:"完善",d:"异常处理"}]},
+  {id:20,ti:"项目：天气查询器",
+   html:'<div class="sec"><h3>🌤️ 天气查询器</h3><p>综合：字典+函数+API概念。</p><pre>weather = {\'北京\':{\'temp\':28,\'cond\':\'晴\'}}\ndef show(city):\n    d = weather.get(city)\n    if d:\n      print(f\'{city}：{d["temp"]}°C {d["cond"]}\')\n    else:\n      print(\'未找到\')\n\nshow(\'北京\')</pre></div><div class="box tip"><span class="ico">💡</span><span>真实项目用 API 获取天气数据。</span></div><div class="sec"><h3>✏️ 练习</h3><p>建 weather 字典，函数打印城市天气。</p></div>',
    code:"weather = {'北京': {'temp': 28, 'condition': '晴'}}\n\ndef show_weather(city):\n    d = weather.get(city)\n    if d:\n        print(f'{city}：{d[\"temp\"]}°C，{d[\"condition\"]}')\n    else:\n        print('城市未找到')\n\nshow_weather('北京')\n",
-   expect:{type:"contains",val:"北京"},
+   ans:{t:"contains",v:"北京"},
    hints:["weather = {'北京': {...}}","weather.get(city) 安全访问"],
-   steps:[{t:"设计",d:"嵌套字典"},{t:"查询",d:"get_weather函数"},{t:"扩展",d:"多城市"},{t:"展望",d:"API概念"}]
-  }
+   steps:[{t:"设计",d:"嵌套字典"},{t:"查询",d:"get_weather函数"},{t:"扩展",d:"多城市"},{t:"展望",d:"API概念"}]}
 ];
 
-let cur=0,mode='learn',prog={done:0,hints:{}},runN=0,hintI=0,totalRuns=0,totalAttempts=0,totalPasses=0,streak=0,lessonTimes={},noHintThisLesson=true,speedStartTime=0;
-const achievements=[
-  {id:'first_run',name:'初次运行',desc:'运行了第一段代码',icon:'🚀',check:()=>totalRuns>=1},
-  {id:'five_runs',name:'勤学苦练',desc:'运行了10次代码',icon:'🔥',check:()=>totalRuns>=10},
-  {id:'first_pass',name:'初窥门径',desc:'通过了第1课',icon:'🎓',check:()=>prog.done>=1},
-  {id:'halfway',name:'学有小成',desc:'通过了10课',icon:'⭐',check:()=>prog.done>=10},
-  {id:'all_done',name:'大功告成',desc:'通过了全部20课',icon:'🏆',check:()=>prog.done>=20},
-  {id:'no_hint',name:'独立思考',desc:'一课中没有使用提示',icon:'🧠'},
-  {id:'speed',name:'闪电手',desc:'1秒内完成一课',icon:'⚡'},
-  {id:'try_hard',name:'百折不挠',desc:'同一课运行了5次以上',icon:'💪',check:()=>runN>=5},
-];
-let earnedAch={};try{earnedAch=JSON.parse(localStorage.pl2_ach||'{}')}catch(e){}
-function ld(){try{let p=JSON.parse(localStorage.pl2||'{}');if(p.done!=null)prog=p;let s=JSON.parse(localStorage.pl2stats||'{}');totalAttempts=s.totalAttempts||0;totalPasses=s.totalPasses||0;lessonTimes=s.lessonTimes||{};streak=calcStreak()}catch(e){}}
-function sv(){localStorage.pl2=JSON.stringify(prog);localStorage.pl2stats=JSON.stringify({totalAttempts,totalPasses,lessonTimes,lastDate:localStorage.pl2lastDate||''})}
-function calcStreak(){let d=localStorage.pl2lastDate,today=new Date().toDateString();if(d===today)return parseInt(localStorage.pl2streak||'0');let y=new Date();y.setDate(y.getDate()-1);if(d===y.toDateString()){let s=parseInt(localStorage.pl2streak||'0')+1;localStorage.pl2streak=s;localStorage.pl2lastDate=today;return s}localStorage.pl2streak='1';localStorage.pl2lastDate=today;return 1}
+let cur=0,mode='learn',prog={done:0,hints:{}},totalRuns=0,totalOK=0,hintUsed={},achGot={},startTm=0;
+const S='pl3', AS='pl3_ach';
+function load(){try{let d=JSON.parse(localStorage[S]||'{}');if(d.done!=null)prog=d}catch(e){};try{achGot=JSON.parse(localStorage[AS]||'{}')}catch(e){} }
+function save(){localStorage[S]=JSON.stringify(prog);localStorage[AS]=JSON.stringify(achGot)}
+let dark=false;
+function setDark(v){
+  dark=v;document.getElementById('root').className=dark?'dark':'';
+  const em=dark?'☀️':'🌙';
+  document.getElementById('themeBtn').textContent=em;
+  document.getElementById('fabTheme').textContent=em;
+  localStorage.theme=dark?'dark':'light';
+}
+function toggleTheme(){setDark(!dark)}
 
-function setMode(m){mode=m;loadLsn(cur)}
+function swTab(t){
+  const isLes=t==='lesson';
+  document.getElementById('tbLsn').classList.toggle('on',isLes);
+  document.getElementById('tbEd').classList.toggle('on',!isLes);
+  document.getElementById('panel-lesson').classList.toggle('hide',!isLes);
+  document.getElementById('panel-editor').classList.toggle('hide',isLes);
+  if(!isLes) document.getElementById('codeEl').focus();
+}
+function jumpEd(){swTab('editor');if(window.innerWidth<769)swTab('editor')}
 
-function showTab(t){
-  document.getElementById('tabLsn').classList.toggle('on',t==='content');
-  document.getElementById('tabEd').classList.toggle('on',t==='editor');
-  document.getElementById('contentBody').style.display=t==='content'?'block':'none';
-  document.getElementById('rightPanel').style.display=t==='editor'?'flex':'none';
-  if(t==='editor'){document.getElementById('codeIn').focus();syncHighlight()}
-  if(t==='content') window.scrollTo(0,0);
+function highlight(t){
+  let h=t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  h=h.replace(/(#.*)/g,'<span class="hl-cm">$1</span>');
+  h=h.replace(/(["'])(?:(?=(\\?))\2.)*?\1/g,'<span class="hl-str">$&</span>');
+  'def|class|if|elif|else|for|while|in|return|import|from|as|try|except|finally|with|and|or|not|is|pass|break|continue'.split('|').forEach(k=>h=h.replace(new RegExp('\\b'+k+'\\b','g'),'<span class="hl-kw">$&</span>'));
+  'print|int|float|str|list|dict|set|tuple|range|input|len|append|upper|lower|replace|count|split|join|strip|sum|min|max|abs|round'.split('|').forEach(b=>h=h.replace(new RegExp('\\b('+b+')\\s*\\(','g'),'<span class="hl-fn">$1</span>('));
+  h=h.replace(/\b(True|False|None)\b/g,'<span class="hl-num">$&</span>');
+  h=h.replace(/\b(\d+\.?\d*)\b/g,'<span class="hl-num">$1</span>');
+  return h;
 }
 
-let isDark=false;
-function toggleTheme(){
-  isDark=!isDark;
-  document.getElementById('bodyEl').classList.toggle('dark-mode',isDark);
-  document.getElementById('themeBtn').textContent=isDark?'☀️':'🌙';
-  localStorage.theme=isDark?'dark':'light';
-}
-document.getElementById('bodyEl').classList.toggle('dark-mode',localStorage.theme==='dark');
-isDark=localStorage.theme==='dark';
-document.getElementById('themeBtn').textContent=isDark?'☀️':'🌙';
-
-/* ---- Editor syntax highlighting & line numbers (overlay technique) ---- */
-function setupEditor(){
-  const editor = document.getElementById('editorEl');
-  const ta = document.getElementById('codeIn');
-  // Wrap textarea in overlay container
-  const wrap = document.createElement('div');
-  wrap.className = 'ed-wrap';
-  const ln = document.createElement('div');
-  ln.className = 'ed-ln';
-  ln.id = 'edLn';
-  const hl = document.createElement('pre');
-  hl.className = 'ed-hl';
-  hl.id = 'edHl';
-  hl.setAttribute('aria-hidden','true');
-  ta.parentNode.insertBefore(wrap, ta);
-  wrap.appendChild(ln);
-  wrap.appendChild(hl);
-  wrap.appendChild(ta);
-  // Sync highlight and line numbers on input
-  ta.addEventListener('input', syncHighlight);
-  ta.addEventListener('scroll', syncScroll);
-  // Tab key inserts 4 spaces
-  ta.addEventListener('keydown', function(e){
-    if(e.key==='Tab'){e.preventDefault();const s=ta.selectionStart;ta.value=ta.value.slice(0,s)+'    '+ta.value.slice(ta.selectionEnd);ta.selectionStart=ta.selectionEnd=s+4;syncHighlight()}
-  });
-  syncHighlight();
+function updHL(){
+  const t=document.getElementById('codeEl').value;
+  const ls=t.split('\n');
+  document.getElementById('lnEl').innerHTML=Array.from({length:Math.max(ls.length,1)},(_,i)=>'<span>'+(i+1)+'</span>').join('');
+  document.getElementById('hlEl').innerHTML=highlight(t)+'\n';
+  document.getElementById('hlEl').style.transform='translateY(-'+document.getElementById('codeEl').scrollTop+'px)';
 }
 
-function syncScroll(){
-  const ta = document.getElementById('codeIn');
-  const st = ta.scrollTop;
-  document.getElementById('edLn').scrollTop = st;
-  document.getElementById('edHl').scrollTop = st;
+function fmt(){
+  let t=document.getElementById('codeEl').value;
+  document.getElementById('codeEl').value=t.split('\n').map(l=>{let m=l.match(/^(\s*)/);return m?' '.repeat(Math.round(m[0].length/4)*4)+l.trimStart():l}).join('\n');
+  updHL();
 }
-
-function syncHighlight(){
-  const ta = document.getElementById('codeIn');
-  const code = ta.value;
-  document.getElementById('edHl').innerHTML = highlight(code)+'\n';
-  const lines = (code.match(/\n/g)||[]).length + 1;
-  document.getElementById('edLn').textContent = Array.from({length:lines},(_,i)=>i+1).join('\n')+'\n';
-}
-
-function highlight(code){
-  let html = code.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  // Comments (# to end of line)
-  html = html.replace(/(#.*)$/gm,'<span class="hl-cm">$1</span>');
-  // Strings (single and double quoted, including escaped quotes)
-  html = html.replace(/(?<!\\)(')(?:(?!\1|\\).|\\.)*\1/g, function(m){
-    if(m.includes('#')&&m.indexOf('#')<m.indexOf(m[0]))return m; // skip if already hashl-cm
-    return '<span class="hl-str">'+m+'</span>';
-  });
-  html = html.replace(/(?<!\\)(")(?:(?!\1|\\).|\\.)*\1/g, '<span class="hl-str">$&</span>');
-  // Keywords
-  html = html.replace(/\b(def|class|if|else|elif|for|while|import|from|return|try|except|with|as|in|and|or|not|True|False|None|pass|break|continue|print|range|len|int|float|str|list|dict|tuple|set|open|input|yield|lambda|raise|assert|del|global|is)\b/g, '<span class="hl-kw">$1</span>');
-  return html;
-}
+function cpy(){navigator.clipboard.writeText(document.getElementById('codeEl').value).then(()=>toast('✅ 已复制'))}
 
 function loadLsn(i){
-  cur=i;hintI=prog.hints[i]||0;
-  const c=courses[i];
-  let html;
-  if(mode==='learn'){
-    html=c.html;
-  }else{
-    html=`<h3 style="margin-bottom:12px">📖 ${c.title} — 跟着走</h3>`;
-    c.steps.forEach((s,si)=>html+=`<div class="step"><div class="sn">${si+1}</div><div><strong>${s.t}</strong>${s.d}</div></div>`);
-    html+='<div class="box tip"><span class="box-icon">💡</span><span>完成后切换到<strong>编辑</strong>动手试试！</span></div>';
-  }
-  document.getElementById('contentBody').innerHTML=html;
-  document.getElementById('codeIn').value=c.code;
-  document.getElementById('consoleEl').innerHTML='点击 ▶ 运行 执行代码';
-  document.getElementById('nextBtn').disabled=i+1>prog.done;
-  document.getElementById('hintBtn').textContent='💡 提示('+(c.hints.length-hintI)+')';
-  document.getElementById('hintBtn').disabled=hintI>=c.hints.length;
+  cur=i;startTm=Date.now();hintUsed[cur]=false;
+  const c=C[i];
+  let html=c.html;
+  document.getElementById('panel-lesson').innerHTML=html;
+  document.getElementById('codeEl').value=c.code;
+  document.getElementById('conEl').innerHTML='▶ 点击「运行」执行代码 · Ctrl+Enter';
+  updHL();
+  const ok=i+1<=prog.done;
+  document.getElementById('nextBtn').disabled=!ok;
+  document.getElementById('nextBtn2').disabled=!ok;
   renderChips();
-  document.getElementById('pct').textContent=prog.done+'/20';
-  noHintThisLesson=true;
-  speedStartTime=Date.now();
-  syncHighlight();
+  renderAch();
+  updateStats();
+  document.getElementById('badgePct').textContent=prog.done+'/20';
+  document.getElementById('aiMsg').innerHTML='你好！有什么问题直接问，我帮你~';
 }
 
 function renderChips(){
-  const el=document.getElementById('contentBody');
-  const existing=el.querySelector('.lsn');
-  if(existing) existing.remove();
-  let chips='<div class="lsn">';
-  courses.forEach((c,i)=>{
+  let el=document.querySelector('#panel-lesson .chips');
+  if(!el){el=document.createElement('div');el.className='chips';document.getElementById('panel-lesson').insertBefore(el,document.getElementById('panel-lesson').firstChild)}
+  let h='';
+  C.forEach((c,i)=>{
     let cls='chip';
-    if(i<prog.done) cls+=' done';
-    if(i===cur) cls+=' on';
-    if(i>prog.done) cls+=' lock';
-    const icon=i<prog.done?'✓':(c.title.slice(0,2));
-    chips+=`<span class="${cls}" onclick="loadLsn(${i});document.getElementById('contentBody').scrollTop=0">${icon} ${c.title}</span>`;
+    if(i<prog.done) cls+=' done';if(i===cur) cls+=' on';
+    h+='<button class="'+cls+'" onclick="loadLsn('+i+');document.getElementById(\'panel-lesson\').scrollTop=0">'+(i<prog.done?'✓':c.ti.slice(0,2))+' '+c.ti+'</button>';
   });
-  chips+='</div>';
-  el.insertAdjacentHTML('afterbegin',chips);
+  el.innerHTML=h;
 }
 
 function execPy(code){
-  let p=code;
-  // ---- 0: with open file ----
-  p=p.replace(/with open\(['"](.+?)['"],\s*['"]w['"]\)\s+as\s+(\w+):\s*\n\s+\2\.write\((.+)\)/g,"_fw('$1',$3)");
-  p=p.replace(/with open\(['"](.+?)['"],\s*['"]r['"]\)\s+as\s+(\w+):\s*\n\s+print\(\2\.read\(\)\)/g,"_p(_fr('$1'))");
-  p=p.replace(/with open\(['"](.+?)['"],\s*['"]r['"]\)\s+as\s+(\w+):\s*\n\s+(\w+)\s*=\s*\2\.read\(\)/g,"$3=_fr('$1')");
-  // ---- 1: comments ----
-  p=p.replace(/#.*/g,'');
-  // ---- 2: print / input ----
-  p=p.replace(/print\((.*)\)/g,'_p($1)');
-  p=p.replace(/input\((.*)\)/g,'_in($1)');
-  // ---- 3: import json ----
+  let p=code.replace(/#.*/g,'').replace(/print\((.*)\)/g,'_p($1)').replace(/input\((.*)\)/g,'_in($1)');
+  p=p.replace(/import re\n?/g,'');
+  p=p.replace(/re\.findall\(r'([^']*)',\s*(.+?)\)/g,'($2.match(new RegExp(String.raw`$1`,"g"))||[])');
+  p=p.replace(/re\.findall\(r"([^"]*)",\s*(.+?)\)/g,'($2.match(new RegExp(String.raw`$1`,"g"))||[])');
+  p=p.replace(/re\.sub\(r'([^']*)',\s*'([^']*)',\s*(.+?)\)/g,'$3.replace(new RegExp(String.raw`$1`,"g"),"$2")');
   p=p.replace(/import json\n?/g,'');
   p=p.replace(/json\.loads\((.+?)\)/g,'JSON.parse($1)');
   p=p.replace(/json\.dumps\((.+?)\)/g,'JSON.stringify($1)');
-  // ---- 4: import re - WITH ESCAPED BACKSLASH HANDLING ----
-  p=p.replace(/import re\n?/g,'');
-  // Handle raw strings: re.findall(r'\d+', text) -> text.match(/\d+/g)
-  p=p.replace(/re\.findall\(r'([^']*)',\s*(.+?)\)/g,'($2.match(new RegExp(String.raw`$1`,"g"))||[])');
-  p=p.replace(/re\.findall\(r"([^"]*)",\s*(.+?)\)/g,'($2.match(new RegExp(String.raw`$1`,"g"))||[])');
-  p=p.replace(/re\.findall\(([^,]+),\s*([^)]+)\)/g,'($2.match(new RegExp($1,"g"))||[])');
-  p=p.replace(/re\.sub\(r'([^']*)',\s*'([^']*)',\s*(.+?)\)/g,'$3.replace(new RegExp(String.raw`$1`,"g"),"$2")');
-  p=p.replace(/re\.sub\(r"([^"]*)",\s*"([^"]*)",\s*(.+?)\)/g,'$3.replace(new RegExp(String.raw`$1`,"g"),"$2")');
-  p=p.replace(/re\.search\(r'([^']*)',\s*(.+?)\)/g,'new RegExp(String.raw`$1`).test($2)');
-  p=p.replace(/re\.search\(r"([^"]*)",\s*(.+?)\)/g,'new RegExp(String.raw`$1`).test($2)');
-  // ---- 5: import math ----
   p=p.replace(/import math\n?/g,'');
   p=p.replace(/math\.sqrt\((.+?)\)/g,'Math.sqrt($1)');
   p=p.replace(/math\.pi\b/g,'Math.PI');
   p=p.replace(/math\.ceil\((.+?)\)/g,'Math.ceil($1)');
   p=p.replace(/math\.floor\((.+?)\)/g,'Math.floor($1)');
-  p=p.replace(/math\.abs\((.+?)\)/g,'Math.abs($1)');
-  // ---- 6: import random ----
-  p=p.replace(/import random\n?/g,'');p=p.replace(/from random import \w+\n?/g,'');
+  p=p.replace(/import random\n?/g,'');
   p=p.replace(/random\.randint\((\d+),(\d+)\)/g,'Math.floor(Math.random()*($2-$1+1))+$1');
   p=p.replace(/random\.random\(\)/g,'Math.random()');
   p=p.replace(/random\.choice\((.+?)\)/g,'$1[Math.floor(Math.random()*$1.length)]');
-  // ---- 7: datetime ----
   p=p.replace(/from datetime import datetime\n?/g,'');
   p=p.replace(/datetime\.now\(\)\.strftime\((.+?)\)/g,'_dtf(new Date(),$1)');
   p=p.replace(/datetime\.now\(\)/g,'new Date()');
-  // ---- 8: type conversions & methods ----
   p=p.replace(/int\((.*)\)/g,'parseInt($1)');
   p=p.replace(/float\((.*)\)/g,'parseFloat($1)');
   p=p.replace(/(\w+)\.append\((.*)\)/g,'$1.push($2)');
   p=p.replace(/(\w+)\.upper\(\)/g,'$1.toUpperCase()');
   p=p.replace(/(\w+)\.lower\(\)/g,'$1.toLowerCase()');
   p=p.replace(/(\w+)\.replace\(([^,]+),\s*([^)]+)\)/g,'$1.replaceAll($2,$3)');
-  // ---- 9: range / len ----
   p=p.replace(/range\((\d+),\s*(\d+)\)/g,'Array.from({length:$2-$1},(_,i)=>i+$1)');
   p=p.replace(/range\((\d+)\)/g,'Array.from({length:$1},(_,i)=>i)');
   p=p.replace(/len\((\w+)\)/g,'$1.length');
-  // ---- 10: control flow ----
   p=p.replace(/elif /g,'else if ');
   p=p.replace(/def (\w+)\(([^)]*)\):/g,'function $1($2){');
   p=p.replace(/:$/gm,'{');
-  // ---- 11: constants ----
-  p=p.replace(/True/g,'true');p=p.replace(/False/g,'false');
-  p=p.replace(/None/g,'null');p=p.replace(/\band\b/g,'&&');p=p.replace(/\bor\b/g,'||');
-  // ---- 12: for loops ----
+  p=p.replace(/True/g,'true');p=p.replace(/False/g,'false');p=p.replace(/None/g,'null');
+  p=p.replace(/\band\b/g,'&&');p=p.replace(/\bor\b/g,'||');
   p=p.replace(/for (\w+) in (\w+):/g,'for(let $1 of $2){');
-  // ---- 13: brace balance ----
   let bc=0;const ls=p.split('\n').map(l=>{if(!l.trim())return l;bc+=(l.match(/\{/g)||[]).length;bc-=(l.match(/\}/g)||[]).length;return l});
   for(let i=0;i<bc;i++)ls.push('}');
   p=ls.join('\n');
-  // ---- sandbox with file I/O simulation ----
-  const sb='const _o=[];const _p=(...a)=>_o.push(a.join(" "));'+
-    'const _in=p=>{try{let v=prompt(p||"输入：","");return v===null?"":v}catch(e){return""}};'+
-    'const _fw=(n,c)=>{try{localStorage.setItem("_f_"+n,String(c))}catch(e){}};'+
-    'const _fr=n=>{try{return localStorage.getItem("_f_"+n)||""}catch(e){return""}};'+
-    'const _fread=n=>{try{return localStorage.getItem("_f_"+n)||""}catch(e){return""}};'+
-    'const _dtf=(d,f)=>{try{const y=d.getFullYear(),m=d.getMonth()+1,da=d.getDate(),h=d.getHours(),mn=d.getMinutes(),s=d.getSeconds();let r=f.replace("%Y",y).replace("%m",String(m).padStart(2,"0")).replace("%d",String(da).padStart(2,"0")).replace("%H",String(h).padStart(2,"0")).replace("%M",String(mn).padStart(2,"0")).replace("%S",String(s).padStart(2,"0"));return r}catch(e){return""}};'+
-    'const _open=(n,m)=>({write:c=>_fw(n,c),read:()=>_fr(n),__str:n});'+
-    'try{'+p+'}catch(e){_o.push("ERR:"+e.message)}return _o.join("\\n");';
+  const sb='const _o=[];const _p=(...a)=>_o.push(a.join(" "));const _in=p=>{try{let v=prompt(p||"输入：","");return v===null?"":v}catch(e){return""}};const _fw=(n,c)=>{try{localStorage.setItem("_f_"+n,String(c))}catch(e){}};const _fr=n=>{try{return localStorage.getItem("_f_"+n)||""}catch(e){return""}};const _dtf=(d,f)=>{try{const y=d.getFullYear(),m=d.getMonth()+1,da=d.getDate(),h=d.getHours(),mn=d.getMinutes(),s=d.getSeconds();let r=f.replace("%Y",y).replace("%m",String(m).padStart(2,"0")).replace("%d",String(da).padStart(2,"0")).replace("%H",String(h).padStart(2,"0")).replace("%M",String(mn).padStart(2,"0")).replace("%S",String(s).padStart(2,"0"));return r}catch(e){return""}};try{'+p+'}catch(e){_o.push("ERR:"+e.message)}return _o.join("\\n");';
   try{const fn=new Function(sb);const r=fn();return r.startsWith('ERR:')?{ok:false,err:r.slice(4)}:{ok:true,out:r}}
-  catch(e){return{ok:false,err:e.message||'未知执行错误'}}
+  catch(e){return{ok:false,err:e.message}}
 }
+
 function trErr(m){
-  if(!m)return'❌ 未知错误：请检查代码编写';
-  const t=[{p:/SyntaxError|unexpected/i,m:'语法错误：检查括号引号冒号',tip:'if后写冒号，括号成对'},
-  {p:/not defined/i,m:'名称错误：变量没定义或拼错',tip:'先赋值再用'},
-  {p:/cannot read|null/i,m:'属性错误：方法不存在',tip:'数字没有.upper()'},
-  {p:/infinite/i,m:'可能无限循环',tip:'检查range()'},
-  {p:/zero/i,m:'除零错误',tip:'分母不能是0'},
-  {p:/NaN/i,m:'数值错误',tip:'用int()或float()转换'},
-  {p:/TypeError/i,m:'类型错误：检查参数类型',tip:'字符串不能和数字直接相加'},
-  {p:/RangeError/i,m:'范围错误：数值超出限制',tip:'检查数组索引或递归深度'},
-  {p:/ReferenceError/i,m:'引用错误：变量未声明',tip:'先定义变量再使用'}];
+  if(!m)return'未知错误';
+  const t=[{p:/SyntaxError|unexpected/i,m:'语法错误：检查括号/引号/冒号',tip:'if后写冒号，括号要成对'},{p:/not defined/i,m:'名称错误：变量没定义或拼错',tip:'先赋值再用'},{p:/cannot read|null/i,m:'属性错误：方法不存在',tip:'数字没有.upper()'},{p:/infinite/i,m:'可能无限循环',tip:'检查range()'},{p:/zero/i,m:'除零错误',tip:'分母不能是0'},{p:/NaN/i,m:'数值错误',tip:'用int()/float()转换'}];
   for(let e of t)if(e.p.test(m))return'❌ '+e.m+'\n💡 '+e.tip;
-  const msg=(typeof m==='string'?m:String(m)).split('\n')[0]||'未知错误';
-  return'❌ '+msg+'\n💡 检查代码';
-}
-const translateErr=trErr;
-
-function updateStats(){
-  const sR=document.getElementById('statRuns');
-  const sD=document.getElementById('statDone');
-  if(sR)sR.textContent=totalRuns;
-  if(sD)sD.textContent=prog.done;
+  let s=String(m).split('\n')[0]||'未知错误';
+  return'❌ '+s+'\n💡 检查代码';
 }
 
-function runCode(){
-  const code=document.getElementById('codeIn').value.trim();
-  const ce=document.getElementById('consoleEl');
-  if(!code){ce.innerHTML='<span class="c-err">请输入代码后再运行</span>';return}
-  ce.innerHTML='<span class="c-info">⏳ 运行中...</span>';
-  const btn=document.querySelector('.btn-run');
-  btn.textContent='⏳';btn.style.pointerEvents='none';
+function exec(){
+  const code=document.getElementById('codeEl').value.trim();
+  const ce=document.getElementById('conEl');
+  if(!code){ce.innerHTML='<span class="err">请先输入代码</span>';return}
+  ce.innerHTML='<span class="info">⏳ 运行中...</span>';
   setTimeout(()=>{
-    btn.textContent='▶ 运行';btn.style.pointerEvents='';
-    totalAttempts++;runN++;totalRuns++;sv();speedStartTime=Date.now();updateStats();
-    const r=execPy(code);
+    totalRuns++;const r=execPy(code);
     if(r.ok){
       const o=r.out||'(无输出)';
-      ce.innerHTML='<span class="c-out">'+o.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')+'</span>';
+      ce.innerHTML='<span class="out">'+o.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')+'</span>';
       check(o.trim());
     }else{
-      ce.innerHTML='<span class="c-err">'+trErr(r.err).replace(/\n/g,'<br>')+'</span>';
+      ce.innerHTML='<span class="err">'+trErr(r.err).replace(/\n/g,'<br>')+'</span>';
       document.getElementById('nextBtn').disabled=true;
+      document.getElementById('nextBtn2').disabled=true;
     }
-  },100);
+    updateStats();
+  },120);
 }
 
 function check(o){
-  const c=courses[cur],ex=c.expect,ce=document.getElementById('consoleEl');
-  // Guard: missing expect data
-  if(!ex||!ex.type){document.getElementById('nextBtn').disabled=false;return;}
-  let pass = ex.type==='exact'?o===ex.val:o.includes(ex.val);
-  if(!pass&&ex.type==='contains'&&(cur===9||cur===10)&&o.length>8) pass=true;
+  const c=C[cur],ex=c.ans,ce=document.getElementById('conEl');
+  if(!ex||!ex.t){return}
+  let pass=ex.t==='exact'?o===ex.v:o.includes(ex.v);
+  if(!pass&&ex.t==='contains'&&[9,10].includes(cur+1)&&o.length>8) pass=***
   if(pass&&cur>=prog.done){
-    prog.done=cur+1;totalPasses++;sv();if(speedStartTime){lessonTimes[cur]=(Date.now()-speedStartTime)/1000;speedStartTime=0}updateStats();
+    prog.done=cur+1;totalOK++;save();
     document.getElementById('nextBtn').disabled=false;
-    document.getElementById('pct').textContent=prog.done+'/20';
-    ce.innerHTML+='<br><br><span class="c-ok">🎉 太棒了！通过了！</span>';
-    spawnConfetti();
-    setTimeout(()=>{renderChips();if(window.innerWidth<768){showTab('content');document.getElementById('contentBody').scrollTop=0}},400);
+    document.getElementById('nextBtn2').disabled=false;
+    document.getElementById('badgePct').textContent=prog.done+'/20';
+    ce.innerHTML+='\n\n<span class="ok">🎉 太棒了！通过了！</span>';
+    confetti();
+    checkAch();
+    setTimeout(()=>{renderChips();renderChips();renderAch();if(window.innerWidth<768){swTab('lesson');document.getElementById('panel-lesson').scrollTop=0}},400);
   }else if(pass){
-    totalPasses++;sv();
     document.getElementById('nextBtn').disabled=false;
-    ce.innerHTML+='<br><br><span class="c-info">✅ 正确！</span>';
+    document.getElementById('nextBtn2').disabled=false;
+    ce.innerHTML+='\n\n<span class="info">✅ 正确！</span>';
+    checkAch();
   }else if(o){
-    ce.innerHTML+='<br><br><span class="c-info">🤔 不太对？点"提示"看看</span>';
+    ce.innerHTML+='\n\n<span class="info">🤔 不太对？点"💡提示"看看</span>';
   }
 }
 
-function resetCode(){
-  document.getElementById('codeIn').value=courses[cur].code;
-  document.getElementById('consoleEl').innerHTML='代码已重置';
+function reset(){
+  document.getElementById('codeEl').value=C[cur].code;updHL();
+  document.getElementById('conEl').innerHTML='代码已重置';
   document.getElementById('nextBtn').disabled=cur+1>prog.done;
-  runN=0;
-  syncHighlight();
+  document.getElementById('nextBtn2').disabled=cur+1>prog.done;
 }
 
-function showHint(){
-  const c=courses[cur];
-  let idx=prog.hints[cur]||0;
+function hint(){
+  const c=C[cur];let idx=prog.hints[cur]||0;
   if(idx>=c.hints.length) idx=0;
-  document.getElementById('consoleEl').innerHTML+='\n\n<span class="c-hint">💡 提示：'+c.hints[idx]+'</span>';
-  prog.hints[cur]=idx+1;sv();hintI=idx+1;
-  if(hintI>=c.hints.length) prog.hints[cur]=0;
-  document.getElementById('hintBtn').textContent='💡 提示(♾)';
-  document.getElementById('hintBtn').disabled=false;
-  noHintThisLesson=false;
+  hintUsed[cur]=***document.getElementById('conEl').innerHTML+='\n\n<span class="hint">💡 '+c.hints[idx]+'</span>';
+  prog.hints[cur]=idx+1;save();
+  if(prog.hints[cur]>=c.hints.length) prog.hints[cur]=0;
 }
 
-function nextLesson(){
-  if(cur+1<courses.length&&cur+1<=prog.done){
-    loadLsn(cur+1);
-    document.getElementById('contentBody').scrollTop=0;
-    // Auto switch to code tab on mobile
-    if(window.innerWidth<768) showTab('editor');
-    toast('已进入第'+(cur+2)+'课');
-  }
+function next(){
+  if(cur+1<C.length&&cur+1<=prog.done){loadLsn(cur+1);document.getElementById('panel-lesson').scrollTop=0;toast('已进入第'+(cur+2)+'课')}
 }
 
-/* ===== AI Chat Engine ===== */
-function toggleAiChat(){
-  var c=document.getElementById('aiChat');
-  if(!c) return;
-  c.classList.toggle('show');
-  if(c.classList.contains('show')){setTimeout(function(){var i=document.getElementById('aiInput');if(i)i.focus();},100)}
-}
-function aiReply(q){
-  var t=q.trim();
-  if(!t) return '请把问题写详细一点，我帮你看看！😊';
-  var l=t.toLowerCase();
-  if(l.indexOf('print')!==-1) return '📖 <b>print() 用法</b><br><br>print() 在屏幕上显示内容：<br><code>print("你好")</code> → 输出 你好<br><code>print(1+2)</code> → 输出 3<br><br>多个参数逗号分隔：<code>print("结果是",100)</code>';
-  if(l.indexOf('变量')!==-1||l.indexOf('赋值')!==-1) return '📦 <b>变量与赋值</b><br><br>变量就像带名字的盒子：<br><code>name="小明"</code><br><code>score=95</code><br><br>使用时写变量名：<code>print(score)</code><br>⚠️ 一个=赋值，两个==比较！';
-  if(l.indexOf('if')!==-1||l.indexOf('判断')!==-1) return '🔀 <b>if 条件判断</b><br><br><code>if 条件:</code><br>&nbsp;&nbsp;&nbsp;&nbsp;<code>print("成立")</code><br><code>else:</code><br>&nbsp;&nbsp;&nbsp;&nbsp;<code>print("不成立")</code><br><br>⚠️ if 后写冒号，下一行缩进4个空格！';
-  if(l.indexOf('for')!==-1||l.indexOf('循环')!==-1) return '🔄 <b>for 循环</b><br><br><code>for i in range(5):</code><br>&nbsp;&nbsp;&nbsp;&nbsp;<code>print(i)</code><br>输出 0 1 2 3 4。<br><br><code>range(1,6)</code> 生成1到5。<br>⚠️ for 后也要写冒号！';
-  if(l.indexOf('函数')!==-1||l.indexOf('def')!==-1) return '🛠️ <b>定义函数 def</b><br><br><code>def 函数名():</code><br>&nbsp;&nbsp;&nbsp;&nbsp;<code>print("内容")</code><br><br>调用：<code>函数名()</code><br>先定义再调用！';
-  if(l.indexOf('错误')!==-1||l.indexOf('报错')!==-1||l.indexOf('不对')!==-1) return '🔧 <b>常见错误排查</b><br><br>检查一下引号配对、冒号写对、缩进用4个空格。把错误信息发给我帮你看看！';
-  return '💪 <b>别急，慢慢来！</b><br><br>编程是一步步学会的。你可以问：<br>• print 怎么用？<br>• 变量怎么赋值？<br>• if 怎么写？<br>• 我的代码报错了怎么办？<br><br>把具体问题发给我！😊';
-}
-(function(){
-  var sb=document.getElementById('statsBar');
-  if(!sb) return;
-  var d=document.createElement('div');
-  d.id='aiChat';
-  d.className='ai-chat';
-  d.innerHTML='<div class="ai-header">🤖 AI 答疑助手</div>'+'<div class="ai-msg" id="aiMsg">你好！我是你的 Python 学习助手～<br>有问题随时问我，比如：print 怎么用？</div>'+'<div class="ai-input">'+'<input id="aiInput" placeholder="比如：为什么我的代码报错了？" onkeydown="if(event.key===' + "'" + 'Enter' + "'" + ')askAi()">'+'<button onclick="askAi()">发送</button>'+'</div>';
-  sb.insertAdjacentElement('afterend',d);
-})();
-function askAi(){
-  var i=document.getElementById('aiInput');
-  var m=document.getElementById('aiMsg');
-  if(!i||!m) return;
-  m.innerHTML=aiReply(i.value);
-  i.value='';
-  i.focus();
+function toggleAI(){document.getElementById('aiBox').classList.toggle('show')}
+function askAI(){
+  const q=document.getElementById('aiIn').value.trim(),msg=document.getElementById('aiMsg');
+  if(!q)return;
+  let a;
+  const ql=q.toLowerCase();
+  if(ql.includes('print'))a='print() 用来在屏幕上打印文字。用法：<br><code>print("你好")</code><br>文字必须用引号包起来！';
+  else if(ql.includes('变量')||ql.includes('赋值'))a='变量像一个带名字的盒子：<br><code>name = "小明"</code><br>然后用 print(name) 查看。<br>注意：变量名不加引号！';
+  else if(ql.includes('if')||ql.includes('判断'))a='if 语句让程序做选择：<br><code>if x > 10:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("大于10")</code><br>记住：冒号和缩进！';
+  else if(ql.includes('for')||ql.includes('循环'))a='for 循环重复执行代码：<br><code>for i in range(5):<br>&nbsp;&nbsp;&nbsp;&nbsp;print(i)</code><br>range(5) 生成 0,1,2,3,4';
+  else if(ql.includes('函数')||ql.includes('def'))a='用 def 定义函数：<br><code>def greet():<br>&nbsp;&nbsp;&nbsp;&nbsp;print("你好")</code><br>然后用 greet() 来调用它。';
+  else if(ql.includes('错误')||ql.includes('报错'))a='常见错误检查：<br>1. 引号是否成对？<br>2. 冒号写了吗？<br>3. 缩进是4个空格吗？<br>具体报错发我看看~';
+  else if(ql.includes('列表'))a='列表用 []，比如：<br><code>nums = [1,2,3]</code><br>用 nums[0] 取第一个。<br>注意索引从 0 开始！';
+  else if(ql.includes('字典'))a='字典用 {} 存储键值对：<br><code>d = {"name":"小明","age":18}</code><br>用 d["name"] 访问值。';
+  else a='很好的问题！建议先看看当前课程的教程内容，或者试试点"💡 提示"按钮获取线索。多动手写代码是最快的进步方式~';
+  msg.innerHTML='<b>Q:</b> '+q+'<br><br><b>A:</b> '+a;
+  document.getElementById('aiIn').value='';
 }
 
-function spawnConfetti(){
-  checkAchievements();
-  const colors=['#fbbf24','#f472b6','#818cf8','#34d399','#fb923c'];
-  for(let i=0;i<30;i++){
-    const el=document.createElement('div');
-    Object.assign(el.style,{
-      position:'fixed',zIndex:999,pointerEvents:'none',
-      left:Math.random()*100+'%',top:'-10px',
-      width:8+Math.random()*8+'px',height:8+Math.random()*8+'px',
-      background:colors[i%5],borderRadius:'2px',
-      animation:'confettiDrop '+(1.5+Math.random()*1.5)+'s ease-out '+Math.random()*0.5+'s forwards'
-    });
-    document.body.appendChild(el);
-    setTimeout(()=>el.remove(),2500);
-  }
+// Stats
+function updateStats(){
+  document.getElementById('statRuns').textContent=totalRuns;
+  document.getElementById('statDone').textContent=prog.done;
+  const acc=totalRuns>0?Math.round(totalOK/totalRuns*100):'--';
+  document.getElementById('statAcc').textContent=acc;
 }
 
-function toast(msg){
-  const el=document.createElement('div');
-  el.className='toast';el.textContent=msg;
-  document.getElementById('toastC').appendChild(el);
-  setTimeout(()=>el.remove(),1500);
+// Dashboard
+function openDash(){
+  document.getElementById('dv1').textContent=totalRuns;
+  document.getElementById('dv2').textContent=prog.done;
+  const acc=totalRuns>0?Math.round(totalOK/totalRuns*100)+'%':'--';
+  document.getElementById('dv3').textContent=acc;
+  document.getElementById('dv4').textContent=calcStreak();
+  let ph='';C.forEach((_,i)=>{ph+='<span'+(i<prog.done?' class="done"':'')+'>'+(i<prog.done?'✓':i+1)+'</span>'});
+  document.getElementById('dashProg').innerHTML=ph;
+  document.getElementById('dashBg').classList.add('show');
+}
+function closeDash(){document.getElementById('dashBg').classList.remove('show')}
+function calcStreak(){
+  let n=parseInt(localStorage._streak||'0');
+  let ld=parseInt(localStorage._lastDate||'0');
+  let td=new Date().toDateString();let tdNum=Date.parse(td);
+  if(!ld||tdNum-ld>86400000){n=1}else if(tdNum-ld>0&&tdNum-ld<=86400000){n++}
+  localStorage._streak=n;localStorage._lastDate=tdNum;
+  return n;
 }
 
-function checkAchievements(){
-  let changed=false;
-  achievements.forEach(a=>{
-    if(earnedAch[a.id])return;
-    let pass=false;
-    if(a.id==='speed'){pass=Date.now()-speedStartTime<1000}
-    else if(a.id==='no_hint'){pass=noHintThisLesson}
-    else if(a.check){pass=a.check()}
-    if(pass){earnedAch[a.id]=Date.now();changed=true;showAchPopup(a)}
+// Achievements
+const ACH=[
+  {id:'first_run',nm:'初次运行',ic:'🚀',d:'运行了第一段代码',c:()=>totalRuns>=1},
+  {id:'ten_runs',nm:'勤学苦练',ic:'🔥',d:'运行了10次代码',c:()=>totalRuns>=10},
+  {id:'first_pass',nm:'初窥门径',ic:'🎓',d:'通过了第1课',c:()=>prog.done>=1},
+  {id:'halfway',nm:'学有小成',ic:'⭐',d:'通过了10课',c:()=>prog.done>=10},
+  {id:'all_done',nm:'大功告成',ic:'🏆',d:'通过了全部20课',c:()=>prog.done>=20},
+  {id:'fifty_runs',nm:'码不停蹄',ic:'💻',d:'运行了50次代码',c:()=>totalRuns>=50},
+];
+function checkAch(){
+  ACH.forEach(a=>{
+    if(!achGot[a.id]&&a.c()){achGot[a.id]=true;save();achPop(a);renderAch();renderAch()}
   });
-  if(changed){localStorage.setItem('pl2_ach',JSON.stringify(earnedAch));renderAchBar()}
 }
-
-function showAchPopup(a){
-  const el=document.createElement('div');
-  el.className='ach-popup';
-  el.innerHTML=`<span style="font-size:24px">${a.icon}</span><span>🏅 成就解锁：${a.name}<br><small style="font-weight:400;opacity:.7">${a.desc}</small></span>`;
+function achPop(a){
+  const el=document.createElement('div');el.className='ach-pop';
+  el.innerHTML=a.ic+' <b>成就解锁：'+a.nm+'</b> '+a.d;
   document.body.appendChild(el);
-  setTimeout(()=>{el.style.opacity='0';el.style.transition='opacity .3s';setTimeout(()=>el.remove(),300)},2500);
+  setTimeout(()=>el.remove(),3000);
+}
+function renderAch(){
+  const el=document.getElementById('achBar');
+  el.innerHTML=ACH.map(a=>'<span class="ach-badge'+(achGot[a.id]?' got':'')+'">'+a.ic+' '+a.nm+'</span>').join('');
 }
 
-function renderAchBar(){
-  let bar=document.getElementById('achBar');
-  if(!bar){
-    bar=document.createElement('div');
-    bar.id='achBar';
-    bar.className='ach-bar';
-    const sb=document.getElementById('statsBar');
-    if(sb)sb.insertAdjacentElement('afterend',bar);
-  }
-  bar.innerHTML=achievements.map(a=>`<span class="ach-badge${earnedAch[a.id]?' earned':''}">${a.icon} ${a.name}</span>`).join('');
+function confetti(){
+  const cf=document.getElementById('cfEl'),cs=['#fbbf24','#f472b6','#818cf8','#34d399','#fb923c'];
+  let h='';for(let i=0;i<30;i++){h+='<span style="left:'+Math.random()*100+'%;background:'+cs[i%5]+';animation-delay:'+Math.random()*.5+'s;animation-duration:'+(1.5+Math.random()*1.5)+'s;width:'+(6+Math.random()*8)+'px;height:'+(6+Math.random()*8)+'px"></span>'}
+  cf.innerHTML=h;setTimeout(()=>cf.innerHTML='',2500);
 }
 
-// Keyboard
-document.addEventListener('keydown',e=>{
-  if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();runCode()}
-});
+function toast(m){
+  const el=document.createElement('div');el.className='toast';el.textContent=m;
+  document.body.appendChild(el);setTimeout(()=>el.remove(),1500);
+}
 
-// ---- Dashboard ----
-function insertDashboard(){
-  document.body.insertAdjacentHTML('beforeend',
-    '<div class="dash-overlay" id="dashOverlay" onclick="if(event.target===this)closeDashboard()">'+
-    '<div class="dash-panel" id="dashPanel">'+
-    '<h3>📊 学习仪表盘</h3>'+
-    '<div class="dash-grid">'+
-    '<div class="dash-card"><div class="dv" id="dTotalRuns">0</div><div class="dl">总运行次数</div></div>'+
-    '<div class="dash-card"><div class="dv" id="dPassed">0</div><div class="dl">已通关课程</div></div>'+
-    '<div class="dash-card"><div class="dv" id="dAccuracy">0%</div><div class="dl">正确率</div></div>'+
-    '<div class="dash-card"><div class="dv" id="dStreak">0</div><div class="dl">连续天数</div></div>'+
-    '</div>'+
-    '<div class="dash-stats" id="dashStats"></div>'+
-    '<button class="dash-close" onclick="closeDashboard()">关闭</button>'+
-    '</div></div>');
-}
-function openDashboard(){
-  document.getElementById('dTotalRuns').textContent=totalRuns;
-  document.getElementById('dPassed').textContent=prog.done;
-  document.getElementById('dAccuracy').textContent=Math.round(totalPasses/Math.max(totalAttempts,1)*100)+'%';
-  document.getElementById('dStreak').textContent=streak;
-  buildDashProgress();
-  document.getElementById('dashOverlay').classList.add('show');
-}
-function closeDashboard(){document.getElementById('dashOverlay').classList.remove('show')}
-function buildDashProgress(){
-  let html='';
-  courses.forEach((c,i)=>{
-    let done=i<prog.done;
-    let time=lessonTimes[i];
-    html+='<div class="dash-row"><span>'+(done?'✅ ':'⬜ ')+c.title+'</span>'+
-      '<span><b>'+(done?'通关':'未完成')+'</b>'+(time?' · '+Math.round(time)+'s':'')+'</span></div>'+
-      '<div class="dash-progress-bar"><div class="dash-progress-fill" style="width:'+(done?'100':'0')+'"></div></div>';
-  });
-  document.getElementById('dashStats').innerHTML=html;
-}
 // Init
-ld();
-cur=Math.min(prog.done,courses.length-1);
-document.getElementById('pct').textContent=prog.done+'/20';
-updateStats();
-loadLsn(cur);
-showTab('content');
-renderAchBar();
-setupEditor();
-speedStartTime=Date.now();
-insertDashboard();
-document.getElementById('pct').style.cursor='pointer';
-document.getElementById('pct').addEventListener('click',openDashboard);
-
-// Console clear button (inserted dynamically after console)
-(function(){
-  const ce = document.getElementById('consoleEl');
-  const row = document.createElement('div');
-  row.style.cssText = 'text-align:right;margin:4px 0 0 0';
-  const btn = document.createElement('button');
-  btn.className = 'btn-clear';
-  btn.textContent = '🗑 清空';
-  btn.onclick = function(){
-    ce.innerHTML = '控制台已清空';
-    this.blur();
-  };
-  row.appendChild(btn);
-  ce.insertAdjacentElement('afterend', row);
-})();
+load();setDark(localStorage.theme==='dark');
+cur=Math.min(prog.done,C.length-1);
+loadLsn(cur);swTab('lesson');
+document.getElementById('codeEl').addEventListener('input',updHL);
+document.getElementById('codeEl').addEventListener('scroll',()=>{document.getElementById('hlEl').style.transform='translateY(-'+document.getElementById('codeEl').scrollTop+'px)'});
+document.getElementById('codeEl').addEventListener('keydown',e=>{if(e.key==='Tab'){e.preventDefault();let s=e.target.selectionStart;e.target.value=e.target.value.slice(0,s)+'    '+e.target.value.slice(e.target.selectionEnd);e.target.selectionStart=e.target.selectionEnd=s+4;updHL()}if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();exec()}});
+calcStreak();checkAch();renderAch();updateStats();
 </script>
 </body>
 </html>
