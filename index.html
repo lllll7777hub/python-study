@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>Python 零基础学堂</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
+/* System fonts - no external @import that blocks rendering in China */
 
 :root{
   --p:#6366f1;--p2:#a855f7;--s:#10b981;--w:#f59e0b;--e:#ef4444;
@@ -13,7 +13,7 @@
   --code:#111827;--r:16px;--r2:12px;--r3:8px;
   --g1:linear-gradient(135deg,#6366f1,#a855f7);
   --g2:linear-gradient(135deg,#10b981,#059669);
-  --f:'Inter',-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;
+  --f:-apple-system,'PingFang SC','Microsoft YaHei','Inter',sans-serif;
   --fm:'JetBrains Mono','Fira Code',Consolas,'Courier New',monospace;
   --sh1:0 1px 3px rgba(0,0,0,.04),0 2px 8px rgba(0,0,0,.04);
   --sh2:0 4px 16px rgba(0,0,0,.06),0 2px 8px rgba(0,0,0,.04);
@@ -193,7 +193,6 @@ html,body{height:100%;font-family:var(--f);background:var(--bg);color:var(--t);o
 
 ::selection{background:rgba(99,102,241,.2);color:var(--t)}
 button:focus-visible{outline:2px solid var(--p);outline-offset:2px;border-radius:4px}
-</style>
 </style>
 </head>
 <body id="root">
