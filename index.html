@@ -181,8 +181,9 @@ html,body{height:100%;font-family:var(--f);background:var(--bg);color:var(--t);o
   .app{flex-direction:row;flex-wrap:wrap}
   .topbar{width:100%}
   .tab-bar{display:none}
-  #panel-lesson{width:460px;min-width:340px;border-right:1px solid var(--b)}
-  #panel-editor{width:auto;flex:1;padding:0}
+  #panel-lesson{width:460px;min-width:340px;border-right:1px solid var(--b);max-width:50vw}
+  #panel-editor{width:auto;flex:1;padding:0;display:flex!important;flex-direction:column!important}
+  #panel-editor.hide{display:none!important}
   .editor{border-radius:0}
   #panel-editor .panel-acts{display:none}
 }
@@ -416,6 +417,9 @@ function swTab(t){
   const isLes=t==='lesson';
   document.getElementById('tbLsn').classList.toggle('on',isLes);
   document.getElementById('tbEd').classList.toggle('on',!isLes);
+  // Desktop: both always visible
+  if(window.innerWidth>=769){document.getElementById('panel-lesson').classList.remove('hide');document.getElementById('panel-editor').classList.remove('hide');if(!isLes)document.getElementById('codeEl').focus();return}
+  // Mobile: toggle
   document.getElementById('panel-lesson').classList.toggle('hide',!isLes);
   document.getElementById('panel-editor').classList.toggle('hide',isLes);
   if(!isLes) document.getElementById('codeEl').focus();
