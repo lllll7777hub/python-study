@@ -557,8 +557,8 @@ function exec(){
 function check(o){
   const c=C[cur],ex=c.ans,ce=document.getElementById('conEl');
   if(!ex||!ex.t){return}
-  let pass=ex.t==='exact'?o===ex.v:o.includes(ex.v);
-  if(!pass&&ex.t==='contains'&&[9,10].includes(cur+1)&&o.length>8) pass=***
+  let pass = ex.t==='exact'?o===ex.v:o.includes(ex.v);
+  if(!pass&&ex.t==='contains'&&[9,10].includes(cur+1)&&o.length>8) pass=true
   if(pass&&cur>=prog.done){
     prog.done=cur+1;totalOK++;save();
     document.getElementById('nextBtn').disabled=false;
@@ -588,7 +588,7 @@ function reset(){
 function hint(){
   const c=C[cur];let idx=prog.hints[cur]||0;
   if(idx>=c.hints.length) idx=0;
-  hintUsed[cur]=***document.getElementById('conEl').innerHTML+='\n\n<span class="hint">💡 '+c.hints[idx]+'</span>';
+  hintUsed[cur]=true;document.getElementById('conEl').innerHTML+='\n\n<span class="hint">💡 '+c.hints[idx]+'</span>';
   prog.hints[cur]=idx+1;save();
   if(prog.hints[cur]>=c.hints.length) prog.hints[cur]=0;
 }
