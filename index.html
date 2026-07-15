@@ -48,7 +48,7 @@ html,body{height:100%;font-family:var(--f);background:var(--bg);color:var(--t);o
 
 .wrap{flex:1;display:flex;overflow:hidden}
 .panel{flex:1;overflow-y:auto;overflow-x:hidden;background:var(--c);padding:20px 18px;scroll-behavior:smooth}
-.panel.hide{display:none}
+.panel.hide{display:none!important}
 .panel::-webkit-scrollbar{width:4px}
 .panel::-webkit-scrollbar-thumb{background:var(--b);border-radius:4px}
 
@@ -210,7 +210,7 @@ button:focus-visible{outline:2px solid var(--p);outline-offset:2px;border-radius
   </div>
   <div class="wrap">
     <div class="panel" id="panel-lesson"></div>
-    <div class="panel hide" id="panel-editor" style="padding:0;display:flex;flex-direction:column">
+    <div class="panel hide" id="panel-editor">
       <div class="panel-acts" style="padding:8px 12px 0">
         <button class="btn-run" onclick="exec()">▶ 运行</button>
         <button class="btn-reset" onclick="reset()">↺ 重置</button>
